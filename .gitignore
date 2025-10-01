@@ -1,0 +1,64 @@
+# ===================================================================
+# Arquivo .gitignore para projetos Django
+# ===================================================================
+
+# Ambiente Virtual
+# Nunca adicione a pasta do ambiente virtual ao repositório.
+# As dependências devem ser gerenciadas pelo arquivo requirements.txt.
+venv/
+env/
+.venv/
+.env/
+*/venv/
+*/env/
+
+# Arquivos de Cache e compilados do Python
+# São gerados automaticamente e não precisam de versionamento.
+__pycache__/
+*.pyc
+*.pyo
+*.pyd
+
+# Banco de Dados Local
+# O banco de dados de desenvolvimento não deve ser versionado.
+# A estrutura do banco (schema) é gerenciada pelos arquivos de migration.
+db.sqlite3
+db.sqlite3-journal
+
+# Arquivos de Mídia (uploads de usuários)
+# O conteúdo gerado pelo usuário não pertence ao código-fonte.
+media/
+
+# Arquivos Estáticos Coletados
+# Esta pasta é gerada pelo comando `collectstatic` durante o deploy.
+# Os arquivos estáticos originais (na pasta static/ de cada app) devem ser versionados.
+staticfiles/
+static_root/
+
+# Arquivos de Configuração e Segredos
+# NUNCA versione arquivos com senhas, chaves de API ou a SECRET_KEY.
+# É uma boa prática usar variáveis de ambiente ou um arquivo .env.
+.env
+*.env
+
+# Permite versionar um arquivo de exemplo para as variáveis de ambiente.
+!.env.example
+
+# Configurações de IDEs e Editores de Código
+# Configurações pessoais do seu ambiente de desenvolvimento.
+.vscode/
+.idea/
+*.sublime-project
+*.sublime-workspace
+
+# Logs e Relatórios
+# Arquivos gerados durante a execução ou testes.
+*.log
+logs/
+.coverage
+.coverage.*
+htmlcov/
+
+# Arquivos do Sistema Operacional
+.DS_Store
+Thumbs.db
