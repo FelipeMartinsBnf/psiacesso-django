@@ -1,0 +1,15 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Cadastro</title>
+</head>
+<body>
+    <h2>Crie sua Conta</h2>
+
+    <form method="post">
+        {% csrf_token %}
+        {{ form.as_p }}
+        <button type="submit">Cadastrar</button>
+    </form>
+</body>
+</html>

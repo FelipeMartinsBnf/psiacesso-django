@@ -1,55 +1,14 @@
 from django.db import models
-from django.contrib.auth.models import AbstractUser
+from contas.models import Cliente, Psicologo, Usuario
 
-# Create your models here.
-
-
-# ========================================
-# Usuário customizado
-# ========================================
-class Usuario(AbstractUser):
-    ROLE_CHOICES = (
-        ('cliente', 'Cliente'),
-        ('psicologo', 'Psicólogo'),
-        ('admin', 'Administrador'),
-    )
-    nome = models.CharField(max_length=255)
-    telefone = models.CharField(max_length=20, blank=True, null=True)
-    role = models.CharField(max_length=20, choices=ROLE_CHOICES)
-
-    def __str__(self):
-        return f"{self.nome} ({self.role})"
-
-
-# ========================================
-# Perfis
-# ========================================
 class Endereco(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="enderecos")
-    cidade = models.CharField(max_lenght=100)
-    rua = models.CharField(max_lenght=100)
-    estado = numero = models.CharField(max_lenght=100)
-    cep = models.CharField(max_lenght=100, blank=True, null=True)
-    bairro = models.CharField(max_lenght=100, blank=True, null=True)
-    numero = models.CharField(max_lenght=20,  blank=True, null=True)
-    
-class Cliente(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    
-
-    def __str__(self):
-        return self.usuario.nome
-
-
-class Psicologo(models.Model):
-    usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    crp = models.CharField(max_length=50, unique=True)  # Registro profissional
-    formacao = models.TextField()
-    preco_consulta = models.DecimalField(max_digits=8, decimal_places=2)
-    duracao_minutos = models.PositiveIntegerField(default=50)
-
-    def __str__(self):
-        return f"{self.usuario.nome} - CRP {self.crp}"
+    cidade = models.CharField(max_length=100) 
+    rua = models.CharField(max_length=100)     
+    estado = models.CharField(max_length=100)
+    bairro = models.CharField(max_length=100, blank=True, null=True)
+    cep = models.CharField(max_length=100, blank=True, null=True)    
+    numero = models.CharField(max_length=20,  blank=True, null=True) # Corrigido e separado
 
 
 # ========================================
@@ -82,8 +41,8 @@ class Formacao(models.Model):
         (1, 'CURSO'),
     )
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
-    nome = models.CharField(max_lenght=100)
-    descricao = models.CharField(max_lenght=100, blank=True, null=True)
+    nome = models.CharField(max_length=100)
+    descricao = models.CharField(max_length=100, blank=True, null=True)
     tipo = models.IntegerField(choices=TipoFormacao)
     
 

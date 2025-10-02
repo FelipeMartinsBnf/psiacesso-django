@@ -37,7 +37,8 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    'psiacesso_main'
+    'psiacesso_main',
+    'contas'
 ]
 
 MIDDLEWARE = [
@@ -76,7 +77,7 @@ WSGI_APPLICATION = 'psiacesso.wsgi.application'
 DATABASES = {
     'default': {
     'ENGINE': 'django.db.backends.postgresql',
-    'NAME': 'dvdrental',
+    'NAME': 'psiacesso',
     'USER': 'postgres',
     'PASSWORD': '12345678',
     'HOST': '127.0.0.1',
@@ -126,3 +127,8 @@ STATIC_URL = 'static/'
 # https://docs.djangoproject.com/en/5.2/ref/settings/#default-auto-field
 
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
+
+AUTH_USER_MODEL = 'contas.Usuario'
+
+LOGIN_REDIRECT_URL = '/dashboard'
+LOGIN_URL = '/login/'    
