@@ -1,5 +1,5 @@
 from django.db import models
-from contas.models import Cliente, Psicologo, Usuario
+from contas.models import Paciente, Psicologo, Usuario
 
 class Endereco(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="enderecos")
@@ -99,7 +99,7 @@ class Consulta(models.Model):
         ('presencial', 'Presencial'),
     )
 
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
     agenda = models.OneToOneField(AgendaPsicologo, on_delete=models.CASCADE)
     modalidade = models.CharField(max_length=20, choices=MODALIDADE_CHOICES)
@@ -108,7 +108,7 @@ class Consulta(models.Model):
     data_criacao = models.DateTimeField(auto_now_add=True)
 
     def __str__(self):
-        return f"Consulta {self.id} - {self.cliente} com {self.psicologo}"
+        return f"Consulta {self.id} - {self.paciente} com {self.psicologo}"
 
 
 # ========================================
@@ -128,14 +128,14 @@ class AnotacaoPsicologo(models.Model):
 # Avaliações
 # ========================================
 class Avaliacao(models.Model):
-    cliente = models.ForeignKey(Cliente, on_delete=models.CASCADE)
+    paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
     nota = models.PositiveIntegerField()
     comentario = models.TextField(blank=True, null=True)
     data = models.DateTimeField(auto_now_add=True)
 
     class Meta:
-        unique_together = ('cliente', 'psicologo')  # cada cliente avalia uma vez
+        unique_together = ('paciente', 'psicologo')  # cada paciente avalia uma vez
 
     def __str__(self):
-        return f"Avaliação {self.nota} de {self.cliente} para {self.psicologo}"
+        return f"Avaliação {self.nota} de {self.paciente} para {self.psicologo}"

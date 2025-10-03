@@ -14,6 +14,13 @@ class Usuario(AbstractUser):
     
     role = models.CharField(max_length=50, choices=Role.choices, default=base_role)
     
+    email = models.EmailField(unique=True)
+    
+    # Removendo o 'email' dos campos obrigatórios, pois ele já é o USERNAME_FIELD
+    # O username ainda é necessário para o Django, mas não será pedido ao criar um superuser
+    USERNAME_FIELD = 'email'
+    REQUIRED_FIELDS = []
+    
     def save(self, *args, **kwargs):
         # Se o usuário está sendo criado e não tem uma role definida,
         # usamos a base_role. Útil para o createsuperuser.
@@ -25,9 +32,9 @@ class Usuario(AbstractUser):
 # ========================================
 # Perfis
 # ========================================
-class Cliente(models.Model):
+class Paciente(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
-    
+    data_nascimento = models.DateField()
 
     def __str__(self):
         return self.usuario.nome
