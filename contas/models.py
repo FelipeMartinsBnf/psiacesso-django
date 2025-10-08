@@ -10,23 +10,13 @@ class Usuario(AbstractUser):
         USUARIO = 'USUARIO', 'Usuário'
     
     #Campo base_role para definir a role Padrão
-    base_role = Role.USUARIO
-    
-    role = models.CharField(max_length=50, choices=Role.choices, default=base_role)
-    
+    role = models.CharField(max_length=50, choices=Role.choices, default=Role.USUARIO)
     email = models.EmailField(unique=True)
     
     # Removendo o 'email' dos campos obrigatórios, pois ele já é o USERNAME_FIELD
     # O username ainda é necessário para o Django, mas não será pedido ao criar um superuser
     USERNAME_FIELD = 'email'
     REQUIRED_FIELDS = []
-    
-    def save(self, *args, **kwargs):
-        # Se o usuário está sendo criado e não tem uma role definida,
-        # usamos a base_role. Útil para o createsuperuser.
-        if not self.pk:
-            self.role = self.base_role
-        return super().save(*args, **kwargs)
 
 
 # ========================================

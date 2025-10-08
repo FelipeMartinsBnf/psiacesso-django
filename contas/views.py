@@ -59,7 +59,7 @@ def cadastro_psicologo(request):
         # Se não for POST, apenas cria um formulário em branco
         form = PsicologoProfileForm()
         
-    return render(request, 'perfis/cadastro_psicologo.html', {'form': form})
+    return render(request, 'cadastro/cadastro_psicologo.html', {'form': form})
 
 @login_required
 def cadastro_paciente(request):
@@ -73,7 +73,7 @@ def cadastro_paciente(request):
     else:
         form = PacienteProfileForm()
         
-    return render(request, 'perfis/cadastro_paciente.html', {'form': form})
+    return render(request, 'cadastro/cadastro_paciente.html', {'form': form})
 
 
 
