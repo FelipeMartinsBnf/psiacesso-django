@@ -3,20 +3,27 @@ from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
 
 from contas.models import Paciente, Psicologo
-from .forms import CustomUserCreationForm, PacienteProfileForm, PsicologoProfileForm
+from .forms import *
 
 def cadastro(request):
+
     if request.method == 'POST':
-        form = CustomUserCreationForm(request.POST)
-        if form.is_valid():
-            user = form.save()
+        form_usuario = CustomUserCreationForm(request.POST)
+        form_endereco = enderecoForm(request.POST)
+        
+        if form_usuario.is_valid() and form_endereco.is_valid():
+            user = form_usuario.save()
+            endereco = form_endereco.save(commit=False)
+            endereco.usuario = user
+            endereco.save()
             
             login(request, user, backend='contas.backends.EmailBackend') 
             return redirect('/') 
     else:
-        form = CustomUserCreationForm()
+        form_usuario = CustomUserCreationForm()
+        form_endereco = enderecoForm()
     
-    return render(request, 'auth/cadastro.html', {'form': form})
+    return render(request, 'auth/cadastro.html', {'form_usuario': form_usuario, 'form_endereco': form_endereco})
 
 @login_required # Garante que o usuário já esteja logado
 def checar_perfil(request):

@@ -8,7 +8,8 @@
 
     <form method="post">
         {% csrf_token %}
-        {{ form.as_p }}
+        {{ form_usuario.as_p }}
+        {{ form_endereco.as_p}}
         <button type="submit">Cadastrar</button>
     </form>
 </body>

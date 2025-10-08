@@ -3,12 +3,19 @@
 from multiprocessing import AuthenticationError
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Paciente, Psicologo, Usuario # Importe seu modelo de usuário customizado
+from .models import Paciente, Psicologo, Usuario, Endereco # Importe seu modelo de usuário customizado
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Usuario
-        fields = ('first_name', 'last_name', 'email', 'role')
+        fields = ('first_name', 'last_name', 'email', 'cpf', 'gender')
+        labels = {
+                'first_name': 'Seu Nome',
+                'last_name': 'Sobrenome',
+                'email': 'E-mail',
+                'CPF': 'CPF',
+                'gender': 'Gênero'
+            }
         
     def save(self, commit=True):
         user = super().save(commit=False)
@@ -54,3 +61,26 @@ class PacienteProfileForm(forms.ModelForm):
         widgets = {
             'data_nascimento': forms.DateInput(attrs={'type': 'date'}),
         }
+        
+class enderecoForm(forms.ModelForm):
+    class Meta:
+        model = Endereco
+        
+        fields = ['cidade', 'rua', 'estado', 'bairro', 'cep', 'numero', 'complemento']
+        labels = {
+            'cidade': 'Cidade',
+            'rua': 'Rua',
+            'estado': 'Estado',
+            'bairro': 'Bairro',
+            'cep': 'CEP',
+            'numero': 'Numero',
+            'complemento': 'Complemento'
+        }
+        
+        estado = forms.ChoiceField(
+             widget=forms.Select(choices=[('MG', 'MG'), ('SP', 'SP')])
+        )
+        
+        
+        
+    

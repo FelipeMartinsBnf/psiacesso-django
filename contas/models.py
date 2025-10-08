@@ -9,9 +9,18 @@ class Usuario(AbstractUser):
         PSICOLOGO = 'PSICOLOGO', 'Psicólogo'
         USUARIO = 'USUARIO', 'Usuário'
     
+    class Gender(models.TextChoices):
+        MASCULINO = 'MASCULINO', 'Masculino'
+        FEMININO = 'FEMININO', 'Feminino',
+        NAO_INFORMAR = 'NAO_INFORMAR', 'Não informar',
+        OUTRO = 'OUTRO', 'Outro'
+        
+    
     #Campo base_role para definir a role Padrão
     role = models.CharField(max_length=50, choices=Role.choices, default=Role.USUARIO)
     email = models.EmailField(unique=True)
+    cpf = models.CharField(max_length=50)
+    gender = models.CharField(max_length=50, choices=Gender.choices)
     
     # Removendo o 'email' dos campos obrigatórios, pois ele já é o USERNAME_FIELD
     # O username ainda é necessário para o Django, mas não será pedido ao criar um superuser
@@ -38,3 +47,14 @@ class Psicologo(models.Model):
 
     def __str__(self):
         return f"{self.usuario.nome} - CRP {self.crp}"
+
+class Endereco(models.Model):
+    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="enderecos")
+    cidade = models.CharField(max_length=100) 
+    rua = models.CharField(max_length=100)     
+    estado = models.CharField(max_length=100)
+    bairro = models.CharField(max_length=100, blank=True, null=True)
+    cep = models.CharField(max_length=50, blank=True, null=True)    
+    numero = models.CharField(max_length=20,  blank=True, null=True)
+    complemento = models.CharField(max_length=100)
+

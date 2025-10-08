@@ -1,16 +1,6 @@
 from django.db import models
 from contas.models import Paciente, Psicologo, Usuario
 
-class Endereco(models.Model):
-    usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="enderecos")
-    cidade = models.CharField(max_length=100) 
-    rua = models.CharField(max_length=100)     
-    estado = models.CharField(max_length=100)
-    bairro = models.CharField(max_length=100, blank=True, null=True)
-    cep = models.CharField(max_length=100, blank=True, null=True)    
-    numero = models.CharField(max_length=20,  blank=True, null=True) # Corrigido e separado
-
-
 # ========================================
 # Especialidades
 # ========================================
