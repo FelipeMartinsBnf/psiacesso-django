@@ -19,6 +19,20 @@
         {% csrf_token %}
         
         {{ form.as_p }}
+
+        <h3>Formação Acadêmica e Cursos</h3>
+        
+        {{ formset.management_form }} {% for form_item in formset %}
+            <div class="formacao-item">
+                <h4>Formação {{ forloop.counter }}</h4>
+                {{ form_item.as_p }}
+                {% if form_item.instance.pk and formset.can_delete %}
+                    <label for="{{ form_item.DELETE.id_for_label }}">Marcar para remover:</label>
+                    {{ form_item.DELETE }}
+                {% endif %}
+            </div>
+            <br>
+        {% endfor %}
         
         <button type="submit">Salvar Perfil</button>
     </form>

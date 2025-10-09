@@ -3,7 +3,10 @@
 from multiprocessing import AuthenticationError
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-from .models import Paciente, Psicologo, Usuario, Endereco # Importe seu modelo de usuário customizado
+
+from psiacesso_main.models import Formacao
+from .models import Paciente, Psicologo, Usuario, Endereco 
+from django.forms import inlineformset_factory
 
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
@@ -37,17 +40,29 @@ class EmailLoginForm(AuthenticationForm):
         })
         
 class PsicologoProfileForm(forms.ModelForm):
+    # O ModelChoiceField cria um <select> populado com todas as especialidades.
+    # O ModelForm já faz isso automaticamente para ForeignKeys, então só precisamos adicionar ao fields.
     class Meta:
         model = Psicologo
-        # Liste os campos do modelo Psicologo que devem aparecer no formulário
-        fields = ['crp', 'preco_consulta', 'duracao_minutos']
+        # 2. Adicione 'especialidade' aos fields
+        fields = ['crp', 'preco_consulta', 'duracao_minutos', 'especialidade', 'atendimento_online', 'atendimento_presencial']
         
-        # rótulos (labels) dos campos
         labels = {
             'crp': 'Número do CRP',
             'preco_consulta': 'Preço da Consulta (R$)',
             'duracao_minutos': 'Duração da Sessão (em minutos)',
+            'especialidade': 'Principal Área de Especialidade',
+            'atendimento_online': 'Atendimento Online',
+            'atendimento_presencial': 'Atendimento Presencial'
         }
+        
+FormacaoFormSet = inlineformset_factory(
+    Psicologo,           
+    Formacao,            
+    fields=('nome', 'descricao', 'tipo'),
+    extra=1,                
+    can_delete=False      
+)
 
 class PacienteProfileForm(forms.ModelForm):
     class Meta:

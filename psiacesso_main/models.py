@@ -1,26 +1,5 @@
 from django.db import models
-from contas.models import Paciente, Psicologo, Usuario
-
-# ========================================
-# Especialidades
-# ========================================
-class Especialidade(models.Model):
-    nome = models.CharField(max_length=100, unique=True)
-    descricao = models.TextField(blank=True, null=True)
-
-    def __str__(self):
-        return self.nome
-
-
-class PsicologoEspecialidade(models.Model):
-    psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
-    especialidade = models.ForeignKey(Especialidade, on_delete=models.CASCADE)
-
-    class Meta:
-        unique_together = ('psicologo', 'especialidade')
-
-    def __str__(self):
-        return f"{self.psicologo} - {self.especialidade}"
+from contas.models import Paciente, Psicologo
 
 # ========================================
 # Formação psicologo
@@ -93,7 +72,6 @@ class Consulta(models.Model):
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
     agenda = models.OneToOneField(AgendaPsicologo, on_delete=models.CASCADE)
     modalidade = models.CharField(max_length=20, choices=MODALIDADE_CHOICES)
-    especialidade = models.ForeignKey(Especialidade, on_delete=models.SET_NULL, null=True)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='confirmado')
     data_criacao = models.DateTimeField(auto_now_add=True)
 

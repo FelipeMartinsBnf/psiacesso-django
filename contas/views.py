@@ -1,18 +1,31 @@
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
+from django.http import Http404
 
-from contas.models import Paciente, Psicologo
+from contas.models import Paciente, Psicologo, Usuario
 from .forms import *
 
-def cadastro(request):
+def roleCadastro(request):
+    return render(request, 'cadastro/cadastro_select_role.html', {})
+
+def cadastro(request, tipo_cadastro):
 
     if request.method == 'POST':
         form_usuario = CustomUserCreationForm(request.POST)
         form_endereco = enderecoForm(request.POST)
         
         if form_usuario.is_valid() and form_endereco.is_valid():
-            user = form_usuario.save()
+            
+            user = form_usuario.save(commit=False)
+            if tipo_cadastro == 1:
+                user.role = Usuario.Role.PSICOLOGO
+            elif tipo_cadastro == 2:
+                user.role = Usuario.Role.USUARIO
+            else:
+                raise Http404("Este tipo de cadastro não está disponível no momento.")
+            user.save()
+            
             endereco = form_endereco.save(commit=False)
             endereco.usuario = user
             endereco.save()
@@ -49,24 +62,27 @@ def checar_perfil(request):
 
 @login_required
 def cadastro_psicologo(request):
-    # O padrão para processar formulários no Django
     if request.method == 'POST':
-        # Cria uma instância do formulário com os dados enviados
         form = PsicologoProfileForm(request.POST)
-        if form.is_valid():
-            # Cria o objeto do modelo, mas não salva no banco ainda (commit=False)
-            perfil = form.save(commit=False)
-            # Associa o perfil ao usuário que está logado
-            perfil.usuario = request.user
-            # Agora sim, salva no banco de dados
-            perfil.save()
-            # Redireciona para o dashboard após o sucesso
+        formset = FormacaoFormSet(request.POST, prefix='formacoes')
+
+        if form.is_valid() and formset.is_valid():
+            psicologo = form.save(commit=False)
+            psicologo.usuario = request.user
+            psicologo.save()
+            
+            formset.instance = psicologo
+            formset.save()
+            
             return redirect('dashboard')
     else:
-        # Se não for POST, apenas cria um formulário em branco
         form = PsicologoProfileForm()
-        
-    return render(request, 'cadastro/cadastro_psicologo.html', {'form': form})
+        formset = FormacaoFormSet(prefix='formacoes')
+    context = {
+        'form': form,
+        'formset': formset,
+    }
+    return render(request, 'cadastro/cadastro_psicologo.html', context)
 
 @login_required
 def cadastro_paciente(request):

@@ -1,6 +1,5 @@
 from django.contrib import admin
 from django.contrib.auth.admin import UserAdmin
-from .models import Usuario
 
 # Adicionamos o campo 'role' aos fieldsets do UserAdmin para que ele
 # apareça na tela de criação e edição de usuários no admin.

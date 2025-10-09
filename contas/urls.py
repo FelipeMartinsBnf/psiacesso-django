@@ -12,7 +12,8 @@ urlpatterns = [
             template_name='auth/login.html', authentication_form=EmailLoginForm 
     ), name='login'),
     path('logout/', auth_views.LogoutView.as_view(next_page='/login/'), name='logout'),
-    path('cadastro/', views.cadastro, name='cadastro'),
+    path('tipo-cadastro', views.roleCadastro, name='select_tipo_cadastro'),
+    path('cadastro/<int:tipo_cadastro>', views.cadastro, name='tipo_cadastro'),
 
     path('cadastro/psicologo/', views.cadastro_psicologo, name='cadastro_psicologo'),
     path('cadastro/paciente/',  views.cadastro_paciente, name='cadastro_paciente'),
