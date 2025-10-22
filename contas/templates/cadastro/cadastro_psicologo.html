@@ -9,6 +9,7 @@
         label { margin-bottom: 5px; font-weight: bold; }
         input { padding: 8px; border: 1px solid #ccc; border-radius: 4px; }
         button { padding: 10px 15px; background-color: #007bff; color: white; border: none; border-radius: 4px; cursor: pointer; }
+        .hidden {display: none;}
     </style>
 </head>
 <body>
@@ -22,19 +23,61 @@
 
         <h3>Formação Acadêmica e Cursos</h3>
         
-        {{ formset.management_form }} {% for form_item in formset %}
-            <div class="formacao-item">
-                <h4>Formação {{ forloop.counter }}</h4>
-                {{ form_item.as_p }}
-                {% if form_item.instance.pk and formset.can_delete %}
-                    <label for="{{ form_item.DELETE.id_for_label }}">Marcar para remover:</label>
-                    {{ form_item.DELETE }}
-                {% endif %}
-            </div>
-            <br>
-        {% endfor %}
+        <div id="formacao-list">
+            {{ formset.management_form }} {% for form_item in formset %}
+                <div class="formacao-item">
+                    <h4>Formação {{ forloop.counter }}</h4>
+                    {{ form_item.as_p }}
+                    {% if form_item.instance.pk and formset.can_delete %}
+                        <label for="{{ form_item.DELETE.id_for_label }}">Marcar para remover:</label>
+                        {{ form_item.DELETE }}
+                    {% endif %}
+                </div>
+            {% endfor %}
+        </div>
         
+        <button type="button" id="add-formacao-button">Adicionar mais uma formação</button>
+        
+        <br><br>
+
+        <div id="empty-form" class="hidden">
+            <div class="formacao-item">
+                <h4>Formação <span class="form-counter"></span></h4>
+                {{ formset.empty_form.as_p }}
+            </div>
+        </div>
+            
         <button type="submit">Salvar Perfil</button>
     </form>
+    <script>
+        // Este script vai dentro da tag <script> no final do seu <body>
+
+        // Seleciona os elementos do DOM
+        const addFormacaoButton = document.getElementById('add-formacao-button');
+        const formacaoList = document.getElementById('formacao-list');
+        const emptyForm = document.getElementById('empty-form').innerHTML;
+        const totalFormsInput = document.getElementById('id_formacoes-TOTAL_FORMS');
+
+        addFormacaoButton.addEventListener('click', function() {
+        // Pega o número atual de formulários
+        let currentFormCount = parseInt(totalFormsInput.value);
+
+        // Cria o HTML do novo formulário, substituindo o placeholder '__prefix__' pelo número correto
+        const newFormHtml = emptyForm.replace(/__prefix__/g, currentFormCount);
+        
+        // Cria um novo elemento div para inserir o formulário
+        const newFormElement = document.createElement('div');
+        newFormElement.innerHTML = newFormHtml;
+        
+        // Atualiza o contador no título (opcional, mas melhora a UX)
+        newFormElement.querySelector('.form-counter').innerText = currentFormCount + 1;
+
+        // Insere o novo formulário na lista
+        formacaoList.appendChild(newFormElement);
+
+        // Incrementa o valor no management_form para que o Django saiba do novo formulário
+        totalFormsInput.value = currentFormCount + 1;
+        });
+    </script>
 </body>
 </html>
