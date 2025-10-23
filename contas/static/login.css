@@ -1,0 +1,237 @@
+:root {
+    --color-primary-green: #386641;
+    --color-secondary-green: #6A994E;
+    --color-text-light: #f4f4f4;
+    --color-white: #ffffff;
+    --color-light-gray: #e0e0e0;
+    --color-border: #cccccc;
+    --font-family: 'Roboto', sans-serif;
+}
+
+/* Base */
+html, body {
+    height: 100%;
+    margin: 0;
+    font-family: var(--font-family);
+    background-color: var(--color-white);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
+
+/* Layout Geral do Login */
+.login-container {
+    height: 100vh;
+    width: 100vw;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 0;
+}
+
+.login-wrapper-col {
+    max-width: 1100px;
+    width: 100%;
+    height: 100vh;
+    display: flex;
+    flex-direction: column;
+}
+
+.login-card {
+    width: 100%;
+    height: 100%;
+    border-radius: 10px;
+    overflow: hidden;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    display: flex;
+}
+
+.login-card .row.g-0.h-100 {
+    flex-grow: 1;
+    display: flex;
+    height: 100%;
+}
+
+.login-branding-section,
+.login-form-section {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+}
+
+/* Sidebar (lado esquerdo) */
+.login-branding-section {
+    background-color: var(--color-primary-green);
+    color: var(--color-text-light);
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+}
+
+.branding-content {
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+.logo-icon {
+    font-size: 3.5rem;
+    margin-bottom: 10px;
+}
+
+.features-list p {
+    margin: 15px 0;
+    font-weight: 400;
+    text-align: left;
+}
+
+.features-list i {
+    color: var(--color-secondary-green);
+    font-size: 1.1rem;
+}
+
+/* SUBSTITUA A REGRA ANTIGA POR ESTA */
+.login-form-section {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    padding: 40px;
+    background-size: cover;
+    background-position: center center;
+  
+    /* Centraliza o form-box verticalmente e horizontalmente */
+    justify-content: center; 
+    align-items: center;
+  
+    /* Garante altura total em telas grandes */
+    height: 100%;
+  }
+
+/* Caixa branca do formulário */
+.form-box {
+    position: relative;
+    z-index: 2;
+    background-color: var(--color-white);
+    padding: 30px; /* Um pouco mais de preenchimento, como na imagem */
+    border-radius: 8px;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.2);
+    width: 100%;
+    max-width: 400px; /* Um pouco mais largo, como na imagem */
+    margin-bottom: 0; /* REMOVIDA a margem inferior */
+}
+
+/* --- REGRAS ADICIONADAS PARA DIMINUIR ITENS --- */
+.form-box h2 {
+    font-size: 1.5rem; /* Diminui o título principal */
+}
+.form-box p.mb-4 {
+    margin-bottom: 1rem !important; /* Diminui o espaço do subtítulo */
+}
+.form-box .form-label {
+    font-size: 0.875rem; /* Diminui as labels (E-mail, Senha) */
+}
+.form-box .form-control {
+    font-size: 0.9rem; /* Diminui a fonte dentro dos inputs */
+}
+/* --- FIM DAS NOVAS REGRAS --- */
+
+/* Estilos do formulário interno */
+.user-type-button {
+    padding: 10px; /* MODIFICADO: Era 15px */
+    border: 1px solid var(--color-border);
+    border-radius: 8px;
+    text-align: center;
+    cursor: pointer;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    color: #666;
+    font-weight: 500;
+    user-select: none;
+}
+
+.user-icon {
+    font-size: 1.5rem; /* MODIFICADO: Era 1.8rem */
+    margin-bottom: 3px; /* MODIFICADO: Era 5px */
+    color: #999;
+}
+
+.type-options input[type="radio"]:checked + .user-type-button {
+    border-color: var(--color-primary-green);
+    background-color: #f0f8f0;
+    color: var(--color-primary-green);
+    box-shadow: 0 0 0 1px var(--color-primary-green);
+}
+
+.btn-login {
+    background-color: var(--color-primary-green);
+    border-color: var(--color-primary-green);
+    padding: 0.6rem 1rem; /* MODIFICADO: Era 12px */
+    font-size: 0.9rem; /* ADICIONADO */
+    font-weight: 500;
+    border-radius: 8px;
+    color: white;
+}
+
+.btn-login:hover {
+    background-color: #2a5232;
+    border-color: #2a5232;
+}
+
+/* --- REGRA ADICIONADA PARA O BOTÃO GOOGLE --- */
+.form-box .btn-outline-secondary {
+    padding: 0.6rem 1rem;
+    font-size: 0.9rem;
+}
+
+.signup-text {
+    font-size: 0.85rem; /* MODIFICADO: Era 0.9rem */
+    color: #666;
+}
+
+.signup-link-btn {
+    font-weight: 500;
+    color: var(--color-primary-green);
+    text-decoration: none;
+    margin-left: 5px;
+    transition: color 0.2s ease-in-out;
+}
+
+.signup-link-btn:hover {
+    color: var(--color-secondary-green);
+    text-decoration: underline;
+}
+
+/* --- REGRA ADICIONADA PARA TEXTOS MENORES --- */
+.form-check-label,
+.forgot-password-link {
+    font-size: 0.85rem;
+}
+
+/* AJUSTE PARA TELAS PEQUENAS (Mobile) */
+@media (max-width: 991.98px) { /* Ponto de quebra 'lg' do Bootstrap */
+  
+    .login-card {
+      height: auto; /* Permite o card crescer conforme o conteúdo */
+      overflow: auto; /* Adiciona scroll se necessário */
+    }
+  
+    .login-wrapper-col, .login-container {
+      height: auto; /* Remove a altura fixa de 100vh */
+      align-items: flex-start; /* Alinha no topo */
+    }
+    
+    .login-branding-section,
+    .login-form-section {
+      height: auto; /* Remove a altura fixa de 100% */
+      padding: 60px 20px; /* Adiciona um respiro em telas menores */
+    }
+  
+    .login-branding-section {
+       min-height: 350px; /* Garante um espaço mínimo para a logo */
+    }
+  }

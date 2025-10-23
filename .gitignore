@@ -1,16 +1,18 @@
-# ===================================================================
-# Arquivo .gitignore para projetos Django
-# ===================================================================
+# Arquivos Python compilados
+__pycache__/
+*.py[cod]
 
-# Ambiente Virtual
-# Nunca adicione a pasta do ambiente virtual ao repositório.
-# As dependências devem ser gerenciadas pelo arquivo requirements.txt.
-venv/
+# Ambiente virtual
 env/
-.venv/
-.env/
-*/venv/
-*/env/
+venv/
+
+# Arquivos temporários do sistema
+.DS_Store
+*.log
+
+# Cache do Django
+*.sqlite3
+
 
 _pycache
 _pycache_
