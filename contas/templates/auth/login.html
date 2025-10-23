@@ -58,13 +58,32 @@
               <div class="form-box">
                 <h2 class="mb-1">Bem-vindo de volta</h2>
                 <p class="mb-4 text-muted">Faça login para acessar sua conta</p>
-
-    <form method="post">
-        {% csrf_token %}
-        {{ form.as_p }}
-        <button type="submit">Entrar</button>
-    </form>
-
-    <p><a href="{% url 'select_tipo_cadastro' %}">Não tem uma conta? Cadastre-se</a></p>
+              <form method="post">
+                  {% csrf_token %}
+                  {{ form.as_p }}
+                  <input type="submit" class="btn btn-primary btn-login w-100 mb-3"></button>
+              </form>
+              <a
+              href="#"
+              class="btn btn-outline-secondary w-100 mb-3"
+              style="display: flex; align-items: center; justify-content: center; gap: 10px;"
+            >
+              <img
+                src="https://upload.wikimedia.org/wikipedia/commons/c/c1/Google_%22G%22_logo.svg"
+                alt="Google"
+                width="20"
+                height="20"
+              />
+              Continuar com Google
+            </a>
+              <div class="text-center signup-text">
+                Não tem uma conta?
+                <a href="#" class="signup-link-btn">Cadastre-se</a>
+              </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
 </body>
 </html>

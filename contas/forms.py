@@ -38,6 +38,10 @@ class EmailLoginForm(AuthenticationForm):
             'class': 'form-control', # Adicionei uma classe CSS como exemplo
             'placeholder': 'seuemail@exemplo.com'
         })
+        self.fields['password'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control',
+            'placeholder': 'Sua senha'
+        })
         
 class PsicologoProfileForm(forms.ModelForm):
     # O ModelChoiceField cria um <select> populado com todas as especialidades.
