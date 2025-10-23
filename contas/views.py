@@ -41,15 +41,14 @@ def cadastro(request, tipo_cadastro):
 @login_required # Garante que o usuário já esteja logado
 def checar_perfil(request):
     user = request.user
-
     try:
         if user.role == 'PSICOLOGO':
             psicologo = Psicologo.objects.get(usuario=user)
-            return redirect('dashboard')
+            return redirect('user-dashboard')
 
         elif user.role == 'USUARIO':
             paciente = Paciente.objects.get(usuario=user)
-            return redirect('dashboard')
+            return redirect('user-dashboard')
 
     except Psicologo.DoesNotExist:
         return redirect('cadastro_psicologo')
@@ -74,7 +73,7 @@ def cadastro_psicologo(request):
             formset.instance = psicologo
             formset.save()
             
-            return redirect('dashboard')
+            return redirect('user-dashboard')
     else:
         form = PsicologoProfileForm()
         formset = FormacaoFormSet(prefix='formacoes')
@@ -92,7 +91,7 @@ def cadastro_paciente(request):
             perfil = form.save(commit=False)
             perfil.usuario = request.user
             perfil.save()
-            return redirect('dashboard')
+            return redirect('user-dashboard') #TODO: alterar aqui para psi-dash
     else:
         form = PacienteProfileForm()
         

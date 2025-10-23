@@ -6,10 +6,11 @@
     <title>Dash</title>
 </head>
 <body>
-    Teste Dash
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
+    Listagem de Psicologos
+    <div class="psicologos">
+        {% for psi in psicologos %}
+           {{psi.usuario.first_name}} 
+        {% endfor %}
+    </div>
 </body>
 </html>
