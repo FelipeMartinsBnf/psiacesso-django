@@ -1,0 +1,26 @@
+/* Variáveis de Cores (Adaptadas do PsiAcesso) */
+:root {
+    --color-primary-green: #386641; /* Verde Escuro da Sidebar */
+    --color-secondary-green: #6A994E; /* Verde Mais Claro (Acentos) */
+    --color-text-dark: #333;
+    --color-text-light: #f4f4f4;
+    --color-white: #ffffff;
+    --color-light-gray: #e0e0e0;
+    --color-border: #cccccc;
+    --color-google: #4285F4;
+    --font-family: 'Roboto', sans-serif;
+}
+
+/* Reset básico e Fontes */
+body, html {
+    /* FORÇA 100% DA ALTURA DA VIEWPORT */
+    height: 100%;
+    margin: 0;
+    font-family: var(--font-family);
+    background-color: var(--color-white);
+}
+
+a {
+    text-decoration: none;
+    color: inherit;
+}
