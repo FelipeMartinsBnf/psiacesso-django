@@ -14,5 +14,7 @@ env/
 
 _pycache
 _pycache_
-*/_pycache_/*
+_pycache_/
+__pycache__/
 */migrations/*
+*/__pycache__/
