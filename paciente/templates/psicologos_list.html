@@ -9,7 +9,7 @@
     Listagem de Psicologos
     <div class="psicologos">
         {% for psi in psicologos %}
-           {{psi.usuario.first_name}} 
+           <a href="{% url 'user-psi-detail' psi.id %}">{{psi.usuario.first_name}} </a>
         {% endfor %}
     </div>
 </body>

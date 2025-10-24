@@ -44,7 +44,7 @@ def checar_perfil(request):
     try:
         if user.role == 'PSICOLOGO':
             psicologo = Psicologo.objects.get(usuario=user)
-            return redirect('user-dashboard')
+            return redirect('psi-dashboard')
 
         elif user.role == 'USUARIO':
             paciente = Paciente.objects.get(usuario=user)

@@ -1,0 +1,26 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dash</title>
+</head>
+<body>
+    <div class="psicologos">
+        <h2>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</h2>
+        <p>CRP: {{ psi.crp }}</p>
+        <p>Preço consulta: {{psi.preco_consulta}}</p>
+        <p>Duração da consulta: {{psi.duracao_minutos}}</p>
+        <p>Especialdiade: {{psi.especialidade.nome}} - {{psi.especialidade.descricao}}</p>
+        <p>Atendimento online: {{psi.atendimento_online}}</p>
+        <p>atendimento_presencial: {{psi.atendimento_presencial}}</p>
+        <p>Formação: <br>
+            {% for formacao in formacoes %}
+                {{ formacao.nome }} - {{ formacao.descricao }} | Tipos: {{formacao.tipo}} <br>
+            {% endfor %}
+        </p>
+
+        <a href="{% url 'agendar_consulta' psi.id %}">Agendar Consulta</a>
+    </div>
+</body>
+</html>
