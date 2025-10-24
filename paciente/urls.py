@@ -1,6 +1,4 @@
-from django.contrib import admin
-from django.urls import path, re_path 
-from contas.views import checar_perfil
+from django.urls import path
 from .views import dashboard, view_all_psicologs, view_detail_psi
 
 urlpatterns = [

@@ -39,7 +39,8 @@ INSTALLED_APPS = [
     'django.contrib.staticfiles',
     'psiacesso_main',
     'contas',
-    'paciente'
+    'paciente',
+    'psicologos'
 ]
 
 MIDDLEWARE = [
