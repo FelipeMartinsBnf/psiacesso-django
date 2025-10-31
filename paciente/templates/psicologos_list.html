@@ -14,6 +14,7 @@
     <link rel="stylesheet" href="{% static 'global.css' %}">
     
     <link rel="stylesheet" href="{% static 'psicologos_list.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}" />
 </head>
 <body>
 
@@ -28,6 +29,20 @@
         
         <h1>Encontre seu Psicólogo</h1>
         <p>Estes são os profissionais disponíveis em nossa plataforma.</p>
+        <section class="search-container card padding-1">
+            <h2>Encontrar Profissional</h2>
+            <div class="barra-pesquisa">
+                <form method="get" action="{% url 'user-psi-list' %}" class="search-form">
+                    {% csrf_token %}
+                    <span class="material-icons">search</span>
+                    <input type="text" value="{{ query }}" name="query" placeholder="Buscar por nome ou especialidade...">
+                    <input type="submit" value="Buscar" class="search-button">
+                    <button type="button" class="filter-button">
+                        Filtrar <span class="material-icons">filter_list</span>
+                    </button>
+                </form>
+            </div>
+        </section>
 
         <div class="psicologos-grid">
             
@@ -36,14 +51,14 @@
                     <div class="psi-card-header">
                         <img src="https" alt="Foto de {{ psi.usuario.first_name }}">
                         <div class="psi-card-info">
-                            <h3> <a href="{% url 'user-psi-detail' psi.id %}">{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</a></h3>
+                            <h3>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}></h3>
                             <span>{{ psi.especialidade|default:'Terapia Cognitiva' }}</span>
                         </div>
                     </div>
                     <div class="psi-card-rating">
                         <span class="material-icons">star</span>
                         <strong>4.9</strong> (120) </div>
-                    <a href="#" class="agendar-button">Agendar Consulta</a>
+                    <a href="{% url 'user-psi-detail' psi.id %}" class="agendar-button">Agendar Consulta</a>
                 </article>
             {% empty %}
                 <p class="empty-message">Nenhum psicólogo encontrado no momento.</p>
