@@ -1,0 +1,228 @@
+/*
+ * LISTAGEM.CSS
+ * Estilo da página de listagem de psicólogos
+ * (VERSÃO AJUSTADA - Fontes e Navbar menores)
+ */
+
+/* --- Estilos Gerais da Página --- */
+body {
+    /* As variáveis (cores, fontes) vêm do seu global.css */
+    font-family: var(--font-family, 'Roboto', sans-serif);
+    background-color: var(--color-light-gray, #f2f2f2);
+    color: var(--color-dark-gray, #333);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+/* --- Cabeçalho (AJUSTADO) --- */
+.top-header {
+    background-color: var(--color-primary-green, #386641);
+    color: var(--color-white, #fff);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 10px 25px; /* <-- Reduzido (antes era 14px 30px) */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.1);
+}
+
+.top-header .logo {
+    font-size: 1.5rem; /* <-- Reduzido (antes era 1.6rem) */
+    font-weight: 700;
+    color: var(--color-white, #fff);
+    text-decoration: none;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    font-size: 0.9rem; /* <-- Reduzido (antes era 0.95rem) */
+    font-weight: 500;
+}
+
+/* --- Container Principal (AJUSTADO) --- */
+.listagem-container {
+    max-width: 1200px;
+    margin: 25px auto; /* <-- Reduzido (antes era 30px) */
+    padding: 20px;
+    width: 100%;
+    box-sizing: border-box;
+    flex-grow: 1;
+}
+
+.listagem-container h1 {
+    font-size: 1.8rem; /* <-- Reduzido (antes era 2rem) */
+    font-weight: 700;
+    color: var(--color-dark-gray, #333);
+    margin-bottom: 5px;
+}
+
+.listagem-container p {
+    font-size: 1rem; /* <-- Reduzido (antes era 1.1rem) */
+    color: #666;
+    margin-bottom: 25px; /* <-- Reduzido (antes era 30px) */
+}
+
+/* --- Grid de Psicólogos --- */
+/* Esta é a div que você chamou de ".psicologos" no seu HTML original */
+.psicologos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); /* <-- Mínimo um pouco menor */
+    gap: 20px; /* <-- Reduzido (antes era 24px) */
+}
+
+/* Mensagem de lista vazia */
+.empty-message {
+    font-size: 0.95rem; /* <-- Reduzido */
+    color: #555;
+    padding: 20px;
+    background-color: var(--color-white, #fff);
+    border-radius: 8px;
+    grid-column: 1 / -1;
+    text-align: center;
+}
+
+/* --- Card do Psicólogo (AJUSTADO) --- */
+.psi-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--color-white, #fff);
+    border-radius: 8px; /* <-- Reduzido (antes era 10px) */
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05); /* <-- Mais suave */
+    padding: 18px; /* <-- Reduzido (antes era 20px) */
+    border: 1px solid #e8e8e8; /* <-- Mais suave */
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.psi-card:hover {
+    transform: translateY(-3px); /* <-- Mais sutil */
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08); /* <-- Mais sutil */
+}
+
+.psi-card-header {
+    display: flex;
+    align-items: center;
+    gap: 12px; /* <-- Reduzido (antes era 15px) */
+    margin-bottom: 10px; /* <-- Reduzido (antes era 12px) */
+}
+
+.psi-card-header img {
+    width: 50px; /* <-- Reduzido (antes era 60px) */
+    height: 50px; /* <-- Reduzido (antes era 60px) */
+    border-radius: 50%;
+    object-fit: cover;
+    background-color: var(--color-light-gray, #f2f2f2);
+}
+
+.psi-card-info h3 {
+    margin: 0;
+    font-size: 1.05rem; /* <-- Reduzido (antes era 1.1rem) */
+    font-weight: 600;
+    color: var(--color-dark-gray, #333);
+}
+
+.psi-card-info span {
+    font-size: 0.85rem; /* <-- Reduzido (antes era 0.9rem) */
+    color: #666;
+}
+
+.psi-card-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #777;
+    font-size: 0.85rem; /* <-- Reduzido (antes era 0.9rem) */
+    margin: 8px 0 14px 0; /* <-- Ajustado */
+}
+
+.psi-card-rating .material-icons {
+    color: #fbbc05;
+    font-size: 1rem; /* <-- Reduzido (antes era 1.1rem) */
+}
+
+.agendar-button {
+    background-color: var(--color-primary-green, #386641);
+    color: var(--color-white, #fff);
+    border: none;
+    border-radius: 6px;
+    padding: 10px; 
+    font-size: 0.9rem; 
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s;
+    margin-top: auto;
+}
+
+.agendar-button:hover {
+    background-color: var(--color-secondary-green, #6A994E);
+}
+
+/* --- Rodapé (AJUSTADO) --- */
+.footer {
+    background-color: var(--color-dark-gray, #333);
+    color: var(--color-white, #fff);
+    padding: 20px 20px 10px; 
+    margin-top: auto;
+    font-size: 0.75rem; 
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+    max-width: 1100px;
+    margin: 0 auto 15px;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-column h3,
+.footer-column h4 {
+    margin: 0 0 4px 0;
+    font-size: 0.95rem; 
+    color: var(--color-white, #fff);
+}
+.footer-column .logo {
+    color: var(--color-white);
+}
+
+.footer-column p,
+.footer-column a,
+.footer-column span {
+    font-size: 0.8rem; 
+    color: #ccc;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.footer-column a:hover {
+    opacity: 1;
+}
+
+.footer-column span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+.footer-column span .material-icons {
+    font-size: 1rem; /* Tamanho do ícone */
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #555;
+    padding-top: 10px;
+    opacity: 0.6;
+    font-size: 0.75rem; /* <-- Reduzido */
+}

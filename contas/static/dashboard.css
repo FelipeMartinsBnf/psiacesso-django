@@ -1,0 +1,433 @@
+:root {
+    --color-primary-green: #386641;
+    --color-secondary-green: #6A994E;
+    --color-light-gray: #f2f2f2;
+    --color-dark-gray: #333;
+    --color-white: #fff;
+}
+
+body {
+    font-family: 'Roboto', sans-serif;
+    background-color: var(--color-light-gray);
+    color: var(--color-dark-gray);
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    min-height: 100vh;
+}
+
+.card {
+    background-color: var(--color-white);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+.top-header {
+    background-color: var(--color-primary-green);
+    color: var(--color-white);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 14px 30px;
+}
+
+.top-header .logo {
+    font-size: 1.6rem;
+    font-weight: 700;
+    color: var(--color-white);
+    text-decoration: none;
+}
+
+.user-menu {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+}
+
+.user-menu span {
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.profile-pic {
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-white);
+}
+
+.logout-form button {
+    background: none;
+    border: none;
+    color: var(--color-white);
+    cursor: pointer;
+    opacity: 0.8;
+    transition: opacity 0.2s;
+}
+
+.logout-form button:hover {
+    opacity: 1;
+}
+
+.dashboard-container {
+    display: flex;
+    flex-wrap: wrap;
+    max-width: 1300px;
+    margin: 30px auto;
+    padding: 0 20px;
+    gap: 24px;
+    flex-grow: 1;
+}
+
+.main-content {
+    flex: 2;
+    min-width: 60%;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.right-sidebar {
+    flex: 1;
+    min-width: 300px;
+    display: flex;
+    flex-direction: column;
+    gap: 24px;
+}
+
+.welcome-banner {
+    background-color: var(--color-primary-green);
+    color: var(--color-white);
+}
+
+.welcome-banner h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.8rem;
+}
+
+.welcome-banner p {
+    margin: 0;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.upcoming-appointment {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    background-color: #e8f4ec;
+    border-left: 5px solid var(--color-secondary-green);
+    font-size: 0.9rem;
+}
+
+.upcoming-appointment .material-icons {
+    color: var(--color-secondary-green);
+}
+
+.search-container h2 {
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-form .material-icons {
+    color: var(--color-dark-gray);
+    opacity: 0.6;
+}
+
+.search-form input[type="text"] {
+    flex-grow: 1;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    padding: 8px 5px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.search-form input[type="text"]:focus {
+    outline: none;
+    border-bottom-color: var(--color-primary-green);
+}
+
+.search-button,
+.filter-button {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.search-button {
+    background-color: var(--color-primary-green);
+    color: var(--color-white);
+}
+
+.search-button:hover {
+    background-color: var(--color-secondary-green);
+}
+
+.filter-button {
+    background-color: var(--color-white);
+    color: var(--color-dark-gray);
+    border: 1px solid #ccc;
+}
+
+.filter-button:hover {
+    background-color: #f1f1f1;
+}
+
+/* ==== PSICÓLOGOS ==== */
+.psicologos-section {
+    display: flex;
+    flex-direction: column;
+    gap: 20px;
+}
+
+.psicologos-section h2 {
+    font-size: 1.4rem;
+    font-weight: 600;
+    margin-bottom: 10px;
+    color: var(--color-dark-gray);
+}
+
+.psicologos-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(280px, 1fr));
+    gap: 22px;
+}
+
+.psi-card {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    background-color: var(--color-white);
+    border-radius: 10px;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.05);
+    padding: 20px;
+    transition: transform 0.2s, box-shadow 0.2s;
+}
+
+.psi-card:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 6px 16px rgba(0, 0, 0, 0.1);
+}
+
+.psi-card-header {
+    display: flex;
+    align-items: center;
+    gap: 15px;
+    margin-bottom: 12px;
+}
+
+.psi-card-header img {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--color-light-gray);
+}
+
+.psi-card-info h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    font-weight: 600;
+    color: var(--color-dark-gray);
+}
+
+.psi-card-info span {
+    font-size: 0.9rem;
+    color: #666;
+}
+
+.psi-card-rating {
+    display: flex;
+    align-items: center;
+    gap: 4px;
+    color: #777;
+    font-size: 0.9rem;
+    margin: 8px 0 12px 0;
+}
+
+.psi-card-rating .material-icons {
+    color: #fbbc05;
+    font-size: 1.1rem;
+}
+
+.agendar-button {
+    background-color: var(--color-primary-green);
+    color: var(--color-white);
+    border: none;
+    border-radius: 6px;
+    padding: 10px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    text-align: center;
+    text-decoration: none;
+    transition: background-color 0.2s, transform 0.2s;
+}
+
+.agendar-button:hover {
+    background-color: var(--color-secondary-green);
+    transform: scale(1.02);
+}
+
+/* ==== SIDEBAR ==== */
+.consultas-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+}
+
+.consulta-item {
+    display: flex;
+    flex-direction: column;
+    gap: 5px;
+    padding: 12px;
+    border-radius: 6px;
+    background-color: #f3f3f3;
+}
+
+.consulta-item.proxima {
+    background-color: rgba(106, 153, 78, 0.15);
+    border: 1px solid var(--color-secondary-green);
+}
+
+.view-all-button {
+    display: block;
+    text-align: center;
+    margin-top: 15px;
+    font-size: 0.9rem;
+    color: var(--color-primary-green);
+    text-decoration: none;
+    font-weight: 500;
+}
+
+.view-all-button:hover {
+    text-decoration: underline;
+}
+
+.acoes-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+}
+
+.acoes-list li a {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    text-decoration: none;
+    color: var(--color-dark-gray);
+    font-size: 0.95rem;
+    font-weight: 500;
+}
+
+.acoes-list li a .material-icons {
+    font-size: 1.2rem;
+    color: #666;
+}
+
+.acoes-list li a:hover {
+    color: var(--color-primary-green);
+}
+
+.acoes-list li a:hover .material-icons {
+    color: var(--color-primary-green);
+}
+
+/* ==== FOOTER ==== */
+.footer {
+    background-color: var(--color-dark-gray);
+    color: var(--color-white);
+    padding: 25px 20px 10px;
+    margin-top: auto;
+    font-size: 0.8rem;
+}
+
+.footer-container {
+    display: flex;
+    flex-wrap: wrap;
+    justify-content: space-between;
+    gap: 15px;
+    max-width: 1100px;
+    margin: 0 auto 15px;
+}
+
+.footer-column {
+    flex: 1;
+    min-width: 180px;
+    display: flex;
+    flex-direction: column;
+    gap: 8px;
+}
+
+.footer-column h3,
+.footer-column h4 {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+    color: var(--color-white);
+}
+
+.footer-column p,
+.footer-column a,
+.footer-column span {
+    font-size: 0.8rem;
+    color: #ccc;
+    text-decoration: none;
+    opacity: 0.8;
+}
+
+.footer-column a:hover {
+    opacity: 1;
+}
+
+.footer-bottom {
+    text-align: center;
+    border-top: 1px solid #555;
+    padding-top: 10px;
+    opacity: 0.6;
+}
+
+/* ==== RESPONSIVO ==== */
+@media (max-width: 992px) {
+    .dashboard-container {
+        flex-direction: column;
+    }
+    .main-content, .right-sidebar {
+        min-width: 100%;
+    }
+}
+
+@media (max-width: 600px) {
+    .search-form {
+        flex-wrap: wrap;
+    }
+    .search-form input[type="text"] {
+        width: 100%;
+    }
+    .user-menu span {
+        display: none;
+    }
+    .footer-container {
+        flex-direction: column;
+        text-align: center;
+    }
+}

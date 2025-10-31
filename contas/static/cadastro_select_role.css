@@ -1,0 +1,135 @@
+/* Card principal que segura tudo */
+.cadastro-card {
+    width: 100%;
+    max-width: 650px;
+    background-color: var(--color-white); 
+    border-radius: 10px;
+    box-shadow: 0 10px 40px rgba(0,0,0,0.2);
+    overflow: hidden; 
+    display: flex;
+    flex-direction: column;
+    margin: 20px 0;
+}
+
+/* --- Seção do Cabeçalho (Verde) --- */
+.cadastro-header {
+    background-color: var(--color-primary-green); 
+    color: var(--color-text-light);
+    text-align: center;
+    padding: 30px 20px;
+}
+
+.cadastro-header .header-icon {
+    width: 50px;
+    height: 50px;
+    border-radius: 50%;
+    background-color: rgba(255, 255, 255, 0.15); 
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 15px auto;
+    font-size: 1.5rem;
+}
+
+.cadastro-header h2 {
+    font-weight: 600;
+    margin: 0;
+    font-size: 1.75rem;
+}
+
+.cadastro-header p {
+    margin: 5px 0 0 0;
+    color: rgba(255, 255, 255, 0.8);
+    font-size: 0.9rem;
+}
+
+/* --- Seção do Corpo (Branca) --- */
+.cadastro-body {
+    padding: 30px 40px;
+    text-align: center;
+}
+
+.cadastro-body h5 {
+    color: #555;
+    font-weight: 500;
+    margin-bottom: 25px;
+}
+
+/* Wrapper que segura as duas caixas de seleção */
+.type-selection-wrapper {
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Estilo individual de cada caixa de seleção */
+.type-selection-box {
+    flex: 1; 
+    padding: 25px 20px;
+    border: 1px solid var(--color-border); 
+    border-radius: 8px;
+    text-align: center;
+    text-decoration: none;
+    color: #333;
+    transition: all 0.3s ease;
+}
+
+.type-selection-box .type-icon-wrapper {
+    width: 60px;
+    height: 60px;
+    border-radius: 50%;
+    background-color: #f0f0f0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin: 0 auto 15px auto;
+    font-size: 1.8rem;
+    color: var(--color-primary-green); 
+    transition: all 0.3s ease;
+}
+
+.type-selection-box h4 {
+    font-size: 1.2rem;
+    font-weight: 600;
+    margin-bottom: 5px;
+}
+
+.type-selection-box p {
+    font-size: 0.9rem;
+    color: #666;
+    margin: 0;
+}
+
+/* --- Efeitos de Hover e Seleção --- */
+.type-selection-box.selected,
+.type-selection-box:hover {
+    border-color: var(--color-secondary-green);
+    background-color: #f0f8f0;
+    box-shadow: 0 0 0 1px var(--color-secondary-green);
+}
+
+/* Muda o ícone para fundo verde e texto branco */
+.type-selection-box.selected .type-icon-wrapper,
+.type-selection-box:hover .type-icon-wrapper {
+    background-color: var(--color-primary-green);
+    color: var(--color-white);
+}
+
+/* Muda o título da caixa para verde */
+.type-selection-box.selected h4,
+.type-selection-box:hover h4 {
+    color: var(--color-primary-green);
+}
+
+/* --- Ajuste para Celular --- */
+@media (max-width: 767.98px) {
+    .cadastro-card {
+        max-width: 90%;
+    }
+    .cadastro-body {
+        padding: 30px 20px; 
+    }
+    .type-selection-wrapper {
+        flex-direction: column; 
+    }
+}
