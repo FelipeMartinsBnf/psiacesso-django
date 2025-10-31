@@ -1,7 +1,7 @@
 /* Variáveis de Cores (Adaptadas do PsiAcesso) */
 :root {
-    --color-primary-green: #386641; /* Verde Escuro da Sidebar */
-    --color-secondary-green: #6A994E; /* Verde Mais Claro (Acentos) */
+    --color-primary-green: #386641;
+    --color-secondary-green: #6A994E;
     --color-text-dark: #333;
     --color-text-light: #f4f4f4;
     --color-white: #ffffff;
@@ -13,7 +13,6 @@
 
 /* Reset básico e Fontes */
 body, html {
-    /* FORÇA 100% DA ALTURA DA VIEWPORT */
     height: 100%;
     margin: 0;
     font-family: var(--font-family);

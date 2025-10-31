@@ -1,0 +1,205 @@
+/* --- REGRAS GERAIS --- */
+html, body {
+    height: 100%;
+    overflow: hidden;
+    font-family: var(--font-family, 'Inter', sans-serif);
+    background-color: var(--color-light-gray, #f4f6f5);
+    margin: 0;
+    padding: 0;
+}
+
+/* CONTAINER PRINCIPAL (divisão entre esquerda e direita) */
+.main-cadastro-container {
+    display: flex;
+    width: 100vw;
+    height: 100vh;
+}
+
+/* --- SIDEBAR (igual ao layout anterior) --- */
+.branding-sidebar {
+    width: 35%;
+    background-color: var(--color-primary-green, #2e7d32);
+    color: var(--color-text-light, #fff);
+    padding: 40px;
+    box-sizing: border-box;
+    height: 100%;
+    flex-shrink: 0;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+}
+
+/* --- CONTEÚDO PRINCIPAL (lado direito fixo) --- */
+.cadastro-form-content {
+    width: 65%;
+    background-color: var(--color-light-gray, #f4f6f5);
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    padding: 40px;
+    box-sizing: border-box;
+    overflow: hidden;
+    height: 100vh;
+}
+
+/* --- CAIXA DO FORMULÁRIO (centralizada, com scroll interno) --- */
+.cadastro-form-box {
+    background-color: var(--color-white, #fff);
+    border-radius: 10px;
+    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
+    width: 100%;
+    max-width: 600px;
+    max-height: 80vh;
+    padding: 25px 30px;
+    box-sizing: border-box;
+    overflow-y: auto;
+    scrollbar-width: thin;
+    scrollbar-color: var(--color-primary-green, #2e7d32) #f1f1f1;
+}
+
+/* Scrollbar estilizada */
+.cadastro-form-box::-webkit-scrollbar {
+    width: 6px;
+}
+.cadastro-form-box::-webkit-scrollbar-thumb {
+    background-color: var(--color-primary-green, #2e7d32);
+    border-radius: 10px;
+}
+
+/* --- ESTILOS INTERNOS DO FORMULÁRIO --- */
+h2 {
+    font-size: 1.3rem;
+    font-weight: 600;
+    color: #333;
+    margin-bottom: 5px;
+    text-align: center;
+}
+
+p {
+    font-size: 0.8rem;
+    color: #666;
+    text-align: center;
+    margin-bottom: 20px;
+}
+
+/* Estrutura dos campos */
+form p {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 12px;
+}
+
+label {
+    font-size: 0.75rem;
+    color: #444;
+    font-weight: 500;
+    margin-bottom: 4px;
+}
+
+input, select, textarea {
+    border: 1px solid var(--color-border, #ddd);
+    border-radius: 5px;
+    padding: 5px 8px;
+    font-size: 0.75rem;
+    color: #333;
+    background-color: #fff;
+    transition: border-color 0.2s ease, box-shadow 0.2s ease;
+}
+
+input:focus, select:focus, textarea:focus {
+    outline: none;
+    border-color: var(--color-primary-green, #2e7d32);
+    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
+}
+
+/* Botões */
+button {
+    background-color: var(--color-primary-green, #2e7d32);
+    color: #fff;
+    border: none;
+    padding: 8px 12px;
+    border-radius: 6px;
+    font-size: 0.85rem;
+    font-weight: 500;
+    cursor: pointer;
+    transition: background-color 0.2s ease;
+}
+
+button:hover {
+    background-color: #245d29;
+}
+
+/* Formações */
+h3, h4 {
+    color: #333;
+    font-weight: 600;
+    margin-bottom: 10px;
+    font-size: 0.9rem;
+}
+
+.formacao-item {
+    border: 1px solid #eee;
+    border-radius: 6px;
+    padding: 10px 15px;
+    margin-bottom: 12px;
+    background-color: #fafafa;
+}
+
+.formacao-item h4 {
+    font-size: 0.85rem;
+    color: var(--color-primary-green, #2e7d32);
+}
+
+/* Botão “Adicionar formação” */
+#add-formacao-button {
+    background-color: transparent;
+    color: var(--color-primary-green, #2e7d32);
+    border: 1px solid var(--color-primary-green, #2e7d32);
+    padding: 6px 10px;
+    font-size: 0.8rem;
+    border-radius: 6px;
+    margin-top: 10px;
+}
+
+#add-formacao-button:hover {
+    background-color: var(--color-primary-green, #2e7d32);
+    color: #fff;
+}
+
+/* Mensagens escondidas */
+.hidden {
+    display: none;
+}
+
+/* --- RESPONSIVIDADE --- */
+@media (max-width: 991.98px) {
+    html, body {
+        overflow: auto;
+        height: auto;
+    }
+
+    .main-cadastro-container {
+        flex-direction: column;
+        height: auto;
+    }
+
+    .branding-sidebar {
+        width: 100%;
+        height: auto;
+    }
+
+    .cadastro-form-content {
+        width: 100%;
+        height: auto;
+        align-items: flex-start;
+        padding: 20px;
+    }
+
+    .cadastro-form-box {
+        max-height: none;
+        overflow-y: visible;
+        padding: 20px 25px;
+    }
+}

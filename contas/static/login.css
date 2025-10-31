@@ -213,25 +213,25 @@ a {
 }
 
 /* AJUSTE PARA TELAS PEQUENAS (Mobile) */
-@media (max-width: 991.98px) { /* Ponto de quebra 'lg' do Bootstrap */
+@media (max-width: 991.98px) { 
   
     .login-card {
-      height: auto; /* Permite o card crescer conforme o conteúdo */
-      overflow: auto; /* Adiciona scroll se necessário */
+      height: auto; 
+      overflow: auto;
     }
   
     .login-wrapper-col, .login-container {
-      height: auto; /* Remove a altura fixa de 100vh */
-      align-items: flex-start; /* Alinha no topo */
+      height: auto; 
+      align-items: flex-start; 
     }
     
     .login-branding-section,
     .login-form-section {
-      height: auto; /* Remove a altura fixa de 100% */
-      padding: 60px 20px; /* Adiciona um respiro em telas menores */
+      height: auto; 
+      padding: 60px 20px; 
     }
   
     .login-branding-section {
-       min-height: 350px; /* Garante um espaço mínimo para a logo */
+       min-height: 350px; 
     }
   }
