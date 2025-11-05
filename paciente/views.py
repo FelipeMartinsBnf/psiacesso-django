@@ -14,13 +14,8 @@ def dashboard(request):
 #Carrega todos os psicologos disponiveis
 @login_required
 def view_all_psicologs(request):
-    query = request.GET.get('query', '')
-    
-    if query:
-        psicologos = Psicologo.objects.filter(usuario__first_name__icontains=query).distinct()
-    else:
-        psicologos = Psicologo.objects.filter()
-    return render(request, 'psicologos_list.html', {'psicologos': psicologos, 'query': query})
+    psicologos = Psicologo.objects.all()
+    return render(request, 'psicologos_list.html', {'psicologos': psicologos })
 
 #Carrega as informações de um psicologo para o paciente
 @login_required

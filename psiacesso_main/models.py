@@ -31,8 +31,6 @@ class DisponibilidadePsicologo(models.Model):
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
     dia_semana = models.IntegerField(choices=DIAS_CHOICES)
     hora_inicio = models.TimeField()
-    hora_fim = models.TimeField()
-    intervalo_minutos = models.PositiveIntegerField(default=50)
 
     def __str__(self):
         return f"{self.psicologo} - {self.get_dia_semana_display()} {self.hora_inicio}-{self.hora_fim}"

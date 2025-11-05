@@ -1,5 +1,6 @@
 # contas/forms.py
 
+import json
 from multiprocessing import AuthenticationError
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
@@ -50,7 +51,6 @@ class PsicologoProfileForm(forms.ModelForm):
         model = Psicologo
         # 2. Adicione 'especialidade' aos fields
         fields = ['crp', 'preco_consulta', 'duracao_minutos', 'especialidade', 'atendimento_online', 'atendimento_presencial']
-        
         labels = {
             'crp': 'Número do CRP',
             'preco_consulta': 'Preço da Consulta (R$)',
@@ -59,6 +59,20 @@ class PsicologoProfileForm(forms.ModelForm):
             'atendimento_online': 'Atendimento Online',
             'atendimento_presencial': 'Atendimento Presencial'
         }
+        
+        horarios_selecionados = forms.CharField(
+            widget=forms.HiddenInput(),
+            required=False # Mesmo que venha vazio, é válido (ele só limpou a agenda)
+        )
+        def clean_horarios_selecionados(self):
+            # Transforma o JSON de volta em uma lista Python
+            data = self.cleaned_data['horarios_selecionados']
+            if not data:
+                return []
+            try:
+                return json.loads(data)
+            except json.JSONDecodeError:
+                raise forms.ValidationError("Formato de dados inválido.")
         
 FormacaoFormSet = inlineformset_factory(
     Psicologo,           

@@ -23,6 +23,7 @@ urlpatterns = [
     path("", include('contas.urls')),
     path("", include('psiacesso_main.urls')),
     path("", include('paciente.urls')),
+    path("", include('psicologos.urls')),
     
     
     # ROTA PEGA-TUDO: Deve ser a ÚLTIMA da lista.

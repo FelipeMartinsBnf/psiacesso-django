@@ -1,3 +1,4 @@
+import datetime
 from django.shortcuts import render, redirect
 from django.contrib.auth import login
 from django.contrib.auth.decorators import login_required
@@ -59,6 +60,18 @@ def checar_perfil(request):
     return redirect('login')
 
 
+def _gerar_horarios(inicio, fim, duracao):
+    """Helper para gerar a lista de horários (ex: 08:00, 08:50, 09:40...)"""
+    horarios = []
+    hora_atual = datetime.datetime.strptime(inicio, '%H:%M')
+    hora_fim = datetime.datetime.strptime(fim, '%H:%M')
+    delta = datetime.timedelta(minutes=duracao)
+    
+    while hora_atual < hora_fim:
+        horarios.append(hora_atual.time())
+        hora_atual += delta
+    return horarios
+
 @login_required
 def cadastro_psicologo(request):
     if request.method == 'POST':
@@ -82,6 +95,7 @@ def cadastro_psicologo(request):
         'formset': formset,
     }
     return render(request, 'cadastro/cadastro_psicologo.html', context)
+
 
 @login_required
 def cadastro_paciente(request):
