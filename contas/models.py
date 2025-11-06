@@ -13,16 +13,12 @@ class CustomUserManager(BaseUserManager):
     Manager customizado para o modelo de usuário onde o e-mail é o identificador
     único para autenticação em vez de usernames.
     """
-    def create_user(self, email, password, **extra_fields):
-        """
-        Cria e salva um usuário com o e-mail e a senha fornecidos.
-        """
+    def create_user(self, email, password=None, **extra_fields):
         if not email:
             raise ValueError(_('O E-mail deve ser fornecido'))
         email = self.normalize_email(email)
-        # Define o username igual ao email para compatibilidade
-        username = email
-        user = self.model(username=username, email=email, **extra_fields)
+        extra_fields.setdefault('username', email)  # garante compatibilidade
+        user = self.model(email=email, **extra_fields)
         user.set_password(password)
         user.save(using=self._db)
         return user
@@ -49,15 +45,15 @@ class Usuario(AbstractUser):
     
     class Gender(models.TextChoices):
         MASCULINO = 'MASCULINO', 'Masculino'
-        FEMININO = 'FEMININO', 'Feminino',
-        NAO_INFORMAR = 'NAO_INFORMAR', 'Não informar',
+        FEMININO = 'FEMININO', 'Feminino'  # remova a vírgula
+        NAO_INFORMAR = 'NAO_INFORMAR', 'Não informar'  # remova a vírgula
         OUTRO = 'OUTRO', 'Outro'
         
     #Username, sem uso - somente para o superuser
     username = models.CharField(max_length=150, unique=True, blank=True)
     role = models.CharField(max_length=50, choices=Role.choices, default=Role.USUARIO)
     email = models.EmailField(unique=True)
-    cpf = models.CharField(max_length=50)
+    cpf = models.CharField(max_length=50, unique=True)
     gender = models.CharField(max_length=50, choices=Gender.choices)
     
     USERNAME_FIELD = 'email'
@@ -117,5 +113,5 @@ class Endereco(models.Model):
     bairro = models.CharField(max_length=100, blank=True, null=True)
     cep = models.CharField(max_length=50, blank=True, null=True)     
     numero = models.CharField(max_length=20,  blank=True, null=True)
-    complemento = models.CharField(max_length=100)
+    complemento = models.CharField(max_length=100, blank=True, null=True)
     
