@@ -1,0 +1,127 @@
+body {
+    background-color: #f2f2f2; 
+}
+
+.card {
+    background-color: var(--color-white, #fff);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 24px;
+}
+
+.psi-dashboard-container {
+    max-width: 900px; 
+    margin: 30px auto; 
+    padding: 0 20px;
+}
+
+.psi-main-content {
+    width: 100%;
+}
+
+.psi-welcome {
+    background-color: var(--color-primary-green, #386641);
+    color: var(--color-white, #fff);
+}
+
+.psi-welcome h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.8rem;
+}
+
+.psi-welcome p {
+    margin: 0;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+.psi-actions h3 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    color: var(--color-text-dark, #333);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.action-links {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(200px, 1fr));
+    gap: 16px;
+    margin-top: 20px;
+}
+
+.action-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 25px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border, #ccc);
+    text-decoration: none;
+    color: var(--color-primary-green, #386641);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.action-button .material-icons {
+    font-size: 2.5rem; 
+}
+
+.action-button:hover {
+    background-color: #f9f9f9;
+    border-color: var(--color-primary-green, #386641);
+    transform: translateY(-3px); 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.action-button.disabled {
+    color: #999;
+    border-color: #ddd;
+    background-color: #fdfdfd;
+    pointer-events: none; 
+}
+.action-button.disabled .material-icons {
+    color: #ccc;
+}
+
+/* Card de Logout */
+.psi-logout-card {
+    background-color: #fff8f8; 
+    border: 1px solid #e0baba;
+}
+
+.psi-logout-card h4 {
+    margin-top: 0;
+    color: #c9302c; 
+}
+.psi-logout-card p {
+    font-size: 0.9rem;
+    color: #555;
+}
+
+.logout-button {
+    background-color: #d9534f;
+    color: var(--color-white, #fff);
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: inline-flex;
+    align-items: center;
+    gap: 8px;
+    transition: background-color 0.2s;
+}
+.logout-button .material-icons {
+    font-size: 1.1rem;
+}
+
+.logout-button:hover {
+    background-color: #c9302c; 
+}
