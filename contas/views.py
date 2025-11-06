@@ -37,7 +37,7 @@ def cadastro(request, tipo_cadastro):
         form_usuario = CustomUserCreationForm()
         form_endereco = enderecoForm()
     
-    return render(request, 'auth/cadastro.html', {'form_usuario': form_usuario, 'form_endereco': form_endereco})
+    return render(request, 'auth/cadastro.html', {'user_form': form_usuario, 'address_form': form_endereco})
 
 @login_required # Garante que o usuário já esteja logado
 def checar_perfil(request):

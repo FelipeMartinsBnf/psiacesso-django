@@ -4,7 +4,6 @@ import json
 from multiprocessing import AuthenticationError
 from django import forms
 from django.contrib.auth.forms import UserCreationForm, AuthenticationForm
-
 from psiacesso_main.models import Formacao
 from .models import Paciente, Psicologo, Usuario, Endereco 
 from django.forms import inlineformset_factory
@@ -12,22 +11,74 @@ from django.forms import inlineformset_factory
 class CustomUserCreationForm(UserCreationForm):
     class Meta(UserCreationForm.Meta):
         model = Usuario
-        fields = ('first_name', 'last_name', 'email', 'cpf', 'gender')
-        labels = {
-                'first_name': 'Seu Nome',
-                'last_name': 'Sobrenome',
-                'email': 'E-mail',
-                'CPF': 'CPF',
-                'gender': 'Gênero'
-            }
         
+        # 1. ADICIONAMOS 'username' DE VOLTA
+        # O UserCreationForm PRECISA disso para funcionar.
+        fields = ('username', 'first_name', 'last_name', 'email', 'cpf', 'gender') 
+        
+        labels = {
+            'first_name': 'Nome',
+            'last_name': 'Sobrenome',
+            'email': 'E-mail',
+            'cpf': 'CPF', 
+            'gender': 'Gênero'
+        }
+        widgets = {
+            # 2. ESCONDEMOS O CAMPO 'username'
+            'username': forms.HiddenInput(),
+            
+            'first_name': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Seu nome', 
+                'required': 'required'
+            }),
+            'last_name': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'Seu sobrenome', 
+                'required': 'required'
+            }),
+            'email': forms.EmailInput(attrs={
+                'class': 'form-control', 
+                'placeholder': 'seu@email.com', 
+                'required': 'required'
+            }),
+            'cpf': forms.TextInput(attrs={
+                'class': 'form-control', 
+                'placeholder': '000.000.000-00', 
+                'required': 'required'
+            }),
+            'gender': forms.Select(attrs={'class': 'form-select'}),
+        }
+    
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        
+        # Agora self.fields['password'] vai existir!
+        self.fields['password1'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control', 
+            'placeholder': 'Mínimo 8 caracteres', 
+            'required': 'required'
+        })
+        self.fields['password2'].widget = forms.PasswordInput(attrs={
+            'class': 'form-control', 
+            'placeholder': 'Repita a senha', 
+            'required': 'required'
+        })
+        self.fields['password1'].label = "Senha"
+        self.fields['password2'].label = "Confirmar Senha"
+        
+        # Dizemos ao campo username (agora oculto) para não ser obrigatório
+        # já que o usuário não vai preenchê-lo.
+        self.fields['username'].required = False
+
+
     def save(self, commit=True):
         user = super().save(commit=False)
-        user.username = self.cleaned_data['email']
+        user.username = self.cleaned_data.get('email')
         if commit:
             user.save()
         return user
-        
+    
 class EmailLoginForm(AuthenticationForm):
     def __init__(self, *args, **kwargs):
         super().__init__(*args, **kwargs)
@@ -98,21 +149,24 @@ class PacienteProfileForm(forms.ModelForm):
 class enderecoForm(forms.ModelForm):
     class Meta:
         model = Endereco
-        
         fields = ['cidade', 'rua', 'estado', 'bairro', 'cep', 'numero', 'complemento']
         labels = {
             'cidade': 'Cidade',
-            'rua': 'Rua',
+            'rua': 'Rua (Logradouro)', # Ajustado
             'estado': 'Estado',
             'bairro': 'Bairro',
             'cep': 'CEP',
-            'numero': 'Numero',
+            'numero': 'Número', # Ajustado
             'complemento': 'Complemento'
         }
-        
-        estado = forms.ChoiceField(
-             widget=forms.Select(choices=[('MG', 'MG'), ('SP', 'SP')])
-        )
+        widgets = {
+            'cidade': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Cidade', 'required': 'required'}),
+            'rua': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Rua, Avenida, etc.', 'required': 'required'}),
+            'bairro': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Nome do bairro', 'required': 'required'}),
+            'cep': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '00000-000', 'required': 'required'}),
+            'numero': forms.TextInput(attrs={'class': 'form-control', 'placeholder': '123', 'required': 'required'}),
+            'complemento': forms.TextInput(attrs={'class': 'form-control', 'placeholder': 'Apt, Bloco, etc.'}),
+        }
         
         
         

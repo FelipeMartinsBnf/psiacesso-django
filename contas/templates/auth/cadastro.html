@@ -5,16 +5,8 @@
     <meta charset="UTF-8" />
     <meta name="viewport" content="width=device-width, initial-scale=1" />
     <title>Crie sua Conta | Paciente | PsiAcesso</title>
-
-    <link
-      href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css"
-      rel="stylesheet"
-    />
-    <link
-      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css"
-      rel="stylesheet"
-    />
-
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.3.2/dist/css/bootstrap.min.css" rel="stylesheet"/>
+    <link href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.0.0-beta3/css/all.min.css" rel="stylesheet"/>
     <link rel="stylesheet" href="{% static 'globals.css' %}" />
     <link rel="stylesheet" href="{% static 'login.css' %}" />
     <link rel="stylesheet" href="{% static 'cadastro.css' %}" />
@@ -29,7 +21,6 @@
                 <div class="logo-icon"><i class="fas fa-brain"></i></div>
                 <h1 class="mt-2 text-white">PsiAcesso</h1>
                 <p class="slogan text-white">Conectando mentes, transformando vidas</p>
-
                 <div class="features-list mt-5">
                     <p><i class="fas fa-lock me-3"></i> Ambiente seguro e confidencial</p>
                     <p><i class="fas fa-user-tie me-3"></i> Profissionais qualificados</p>
@@ -47,41 +38,61 @@
                 <form method="post">
                     {% csrf_token %}
 
+                    {# Exibe erros gerais (non-field errors) #}
+                    {% if user_form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ user_form.non_field_errors }}
+                        </div>
+                    {% endif %}
+                    {% if address_form.non_field_errors %}
+                        <div class="alert alert-danger" role="alert">
+                            {{ address_form.non_field_errors }}
+                        </div>
+                    {% endif %}
+
                     {# Seção de Informações Pessoais #}
                     <div class="form-section-header">
                         <i class="fas fa-user icon-muted me-2"></i>
                         <span>Informações Pessoais</span>
                     </div>
                     <div class="row mb-3 gx-3">
+                        
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ user_form.first_name.id_for_label }}" class="form-label">{{ user_form.first_name.label }} <span class="required-asterisk">*</span></label>
+                            {{ user_form.first_name }}
+                            {% if user_form.first_name.errors %}
+                                <div class="invalid-feedback d-block">{{ user_form.first_name.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ user_form.last_name.id_for_label }}" class="form-label">{{ user_form.last_name.label }} <span class="required-asterisk">*</span></label>
+                            {{ user_form.last_name }}
+                            {% if user_form.last_name.errors %}
+                                <div class="invalid-feedback d-block">{{ user_form.last_name.errors }}</div>
+                            {% endif %}
+                        </div>
+
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ user_form.email.id_for_label }}" class="form-label">{{ user_form.email.label }} <span class="required-asterisk">*</span></label>
+                            {{ user_form.email }}
+                            {% if user_form.email.errors %}
+                                <div class="invalid-feedback d-block">{{ user_form.email.errors }}</div>
+                            {% endif %}
+                        </div>
+                        <div class="col-md-6 mb-3">
+                            <label for="{{ user_form.cpf.id_for_label }}" class="form-label">{{ user_form.cpf.label }} <span class="required-asterisk">*</span></label>
+                            {{ user_form.cpf }}
+                            {% if user_form.cpf.errors %}
+                                <div class="invalid-feedback d-block">{{ user_form.cpf.errors }}</div>
+                            {% endif %}
+                        </div>
+
                         <div class="col-12 mb-3">
-                            <label for="id_nome_completo" class="form-label">Nome Completo <span class="required-asterisk">*</span></label>
-                            <input type="text" name="nome_completo" id="id_nome_completo" class="form-control" placeholder="Digite seu nome completo" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="id_email" class="form-label">E-mail <span class="required-asterisk">*</span></label>
-                            <input type="email" name="email" id="id_email" class="form-control" placeholder="seu@email.com" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="id_cpf" class="form-label">CPF <span class="required-asterisk">*</span></label>
-                            <input type="text" name="cpf" id="id_cpf" class="form-control" placeholder="000.000.000-00" required>
-                        </div>
-                        <div class="col-md-6 mb-3">
-                            <label for="id_telefone" class="form-label">Telefone <span class="required-asterisk">*</span></label>
-                            <input type="tel" name="telefone" id="id_telefone" class="form-control" placeholder="(00) 00000-0000" required>
-                        </div>
-                        <div class="col-md-6 mb-3 position-relative">
-                            <label for="id_data_nascimento" class="form-label">Data de Nascimento <span class="required-asterisk">*</span></label>
-                            <input type="date" name="data_nascimento" id="id_data_nascimento" class="form-control" placeholder="mm/dd/yyyy" required>
-                            <i class="fas fa-calendar-alt calendar-icon"></i>
-                        </div>
-                        <div class="col-12 mb-3">
-                            <label for="id_genero" class="form-label">Gênero (opcional)</label>
-                            <select name="genero" id="id_genero" class="form-select">
-                                <option value="">Selecione</option>
-                                <option value="M">Masculino</option>
-                                <option value="F">Feminino</option>
-                                <option value="O">Outro</option>
-                            </select>
+                            <label for="{{ user_form.gender.id_for_label }}" class="form-label">{{ user_form.gender.label }}</label>
+                            {{ user_form.gender }}
+                            {% if user_form.gender.errors %}
+                                <div class="invalid-feedback d-block">{{ user_form.gender.errors }}</div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -92,61 +103,83 @@
                     </div>
                     <div class="row mb-3 gx-3">
                         <div class="col-md-8 mb-3">
-                            <label for="id_logradouro" class="form-label">Logradouro <span class="required-asterisk">*</span></label>
-                            <input type="text" name="logradouro" id="id_logradouro" class="form-control" placeholder="Rua, Avenida, etc." required>
+                            <label for="{{ address_form.rua.id_for_label }}" class="form-label">{{ address_form.rua.label }} <span class="required-asterisk">*</span></label>
+                            {{ address_form.rua }}
+                            {% if address_form.rua.errors %}
+                                <div class="invalid-feedback d-block">{{ address_form.rua.errors }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-md-4 mb-3">
-                            <label for="id_numero" class="form-label">Número <span class="required-asterisk">*</span></label>
-                            <input type="text" name="numero" id="id_numero" class="form-control" placeholder="123" required>
+                            <label for="{{ address_form.numero.id_for_label }}" class="form-label">{{ address_form.numero.label }} <span class="required-asterisk">*</span></label>
+                            {{ address_form.numero }}
+                             {% if address_form.numero.errors %}
+                                <div class="invalid-feedback d-block">{{ address_form.numero.errors }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="id_complemento" class="form-label">Complemento</label>
-                            <input type="text" name="complemento" id="id_complemento" class="form-control" placeholder="Apt, Bloco, etc.">
+                            <label for="{{ address_form.complemento.id_for_label }}" class="form-label">{{ address_form.complemento.label }}</label>
+                            {{ address_form.complemento }}
+                             {% if address_form.complemento.errors %}
+                                <div class="invalid-feedback d-block">{{ address_form.complemento.errors }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="id_bairro" class="form-label">Bairro <span class="required-asterisk">*</span></label>
-                            <input type="text" name="bairro" id="id_bairro" class="form-control" placeholder="Nome do bairro" required>
+                            <label for="{{ address_form.bairro.id_for_label }}" class="form-label">{{ address_form.bairro.label }} <span class="required-asterisk">*</span></label>
+                            {{ address_form.bairro }}
+                             {% if address_form.bairro.errors %}
+                                <div class="invalid-feedback d-block">{{ address_form.bairro.errors }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="id_cidade" class="form-label">Cidade <span class="required-asterisk">*</span></label>
-                            <input type="text" name="cidade" id="id_cidade" class="form-control" placeholder="Cidade" required>
+                            <label for="{{ address_form.cidade.id_for_label }}" class="form-label">{{ address_form.cidade.label }} <span class="required-asterisk">*</span></label>
+                            {{ address_form.cidade }}
+                            {% if address_form.cidade.errors %}
+                                <div class="invalid-feedback d-block">{{ address_form.cidade.errors }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="id_estado" class="form-label">Estado <span class="required-asterisk">*</span></label>
-                            <select name="estado" id="id_estado" class="form-select" required>
+                            <label for="{{ address_form.estado.id_for_label }}" class="form-label">{{ address_form.estado.label }} <span class="required-asterisk">*</span></label>
+                            {# Este <select> é manual para usar a lista completa de UFs do seu HTML original #}
+                            <select name="{{ address_form.estado.name }}" id="{{ address_form.estado.id_for_label }}" class="form-select" required>
                                 <option value="">UF</option>
-                                <option value="AC">AC</option>
-                                <option value="AL">AL</option>
-                                <option value="AP">AP</option>
-                                <option value="AM">AM</option>
-                                <option value="BA">BA</option>
-                                <option value="CE">CE</option>
-                                <option value="DF">DF</option>
-                                <option value="ES">ES</option>
-                                <option value="GO">GO</option>
-                                <option value="MA">MA</option>
-                                <option value="MT">MT</option>
-                                <option value="MS">MS</option>
-                                <option value="MG">MG</option>
-                                <option value="PA">PA</option>
-                                <option value="PB">PB</option>
-                                <option value="PR">PR</option>
-                                <option value="PE">PE</option>
-                                <option value="PI">PI</option>
-                                <option value="RJ">RJ</option>
-                                <option value="RN">RN</option>
-                                <option value="RS">RS</option>
-                                <option value="RO">RO</option>
-                                <option value="RR">RR</option>
-                                <option value="SC">SC</option>
-                                <option value="SP">SP</option>
-                                <option value="SE">SE</option>
-                                <option value="TO">TO</option>
+                                <option value="AC" {% if address_form.estado.value == "AC" %}selected{% endif %}>AC</option>
+                                <option value="AL" {% if address_form.estado.value == "AL" %}selected{% endif %}>AL</option>
+                                <option value="AP" {% if address_form.estado.value == "AP" %}selected{% endif %}>AP</option>
+                                <option value="AM" {% if address_form.estado.value == "AM" %}selected{% endif %}>AM</option>
+                                <option value="BA" {% if address_form.estado.value == "BA" %}selected{% endif %}>BA</option>
+                                <option value="CE" {% if address_form.estado.value == "CE" %}selected{% endif %}>CE</option>
+                                <option value="DF" {% if address_form.estado.value == "DF" %}selected{% endif %}>DF</option>
+                                <option value="ES" {% if address_form.estado.value == "ES" %}selected{% endif %}>ES</option>
+                                <option value="GO" {% if address_form.estado.value == "GO" %}selected{% endif %}>GO</option>
+                                <option value="MA" {% if address_form.estado.value == "MA" %}selected{% endif %}>MA</option>
+                                <option value="MT" {% if address_form.estado.value == "MT" %}selected{% endif %}>MT</option>
+                                <option value="MS" {% if address_form.estado.value == "MS" %}selected{% endif %}>MS</option>
+                                <option value="MG" {% if address_form.estado.value == "MG" %}selected{% endif %}>MG</option>
+                                <option value="PA" {% if address_form.estado.value == "PA" %}selected{% endif %}>PA</option>
+                                <option value="PB" {% if address_form.estado.value == "PB" %}selected{% endif %}>PB</option>
+                                <option value="PR" {% if address_form.estado.value == "PR" %}selected{% endif %}>PR</option>
+                                <option value="PE" {% if address_form.estado.value == "PE" %}selected{% endif %}>PE</option>
+                                <option value="PI" {% if address_form.estado.value == "PI" %}selected{% endif %}>PI</option>
+                                <option value="RJ" {% if address_form.estado.value == "RJ" %}selected{% endif %}>RJ</option>
+                                <option value="RN" {% if address_form.estado.value == "RN" %}selected{% endif %}>RN</option>
+                                <option value="RS" {% if address_form.estado.value == "RS" %}selected{% endif %}>RS</option>
+                                <option value="RO" {% if address_form.estado.value == "RO" %}selected{% endif %}>RO</option>
+                                <option value="RR" {% if address_form.estado.value == "RR" %}selected{% endif %}>RR</option>
+                                <option value="SC" {% if address_form.estado.value == "SC" %}selected{% endif %}>SC</option>
+                                <option value="SP" {% if address_form.estado.value == "SP" %}selected{% endif %}>SP</option>
+                                <option value="SE" {% if address_form.estado.value == "SE" %}selected{% endif %}>SE</option>
+                                <option value="TO" {% if address_form.estado.value == "TO" %}selected{% endif %}>TO</option>
                             </select>
+                             {% if address_form.estado.errors %}
+                                <div class="invalid-feedback d-block">{{ address_form.estado.errors }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-md-3 mb-3">
-                            <label for="id_cep" class="form-label">CEP <span class="required-asterisk">*</span></label>
-                            <input type="text" name="cep" id="id_cep" class="form-control" placeholder="00000-000" required>
+                            <label for="{{ address_form.cep.id_for_label }}" class="form-label">{{ address_form.cep.label }} <span class="required-asterisk">*</span></label>
+                            {{ address_form.cep }}
+                             {% if address_form.cep.errors %}
+                                <div class="invalid-feedback d-block">{{ address_form.cep.errors }}</div>
+                            {% endif %}
                         </div>
                     </div>
 
@@ -157,12 +190,18 @@
                     </div>
                     <div class="row gx-3">
                         <div class="col-md-6 mb-3">
-                            <label for="id_senha" class="form-label">Senha <span class="required-asterisk">*</span></label>
-                            <input type="password" name="senha" id="id_senha" class="form-control" placeholder="Mínimo 8 caracteres" required>
+                            <label for="{{ user_form.password.id_for_label }}" class="form-label">{{ user_form.password.label }} <span class="required-asterisk">*</span></label>
+                            {{ user_form.password1 }}
+                             {% if user_form.password.errors %}
+                                <div class="invalid-feedback d-block">{{ user_form.password.errors }}</div>
+                            {% endif %}
                         </div>
                         <div class="col-md-6 mb-3">
-                            <label for="id_confirmar_senha" class="form-label">Confirmar Senha <span class="required-asterisk">*</span></label>
-                            <input type="password" name="confirmar_senha" id="id_confirmar_senha" class="form-control" placeholder="Repita a senha" required>
+                            <label for="{{ user_form.password2.id_for_label }}" class="form-label">{{ user_form.password2.label }} <span class="required-asterisk">*</span></label>
+                            {{ user_form.password2 }}
+                             {% if user_form.password2.errors %}
+                                <div class="invalid-feedback d-block">{{ user_form.password2.errors }}</div>
+                            {% endif %}
                         </div>
                     </div>
 
