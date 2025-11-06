@@ -1,26 +1,92 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dash</title>
-</head>
-<body>
-    <div class="psicologos">
-        <h2>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</h2>
-        <p>CRP: {{ psi.crp }}</p>
-        <p>Preço consulta: {{psi.preco_consulta}}</p>
-        <p>Duração da consulta: {{psi.duracao_minutos}}</p>
-        <p>Especialdiade: {{psi.especialidade.nome}} - {{psi.especialidade.descricao}}</p>
-        <p>Atendimento online: {{psi.atendimento_online}}</p>
-        <p>atendimento_presencial: {{psi.atendimento_presencial}}</p>
-        <p>Formação: <br>
-            {% for formacao in formacoes %}
-                {{ formacao.nome }} - {{ formacao.descricao }} | Tipos: {{formacao.tipo}} <br>
-            {% endfor %}
-        </p>
+{% extends 'base.html' %}
+{% load static %}
 
-        <a href="{% url 'agendar_consulta' psi.id %}">Agendar Consulta</a>
-    </div>
-</body>
-</html>
+{% block title %}{{ psi.usuario.first_name }} {{ psi.usuario.last_name }} - PsiConnect{% endblock %}
+
+{% block extra_css %}
+    <!-- Linkando o novo CSS com o nome que você pediu -->
+    <link rel="stylesheet" href="{% static 'css/detalhes_psi.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<main class="profile-main-container">
+
+    <!-- Este é o card principal do perfil -->
+    <div class="profile-card">
+        
+        <!-- CABEÇALHO: Foto e Nome -->
+        <header class="profile-header">
+            <!-- 
+                NOTA: Você precisa adicionar o campo de foto ao seu modelo
+                Por enquanto, usarei um placeholder.
+            -->
+            <img class="profile-pic" 
+                 src="https://placehold.co/120x120/6A994E/FFFFFF?text={{ psi.usuario.first_name.0 }}" 
+                 alt="Foto de {{ psi.usuario.first_name }}">
+            
+            <div class="profile-info">
+                <h2>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</h2>
+                <p class="crp">CRP: {{ psi.crp }}</p>
+                
+                <!-- Botão de Agendar (para mobile) -->
+                <a href="{% url 'agendar_consulta' psi.id %}" class="cta-button mobile-only">Agendar Consulta</a>
+            </div>
+
+            <!-- Botão de Agendar (para desktop) -->
+            <a href="{% url 'agendar_consulta' psi.id %}" class="cta-button desktop-only">Agendar Consulta</a>
+        </header>
+
+        <!-- SEÇÃO: Detalhes da Consulta -->
+        <section class="profile-section details-grid">
+            <div class="detail-item">
+                <span class="material-icons">sell</span>
+                <strong>Preço</strong>
+                <span>R$ {{psi.preco_consulta}}</span>
+            </div>
+            <div class="detail-item">
+                <span class="material-icons">schedule</span>
+                <strong>Duração</strong>
+                <span>{{psi.duracao_minutos}} min</span>
+            </div>
+            <div class="detail-item">
+                <span class="material-icons">psychology</span>
+                <strong>Especialidade</strong>
+                <span>{{psi.especialidade.nome}}</span>
+            </div>
+            <div class="detail-item">
+                <span class="material-icons">videocam</span>
+                <strong>Atendimento</strong>
+                <span>
+                    {% if psi.atendimento_online %}Online{% endif %}
+                    {% if psi.atendimento_online and psi.atendimento_presencial %}, {% endif %}
+                    {% if psi.atendimento_presencial %}Presencial{% endif %}
+                </span>
+            </div>
+        </section>
+
+        <!-- SEÇÃO: Sobre/Descrição da Especialidade -->
+        <section class="profile-section">
+            <h3>Sobre a Especialidade</h3>
+            <p>{{psi.especialidade.descricao|default:"Descrição da especialidade não disponível."}}</p>
+        </section>
+
+        <!-- SEÇÃO: Formação -->
+        <section class="profile-section">
+            <h3>Formação e Qualificações</h3>
+            <ul class="formacao-list">
+                {% for formacao in formacoes %}
+                    <li>
+                        <strong>{{ formacao.nome }} ({{formacao.tipo}})</strong>
+                        <p>{{ formacao.descricao }}</p>
+                    </li>
+                {% empty %}
+                    <li>Nenhuma formação cadastrada.</li>
+                {% endfor %}
+            </ul>
+        </section>
+
+    </div><!-- Fim do .profile-card -->
+
+</main>
+{% endblock %}

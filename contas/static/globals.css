@@ -23,3 +23,273 @@ a {
     text-decoration: none;
     color: inherit;
 }
+
+/* A barra verde principal */
+.navbar-main {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 6px 24px;
+    background-color: var(--color-primary-green, #386641); /* <-- USANDO SUA VARIÁVEL */
+    color: var(--color-text-light, #f0f0f0);
+    
+    position: sticky;
+    top: 0;
+    z-index: 1000;
+    width: 100%;
+    box-sizing: border-box; 
+    font-family: var(--font-family); /* <-- USANDO SUA VARIÁVEL */
+}
+
+/* Lado Esquerdo (Dashboard) */
+.navbar-left .navbar-title {
+    display: flex; /* Mantém o h3 alinhado se houver mais itens */
+    align-items: center;
+}
+.navbar-left .navbar-logo-link {
+    text-decoration: none;
+    color: var(--color-white, #fff); /* Garante que o link seja branco */
+}
+.navbar-title h3 {
+    margin: 0;
+    font-size: 1.3rem; 
+    color: var(--color-white, #fff);
+    display: flex;
+    align-items: center;
+    gap: 8px;
+}
+
+.navbar-title h3 .material-icons,
+.footer-column .logo .material-icons {
+    font-family: 'Material Icons' !important; 
+    font-weight: normal;
+    font-style: normal;
+    font-size: inherit;
+    color: inherit;
+    vertical-align: middle;
+    user-select: none;
+    margin-right: 6px; 
+}
+
+/* Lado Direito (Notificação e Usuário) */
+.navbar-right {
+    display: flex;
+    align-items: center;
+    gap: 20px;
+}
+
+/* Notificação (sino) */
+.navbar-notification {
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    background-color: #fdf6e3;
+    color: #e58a87;
+    padding: 6px 10px;
+    border-radius: 8px;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+.navbar-notification .material-icons {
+    font-size: 20px;
+}
+
+/* --- O Dropdown do Usuário --- */
+.navbar-user-dropdown {
+    position: relative; 
+}
+
+/* A parte clicável (parece um input) */
+.user-trigger {
+    display: flex;
+    align-items: center;
+    background-color: var(--color-white, #fff);
+    color: var(--color-text-dark, #333);
+    padding: 4px 10px;
+    border-radius: 8px;
+    cursor: pointer;
+    transition: background-color 0.2s;
+}
+.user-trigger:hover {
+    background-color: #f5f5f5;
+}
+
+.user-pic {
+    width: 32px;
+    height: 32px;
+    border-radius: 50%;
+    margin-right: 10px;
+    object-fit: cover;
+}
+.user-info {
+    display: flex;
+    flex-direction: column;
+}
+.user-info strong {
+    font-size: 0.9rem;
+    line-height: 1.2;
+}
+.user-info small {
+    font-size: 0.75rem;
+    color: #666;
+}
+.user-trigger .arrow {
+    margin-left: 12px;
+    font-size: 20px;
+    color: #555;
+}
+
+/* O Menu Dropdown (escondido) */
+.dropdown-menu {
+    display: none; 
+    position: absolute;
+    top: 100%; 
+    right: 0;
+    margin-top: 4px;
+    background-color: var(--color-white, #fff);
+    border: 1px solid var(--color-border, #ccc);
+    border-radius: 8px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    min-width: 220px; 
+    z-index: 1001;
+    overflow: hidden; 
+}
+
+/* Mostrar o menu ao passar o mouse */
+.navbar-user-dropdown:hover .dropdown-menu {
+    display: block;
+}
+
+/* Links dentro do dropdown */
+.dropdown-menu a {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    color: var(--color-text-dark, #333);
+    text-decoration: none;
+    transition: background-color 0.2s;
+}
+.dropdown-menu a:hover {
+    background-color: #f5f5f5;
+}
+.dropdown-menu a .material-icons {
+    font-size: 20px;
+    color: #555;
+}
+
+/* Linha divisória */
+.dropdown-divider {
+    height: 1px;
+    background-color: #f0f0f0;
+    margin: 4px 0;
+}
+
+/* Estilo do botão Sair (para parecer um link) */
+.logout-form-dropdown {
+    margin: 0;
+}
+.logout-form-dropdown button {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+    padding: 12px 16px;
+    font-size: 0.9rem;
+    color: #d9534f; /* Vermelho */
+    text-decoration: none;
+    background: none;
+    border: none;
+    cursor: pointer;
+    width: 100%;
+    text-align: left;
+    font-family: var(--font-family); /* <-- USANDO SUA VARIÁVEL */
+}
+.logout-form-dropdown button:hover {
+    background-color: #f5f5f5;
+}
+.logout-form-dropdown button .material-icons {
+    font-size: 20px;
+    color: #d9534f;
+}
+
+.footer {
+    background-color: var(--color-primary-green, #386641);
+    color: var(--color-text-light, #f4f4f4);
+    padding: 24px; 
+    margin-top: auto;
+    font-size: 0.75rem; 
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.footer-container {
+ display: flex;
+ flex-wrap: wrap;
+ justify-content: space-between;
+ gap: 20px;
+ max-width: 1100px;
+ margin: 0 auto 16px;
+}
+
+.footer-column {
+ flex: 1;
+ min-width: 180px;
+ display: flex;
+ flex-direction: column;
+ gap: 6px;
+}
+
+.footer-column h3,
+.footer-column h4 {
+ margin: 0 0 4px 0;
+ font-size: 1rem; 
+ color: var(--color-white, #fff);
+}
+
+.footer-column .logo {
+ color: var(--color-white);
+ text-decoration: none;
+}
+
+.footer-column p,
+.footer-column a,
+.footer-column span {
+ font-size: 0.8rem; 
+ color: var(--color-text-light, #f4f4f4);
+ opacity: 0.7;
+}
+
+.footer-column a:hover {
+ opacity: 1;
+}
+
+.footer-column a,
+.footer-column span {
+ font-size: 0.8rem; 
+ color: var(--color-text-light, #f4f4f4); 
+ text-decoration: none;
+ opacity: 0.8;
+}
+
+.footer-column a:hover {
+    opacity: 1; 
+}
+
+.footer-column span {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+.footer-column span .material-icons {
+    font-size: 1rem; 
+}
+
+.footer-bottom {
+ text-align: center;
+ border-top: 1px solid var(--color-secondary-green, #6A994E);
+ padding-top: 16px;
+ opacity: 0.7;
+ font-size: 0.75rem;
+}
