@@ -1,154 +1,100 @@
+{% extends 'base.html' %}
+
 {% load static %}
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard - PsiConnect</title>
-    
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-    <link href="https://fonts.googleapis.com/css2?family=Roboto:wght@400;500;700&display=swap" rel="stylesheet">
 
-    <link rel="stylesheet" href="{% static 'globals.css' %}" />
-    <link rel="stylesheet" href="{% static 'dashboard.css' %}" />
-    
-    <link href="https://fonts.googleapis.com/icon?family=Material+Icons" rel="stylesheet">
-</head>
-<body>
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'dashboard.css' %}">
+{% endblock %}
 
-    <header class="top-header">
-        <a href="#" class="logo">PsiConnect</a>
-        <div class="user-menu">
-            <span>Olá, {{ user.first_name|default:'Maria' }} {{ user.last_name|default:'Silva' }}</span>
-            <img src="URL_DA_FOTO_DE_PERFIL" alt="Foto de Perfil" class="profile-pic">
+{% block title %}Dashboard - PsiConnect{% endblock %}
+
+{% block content %}
+<div class="dashboard-container">
+
+    <main class="main-content">
+
+        <section class="welcome-banner card">
+            <h2>Bem-vinda, {{ user.first_name|default:'Maria' }}!</h2>
+            <p>Encontre o profissional ideal para seu bem-estar mental.</p>
+        </section>
+
+        <section class="upcoming-appointment card">
+            <span class="material-icons">task_alt</span>
+            <p>Consulta próxima: Você terá uma consulta com <strong>Dr. Carlos Silva</strong> amanhã às 14:00</p>
+        </section>
+
+        <section class="search-container card">
+            <h2>Encontrar Profissional</h2>
+            <div class="barra-pesquisa">
+                <form method="post" action="{% url 'user-psi-list' %}" class="search-form">
+                    {% csrf_token %}
+                    <span class="material-icons">search</span>
+                    <input type="text" name="query" placeholder="Buscar por nome ou especialidade...">
+                    <input type="submit" value="Buscar" class="search-button">
+                    <button type="button" class="filter-button">
+                        Filtrar <span class="material-icons">filter_list</span>
+                    </button>
+                </form>
+            </div>
+        </section>
+
+        <section class="psicologos-section">
+            <h2>Profissionais mais bem avaliados:</h2>
             
-            <form method="post" action="{% url 'logout' %}" class="logout-form">
-                {% csrf_token %}
-                <button type="submit" title="Logout">
-                    <span class="material-icons">logout</span>
-                </button>
-            </form>
-        </div>
-    </header>
-
-    <div class="dashboard-container">
-
-        <main class="main-content">
-
-            <section class="welcome-banner card">
-                <h2>Bem-vinda, {{ user.first_name|default:'Maria' }}!</h2>
-                <p>Encontre o profissional ideal para seu bem-estar mental.</p>
-            </section>
-
-            <section class="upcoming-appointment card">
-                <span class="material-icons">task_alt</span>
-                <p>Consulta próxima: Você terá uma consulta com <strong>Dr. Carlos Silva</strong> amanhã às 14:00</p>
-            </section>
-
-            <section class="search-container card">
-                <h2>Encontrar Profissional</h2>
-                <div class="barra-pesquisa">
-                    <form method="post" action="{% url 'user-psi-list' %}" class="search-form">
-                        {% csrf_token %}
-                        <span class="material-icons">search</span>
-                        <input type="text" name="query" placeholder="Buscar por nome ou especialidade...">
-                        <input type="submit" value="Buscar" class="search-button">
-                        <button type="button" class="filter-button">
-                            Filtrar <span class="material-icons">filter_list</span>
-                        </button>
-                    </form>
-                </div>
-            </section>
-
-            <section class="psicologos-section">
-                <h2>Profissionais mais bem avaliados:</h2>
-                
-                <div class="psicologos-grid">
-                    {% for psi in psicologos %}
-                        <article class="psi-card card">
-                            <div class="psi-card-header">
-                                <img src="URL_FOTO_{{psi.id}}" alt="Foto de {{ psi.usuario.first_name }}">
-                                <div class="psi-card-info">
-                                    <h3>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</h3>
-                                    <span>{{ psi.especialidade|default:'Terapia Cognitiva' }}</span>
-                                </div>
+            <div class="psicologos-grid">
+                {% for psi in psicologos %}
+                    <article class="psi-card card">
+                        <div class="psi-card-header">
+                            <img src="URL_FOTO_{{psi.id}}" alt="Foto de {{ psi.usuario.first_name }}">
+                            <div class="psi-card-info">
+                                <h3>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</h3>
+                                <span>{{ psi.especialidade|default:'Terapia Cognitiva' }}</span>
                             </div>
-                            <div class="psi-card-rating">
-                                <span class="material-icons">star</span>
-                                <strong>4.9</strong> (120) </div>
-                            <a href="#" class="agendar-button">Agendar Consulta</a>
-                        </article>
-                    {% empty %}
-                        <p>Nenhum psicólogo encontrado.</p>
-                    {% endfor %}
+                        </div>
+                        <div class="psi-card-rating">
+                            <span class="material-icons">star</span>
+                            <strong>4.9</strong> (120) </div>
+                        <a href="#" class="agendar-button">Agendar Consulta</a>
+                    </article>
+                {% empty %}
+                    <p>Nenhum psicólogo encontrado.</p>
+                {% endfor %}
+                </div>
+        </section>
+
+    </main>
+
+    <aside class="right-sidebar">
+        
+        <section class="consultas-card card">
+            <h3>Suas Consultas</h3>
+            <ul class="consultas-list">
+                <li class="consulta-item proxima">
+                    <div class="consulta-info">
+                        <strong>Dr. Carlos Silva</strong>
+                        <span>Amanhã, 14:00</span>
                     </div>
-            </section>
+                </li>
+                <li class="consulta-item">
+                    <div class="consulta-info">
+                        <strong>Dra. Ana Santos</strong>
+                        <span>15 Jan, 10:00</span>
+                    </div>
+                </li>
+            </ul>
+            <a href="#" class="view-all-button">Ver Todas as Consultas</a>
+        </section>
 
-        </main>
+        <section class="acoes-card card">
+            <h3>Ações Rápidas</h3>
+            <ul class="acoes-list">
+                <li><a href="#"><span class="material-icons">add_circle_outline</span> Nova Consulta</a></li>
+                <li><a href="#"><span class="material-icons">chat_bubble_outline</span> Mensagens</a></li>
+                <li><a href="#"><span class="material-icons">history</span> Histórico</a></li>
+            </ul>
+        </section>
+        
+    </aside>
 
-        <aside class="right-sidebar">
-            
-            <section class="consultas-card card">
-                <h3>Suas Consultas</h3>
-                <ul class="consultas-list">
-                    <li class="consulta-item proxima">
-                        <div class="consulta-info">
-                            <strong>Dr. Carlos Silva</strong>
-                            <span>Amanhã, 14:00</span>
-                        </div>
-                    </li>
-                    <li class="consulta-item">
-                        <div class="consulta-info">
-                            <strong>Dra. Ana Santos</strong>
-                            <span>15 Jan, 10:00</span>
-                        </div>
-                    </li>
-                </ul>
-                <a href="#" class="view-all-button">Ver Todas as Consultas</a>
-            </section>
-
-            <section class="acoes-card card">
-                <h3>Ações Rápidas</h3>
-                <ul class="acoes-list">
-                    <li><a href="#"><span class="material-icons">add_circle_outline</span> Nova Consulta</a></li>
-                    <li><a href="#"><span class="material-icons">chat_bubble_outline</span> Mensagens</a></li>
-                    <li><a href="#"><span class="material-icons">history</span> Histórico</a></li>
-                </ul>
-            </section>
-            
-        </aside>
-
-    </div>
-
-    <footer class="footer">
-        <div class="footer-container">
-            <div class="footer-column">
-                <h3 class="logo">PsiConnect</h3>
-                <p>Conectamos psicólogos e pacientes para uma saúde mental de qualidade.</p>
-            </div>
-            <div class="footer-column">
-                <h4>Para Psicólogos</h4>
-                <a href="#">Cadastre-se</a>
-                <a href="#">Planos</a>
-                <a href="#">Suporte</a>
-            </div>
-            <div class="footer-column">
-                <h4>Para Pacientes</h4>
-                <a href="#">Encontrar Psicólogo</a>
-                <a href="#">Como Funciona</a>
-                <a href="#">Ajuda</a>
-            </div>
-            <div class="footer-column">
-                <h4>Contato</h4>
-                <span><span class="material-icons">email</span> contato@psiconnect.com</span>
-                <span><span class="material-icons">call</span> (11) 9999-9999</span>
-            </div>
-        </div>
-        <div class="footer-bottom">
-            <p>© 2024 PsiConnect. Todos os direitos reservados.</p>
-        </div>
-    </footer>
-
-</body>
-</html>
+</div>
+{% endblock %}
