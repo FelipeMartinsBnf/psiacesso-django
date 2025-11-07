@@ -68,10 +68,10 @@ class Consulta(models.Model):
 
     paciente = models.ForeignKey(Paciente, on_delete=models.CASCADE)
     psicologo = models.ForeignKey(Psicologo, on_delete=models.CASCADE)
-    agenda = models.OneToOneField(AgendaPsicologo, on_delete=models.CASCADE)
     modalidade = models.CharField(max_length=20, choices=MODALIDADE_CHOICES)
     status = models.CharField(max_length=20, choices=STATUS_CHOICES, default='confirmado')
     data_criacao = models.DateTimeField(auto_now_add=True)
+    data_horario = models.DateTimeField()
 
     def __str__(self):
         return f"Consulta {self.id} - {self.paciente} com {self.psicologo}"

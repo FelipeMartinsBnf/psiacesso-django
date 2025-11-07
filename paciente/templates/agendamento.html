@@ -1,0 +1,128 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ psi.usuario.first_name }} {{ psi.usuario.last_name }} - PsiConnect{% endblock %}
+
+{% block extra_css %}
+    <!-- Linkando o novo CSS com o nome que você pediu -->
+    <link rel="stylesheet" href="{% static 'css/detalhes_psi.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<main>
+
+    <h2>Agendar Consulta com {{ psicologo.usuario.get_full_name }}</h2>
+
+    {% if messages %}
+        {% for message in messages %}
+            <p style="color:{% if message.tags == 'success' %}green{% else %}red{% endif %};">{{ message }}</p>
+        {% endfor %}
+    {% endif %}
+
+    <div id="calendar-container">
+        <div class="calendar-nav">
+            <a href="?year={{ nav_prev.year }}&month={{ nav_prev.month }}">Mes Anterior</a>
+            <strong>Mês Atual</strong> <a href="?year={{ nav_next.year }}&month={{ nav_next.month }}">Próximo Mês</a>
+        </div>
+        {{ calendar }}
+    </div>
+
+    <div id="horarios-container-wrapper">
+        <h3>Horários disponíveis para <span id="data-selecionada-display">--/--/----</span></h3>
+        <div id="horarios-container">
+            <p>Selecione um dia no calendário para ver os horários.</p>
+        </div>
+    </div>
+    
+    <form method="post" id="booking-form">
+        {% csrf_token %}
+        <p>Você selecionou: <strong><span id="horario-final-display"></span></strong></p>
+        
+        <input type="hidden" name="data_selecionada" id="form-input-data">
+        <input type="hidden" name="hora_selecionada" id="form-input-hora">
+        
+        {{ form.as_p }} 
+        
+        <button type="submit">Confirmar Agendamento</button>
+    </form>
+
+
+    <script>
+        document.addEventListener('DOMContentLoaded', function() {
+            const calendarContainer = document.getElementById('calendar-container');
+            const horariosContainer = document.getElementById('horarios-container');
+            const dataSelecionadaSpan = document.getElementById('data-selecionada-display');
+            
+            const bookingForm = document.getElementById('booking-form');
+            const formInputData = document.getElementById('form-input-data');
+            const formInputHora = document.getElementById('form-input-hora');
+            const horarioFinalDisplay = document.getElementById('horario-final-display');
+            
+            let diaSelecionadoEl = null;
+            let horaSelecionadaEl = null;
+
+            // 1. Ação ao clicar em um DIA
+            calendarContainer.addEventListener('click', function(e) {
+                const target = e.target;
+                if (target.classList.contains('day-cell') && target.dataset.date) {
+                    const dataISO = target.dataset.date;
+                    
+                    // Desmarca dia anterior
+                    if (diaSelecionadoEl) diaSelecionadoEl.classList.remove('selected');
+                    // Marca dia novo
+                    target.classList.add('selected');
+                    diaSelecionadoEl = target;
+
+                    // Atualiza a UI
+                    dataSelecionadaSpan.innerText = new Date(dataISO + 'T00:00:00').toLocaleDateString('pt-BR');
+                    formInputData.value = dataISO; // Salva a data no form
+                    horariosContainer.innerHTML = "<p>Carregando...</p>";
+                    bookingForm.style.display = 'none'; // Esconde o form final
+                    if (horaSelecionadaEl) horaSelecionadaEl.classList.remove('selected');
+                    horaSelecionadaEl = null;
+
+                    // 2. Busca (Fetch) os horários da API
+                    const url = `/api/horarios/{{ psicologo.id }}/?data=${dataISO}`;
+                    console.log('Buscando horários em:', url)
+                    fetch(url)
+                        .then(response => response.json())
+                        .then(data => {
+                            if (data.horarios_disponiveis && data.horarios_disponiveis.length > 0) {
+                                let html = '';
+                                data.horarios_disponiveis.forEach(hora => {
+                                    html += `<button type="button" class="slot-button" data-hora="${hora}">${hora}</button>`;
+                                });
+                                horariosContainer.innerHTML = html;
+                            } else {
+                                horariosContainer.innerHTML = "<p>Nenhum horário disponível para este dia.</p>";
+                            }
+                        })
+                        .catch(err => {
+                            horariosContainer.innerHTML = "<p>Erro ao carregar horários. Tente novamente.</p>";
+                        });
+                }
+            });
+            
+            // 3. Ação ao clicar em um HORÁRIO
+            horariosContainer.addEventListener('click', function(e) {
+                const target = e.target;
+                if (target.classList.contains('slot-button')) {
+                    const hora = target.dataset.hora;
+                    
+                    // Desmarca hora anterior
+                    if (horaSelecionadaEl) horaSelecionadaEl.classList.remove('selected');
+                    // Marca hora nova
+                    target.classList.add('selected');
+                    horaSelecionadaEl = target;
+                    
+                    // Preenche os dados finais e mostra o form
+                    formInputHora.value = hora;
+                    horarioFinalDisplay.innerText = `${dataSelecionadaSpan.innerText} às ${hora}`;
+                    bookingForm.style.display = 'block';
+                }
+            });
+        });
+    </script>
+</main>
+{% endblock %}

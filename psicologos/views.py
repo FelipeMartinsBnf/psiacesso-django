@@ -62,7 +62,7 @@ def gerenciar_disponibilidade_grid(request):
             DisponibilidadePsicologo.objects.bulk_create(novas_disponibilidades)
             
             messages.success(request, "Agenda atualizada com sucesso!")
-            return redirect('dashboard')
+            return redirect('psi-dashboard')
     else:
         form = AgendaGridForm()
 
@@ -78,9 +78,9 @@ def gerenciar_disponibilidade_grid(request):
     # Cria um conjunto (Set) para busca rápida no template
     # Ex: {(1, '09:00:00'), (3, '14:00:00')}
     horarios_selecionados_set = {
-        (d.dia_semana, d.hora_inicio.isoformat()) for d in disponibilidades_salvas
-    }
-
+            f"{d.dia_semana},{d.hora_inicio.strftime('%H:%M:%S')}" for d in disponibilidades_salvas
+        }
+    print("DEBUG DA VIEW (horarios_selecionados_set):", horarios_selecionados_set)
     context = {
         'form': form,
         'dias_semana': dias_semana,
