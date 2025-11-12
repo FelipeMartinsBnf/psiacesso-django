@@ -1,158 +1,93 @@
-<!-- templates/perfis/gerenciar_agenda_grid.html -->
+{% extends 'base.html' %}
+{% load static %}
 
-<!DOCTYPE html>
-<html lang="pt-br">
-<head>
-    <meta charset="UTF-8">
-    <title>Minha Agenda Semanal</title>
-    <style>
-        body { font-family: sans-serif; }
-        h2 { text-align: center; }
-        .agenda-grid {
-            display: grid;
-            /* 1 coluna para os horários + 7 para os dias */
-            grid-template-columns: 80px repeat(7, 1fr);
-            border: 1px solid #ccc;
-            max-width: 1200px;
-            margin: 20px auto;
-        }
-        .grid-header, .grid-time-label, .grid-cell {
-            padding: 10px;
-            text-align: center;
-            border: 1px solid #eee;
-        }
-        .grid-header {
-            background-color: #f4f4f4;
-            font-weight: bold;
-        }
-        .grid-time-label {
-            font-size: 0.9em;
-            color: #555;
-            background-color: #f9f9f9;
-        }
-        .grid-cell {
-            background-color: #fdfdfd;
-            cursor: pointer;
-            transition: background-color 0.1s ease-in-out;
-            min-height: 40px;
-        }
-        .grid-cell:hover {
-            background-color: #e0f2fe; /* Azul claro no hover */
-        }
-        .grid-cell.selected {
-            background-color: #16a34a; /* Verde quando selecionado */
-            color: white;
-            font-weight: bold;
-        }
-        .submit-container { text-align: center; }
-        .submit-btn {
-            padding: 12px 25px;
-            font-size: 1.1em;
-            background-color: #007bff;
-            color: white;
-            border: none;
-            border-radius: 5px;
-            cursor: pointer;
-        }
-    </style>
-</head>
-<body>
+{% block title %}Minha Disponibilidade{% endblock %}
 
-    <h2>Minha Disponibilidade Semanal</h2>
-    <p style="text-align: center;">Clique nos horários para ativar ou desativar sua disponibilidade.</p>
+{# Bloco para carregar CSS específico desta página #}
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'disponibilidade.css' %}">
+{% endblock %}
 
-    <form method="post" id="agenda-form">
-        {% csrf_token %}
-        
-        <!-- Nosso campo oculto do form.py -->
-        {{ form.horarios_selecionados }}
+{% block content %}
+<div class="agenda-container">
+    <div class="agenda-header">
+        <h2>Minha Disponibilidade</h2>
+        <p>Clique nos horários abaixo para definir quando você poderá atender seus pacientes.</p>
+    </div>
 
-        <div class="agenda-grid">
-            <!-- Cabeçalho (Horários + Dias) -->
-            <div class="grid-header">Horário</div>
-            {% for dia_num, dia_nome in dias_semana %}
-                <div class="grid-header">{{ dia_nome }}</div>
-            {% endfor %}
+    <div class="agenda-card">
+        <form method="post" id="agenda-form">
+            {% csrf_token %}
+            {# O campo oculto que armazenará o JSON final #}
+            {{ form.horarios_selecionados }}
 
-            <!-- Corpo da Grade (Gerado pelo Django) -->
-            {% for hora in horarios_grade %}
-    <div class="grid-time-label">{{ hora|time:"H:i" }}</div>
-    
-    {% for dia_num, dia_nome in dias_semana %}
-        
-        {% comment %}
-        1. Construímos a string de chave, ex: "1,09:00:00"
-        {% endcomment %}
-        {% with chave_horario=dia_num|stringformat:"i"|add:","|add:hora|time:"H:i:s" %}
-        
-            {% comment %}
-            2. Verificamos se essa chave existe no Set que a view passou
-               e renderizamos o <div> apropriado.
-            {% endcomment %}
-            {% if chave_horario in horarios_selecionados_set %}
-                <div
-                    class="grid-cell selected"
-                    data-dia="{{ dia_num }}"
-                    data-hora="{{ hora|time:"H:i:s" }}">
-                    Ativo
-                </div>
-            {% else %}
-                <div
-                    class="grid-cell"
-                    data-dia="{{ dia_num }}"
-                    data-hora="{{ hora|time:"H:i:s" }}">
-                </div>
-            {% endif %}
+            <div class="agenda-grid">
+                <div class="grid-header"></div>
+                
+                {% for dia_num, dia_nome in dias_semana %}
+                    <div class="grid-header">{{ dia_nome }}</div>
+                {% endfor %}
 
-        {% endwith %} {% endfor %}
-{% endfor %}
-        </div>
-
-        <div class="submit-container">
-            <button type="submit" class="submit-btn">Salvar Agenda</button>
-        </div>
-    </form>
-
-    <script>
-        document.addEventListener('DOMContentLoaded', function() {
-            const grid = document.querySelector('.agenda-grid');
-            const form = document.getElementById('agenda-form');
-            const hiddenInput = document.getElementById('id_horarios_selecionados');
-
-            // 1. Lógica de clique na célula
-            grid.addEventListener('click', function(e) {
-                // Só age se o clique foi em uma célula de horário
-                if (e.target.classList.contains('grid-cell')) {
-                    const cell = e.target;
-                    cell.classList.toggle('selected');
+                {% for hora in horarios_grade %}
+                    <div class="grid-time-label">{{ hora|time:"H:i" }}</div>
                     
-                    // Atualiza o texto da célula (opcional)
-                    if (cell.classList.contains('selected')) {
-                        cell.innerText = 'Ativo';
-                    } else {
-                        cell.innerText = '';
-                    }
-                }
-            });
+                    {% for dia_num, dia_nome in dias_semana %}
+                        {% with chave_horario=dia_num|stringformat:"i"|add:","|add:hora|time:"H:i:s" %}
+                            {% if chave_horario in horarios_selecionados_set %}
+                                <div class="grid-cell selected"
+                                     data-dia="{{ dia_num }}"
+                                     data-hora="{{ hora|time:"H:i:s" }}">
+                                    Disponível
+                                </div>
+                            {% else %}
+                                <div class="grid-cell"
+                                     data-dia="{{ dia_num }}"
+                                     data-hora="{{ hora|time:"H:i:s" }}">
+                                </div>
+                            {% endif %}
+                        {% endwith %}
+                    {% endfor %}
+                {% endfor %}
+            </div>
 
-            // 2. Lógica de envio do formulário
-            form.addEventListener('submit', function(e) {
-                // Pega todas as células selecionadas
-                const selectedCells = document.querySelectorAll('.grid-cell.selected');
-                
-                const horariosData = [];
-                selectedCells.forEach(function(cell) {
-                    horariosData.push({
-                        dia: cell.dataset.dia,
-                        hora: cell.dataset.hora
-                    });
-                });
-                
-                // Converte o array em uma string JSON e coloca no campo oculto
-                hiddenInput.value = JSON.stringify(horariosData);
-            });
+            <div class="submit-container">
+                <button type="submit" class="submit-btn">
+                    Salvar Agenda
+                </button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        const grid = document.querySelector('.agenda-grid');
+        const form = document.getElementById('agenda-form');
+        const hiddenInput = document.getElementById('id_horarios_selecionados');
+
+        // 1. Manipula o clique visualmente
+        grid.addEventListener('click', function(e) {
+            const cell = e.target.closest('.grid-cell');
+            if (cell) {
+                cell.classList.toggle('selected');
+                cell.innerText = cell.classList.contains('selected') ? 'Disponível' : '';
+            }
         });
-    </script>
 
-</body>
-</html>
+        // 2. Prepara os dados antes de enviar o form
+        form.addEventListener('submit', function(e) {
+            const selectedCells = document.querySelectorAll('.grid-cell.selected');
+            let horariosData = [];
+
+            selectedCells.forEach(cell => {
+                horariosData.push({
+                    dia: cell.dataset.dia,
+                    hora: cell.dataset.hora
+                });
+            });
+
+            hiddenInput.value = JSON.stringify(horariosData);
+        });
+    });
+</script>
+{% endblock %}

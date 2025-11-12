@@ -2,13 +2,14 @@
 {% load static %}
 
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'css/dashboard_psi.css' %}">
+    <link rel="stylesheet" href="{% static 'dashboard_psi.css' %}">
 {% endblock %}
 
 {% block title %}Meu Dashboard - PsiConnect{% endblock %}
 
 {% block content %}
 <div class="psi-dashboard-container">
+    
     <main class="psi-main-content">
         
         <section class="psi-welcome card">
@@ -35,18 +36,6 @@
                     Meus Pacientes
                 </a>
             </div>
-        </section>
-
-        <section class="psi-logout-card card">
-            <h4>Sair da sua conta</h4>
-            <p>Clique no botão abaixo para encerrar sua sessão com segurança.</p>
-            <form method="post" action="{% url 'logout' %}">
-                {% csrf_token %}
-                <button type="submit" class="logout-button">
-                    <span class="material-icons">logout</span>
-                    Sair
-                </button>
-            </form>
         </section>
     
     </main>
