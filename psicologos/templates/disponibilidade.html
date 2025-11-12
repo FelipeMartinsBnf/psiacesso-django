@@ -60,26 +60,86 @@
 </div>
 
 <script>
-    document.addEventListener('DOMContentLoaded', function() {
+    document.addEventListener('DOMContentLoaded', function () {
         const grid = document.querySelector('.agenda-grid');
         const form = document.getElementById('agenda-form');
         const hiddenInput = document.getElementById('id_horarios_selecionados');
 
-        // 1. Manipula o clique visualmente
-        grid.addEventListener('click', function(e) {
-            const cell = e.target.closest('.grid-cell');
-            if (cell) {
-                cell.classList.toggle('selected');
-                cell.innerText = cell.classList.contains('selected') ? 'Disponível' : '';
+        // --- LÓGICA DE SELEÇÃO COM DRAG ---
+        
+        let isDragging = false;
+        let selectionMode = 'select'; // Guarda a ação (selecionar ou deselecionar)
+
+        // 1. Quando o mouse é PRESSIONADO (início do drag)
+        grid.addEventListener('mousedown', function (e) {
+            // Só age se for uma célula de horário
+            if (!e.target.classList.contains('grid-cell')) {
+                return;
+            }
+            
+            // Previne o comportamento padrão do navegador (como arrastar texto)
+            e.preventDefault(); 
+
+            isDragging = true;
+            const cell = e.target;
+
+            // Define o MODO da seleção:
+            // Se a primeira célula clicada JÁ ESTÁ selecionada,
+            // o modo será "deselecionar".
+            if (cell.classList.contains('selected')) {
+                selectionMode = 'deselect';
+                cell.classList.remove('selected');
+                cell.innerText = '';
+            } else {
+                // Se for uma célula nova, o modo será "selecionar".
+                selectionMode = 'select';
+                cell.classList.add('selected');
+                cell.innerText = 'Ativo';
             }
         });
 
-        // 2. Prepara os dados antes de enviar o form
-        form.addEventListener('submit', function(e) {
-            const selectedCells = document.querySelectorAll('.grid-cell.selected');
-            let horariosData = [];
+        // 2. Quando o mouse PASSA POR CIMA (durante o drag)
+        grid.addEventListener('mouseover', function (e) {
+            // Só age se o botão do mouse estiver pressionado (isDragging)
+            if (!isDragging) {
+                return;
+            }
+            
+            // Só age se for uma célula de horário
+            if (!e.target.classList.contains('grid-cell')) {
+                return;
+            }
 
-            selectedCells.forEach(cell => {
+            const cell = e.target;
+            
+            // Aplica o modo definido no mousedown
+            if (selectionMode === 'select') {
+                cell.classList.add('selected');
+                cell.innerText = 'Ativo';
+            } else {
+                cell.classList.remove('selected');
+                cell.innerText = '';
+            }
+        });
+
+        // 3. Quando o mouse é SOLTO (fim do drag)
+        // Usamos 'window' para garantir que o evento seja pego
+        // mesmo que o usuário solte o mouse fora da grade.
+        window.addEventListener('mouseup', function (e) {
+            isDragging = false;
+        });
+
+        // --- FIM DA LÓGICA DE SELEÇÃO ---
+
+        
+        // 4. Lógica de envio do formulário (IDÊNTICA A ANTES)
+        // Esta parte não precisa mudar, pois ela só se importa
+        // com o resultado final (quais células TÊM a classe .selected).
+        form.addEventListener('submit', function (e) {
+            const selectedCells = document.querySelectorAll('.grid-cell.selected');
+
+            const horariosData = [];
+            selectedCells.forEach(function (cell) {
                 horariosData.push({
                     dia: cell.dataset.dia,
                     hora: cell.dataset.hora
