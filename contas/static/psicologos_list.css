@@ -1,35 +1,113 @@
-/* --- Container Principal (AJUSTADO) --- */
+/* --- Container Principal --- */
 .listagem-container {
     max-width: 1200px;
-    margin: 25px auto; /* <-- Reduzido (antes era 30px) */
+    margin: 25px auto; 
     padding: 20px;
     width: 100%;
     box-sizing: border-box;
     flex-grow: 1;
-    }
+}
     
-    .listagem-container h1 {
-    font-size: 1.8rem; /* <-- Reduzido (antes era 2rem) */
+.listagem-container h1 {
+    font-size: 1.8rem; 
     font-weight: 700;
     color: var(--color-dark-gray, #333);
     margin-bottom: 5px;
-    }
+}
     
-    .listagem-container p {
-    font-size: 1rem; /* <-- Reduzido (antes era 1.1rem) */
+.listagem-container p {
+    font-size: 1rem;
     color: #666;
-    margin-bottom: 25px; /* <-- Reduzido (antes era 30px) */
-    }
+    margin-bottom: 25px; 
+}
+
+.card {
+    background-color: var(--color-white, #fff);
+    border-radius: 8px;
+    padding: 20px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+}
+
+/* --- Barra de Pesquisa --- */
+.search-container {
+    margin-bottom: 25px; 
+}
+
+.search-container h2 {
+    margin-top: 0; 
+    margin-bottom: 15px;
+    font-size: 1.3rem;
+}
+
+.search-form {
+    display: flex;
+    align-items: center;
+    gap: 10px;
+}
+
+.search-form .material-icons {
+    color: var(--color-dark-gray, #333);
+    opacity: 0.6;
+}
+
+.search-form input[type="text"] {
+    flex-grow: 1;
+    border: none;
+    border-bottom: 2px solid #ccc;
+    padding: 8px 5px;
+    font-size: 1rem;
+    transition: border-color 0.2s;
+}
+
+.search-form input[type="text"]:focus {
+    outline: none;
+    border-bottom-color: var(--color-primary-green, #386641);
+}
+
+/* Regra combinada para os dois botões */
+.search-button,
+.filter-button {
+    border: none;
+    border-radius: 6px;
+    padding: 10px 16px;
+    font-size: 0.9rem;
+    font-weight: 500;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: 5px;
+}
+
+/* Botão Verde */
+.search-button {
+    background-color: var(--color-primary-green, #386641);
+    color: var(--color-white, #fff);
+}
+
+.search-button:hover {
+    background-color: var(--color-secondary-green, #6A994E);
+}
+
+/* Botão Branco/Cinza */
+.filter-button {
+    background-color: var(--color-white, #fff);
+    color: var(--color-dark-gray, #333);
+    border: 1px solid #ccc;
+}
+
+.filter-button:hover {
+    background-color: #f1f1f1;
+}
     
-    /* --- Grid de Psicólogos --- */
-    .psicologos-grid {
+/* --- Grid de Psicólogos --- */
+.psicologos-grid {
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr)); /* <-- Mínimo um pouco menor */
-    gap: 20px; /* <-- Reduzido (antes era 24px) */
-    }
+    grid-template-columns: repeat(auto-fill, minmax(270px, 1fr));
+    gap: 20px; 
+}
     
-    /* Mensagem de lista vazia */
-    .empty-message {
+/* Mensagem de lista vazia */
+.empty-message {
     font-size: 0.95rem; /* <-- Reduzido */
     color: #555;
     padding: 20px;
@@ -37,68 +115,68 @@
     border-radius: 8px;
     grid-column: 1 / -1;
     text-align: center;
-    }
+}
     
-    /* --- Card do Psicólogo (AJUSTADO) --- */
-    .psi-card {
+/* --- Card do Psicólogo (AJUSTADO) --- */
+.psi-card {
     display: flex;
     flex-direction: column;
     justify-content: space-between;
     background-color: var(--color-white, #fff);
-    border-radius: 8px; /* <-- Reduzido (antes era 10px) */
-    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05); /* <-- Mais suave */
-    padding: 18px; /* <-- Reduzido (antes era 20px) */
-    border: 1px solid #e8e8e8; /* <-- Mais suave */
+    border-radius: 8px; 
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.05); 
+    padding: 18px; 
+    border: 1px solid #e8e8e8;
     transition: transform 0.2s, box-shadow 0.2s;
-    }
+}
     
-    .psi-card:hover {
-    transform: translateY(-3px); /* <-- Mais sutil */
-    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08); /* <-- Mais sutil */
-    }
+.psi-card:hover {
+    transform: translateY(-3px);
+    box-shadow: 0 5px 12px rgba(0, 0, 0, 0.08);
+}
     
-    .psi-card-header {
+.psi-card-header {
     display: flex;
     align-items: center;
-    gap: 12px; /* <-- Reduzido (antes era 15px) */
-    margin-bottom: 10px; /* <-- Reduzido (antes era 12px) */
-    }
+    gap: 12px; 
+    margin-bottom: 10px; 
+}
     
-    .psi-card-header img {
-    width: 50px; /* <-- Reduzido (antes era 60px) */
-    height: 50px; /* <-- Reduzido (antes era 60px) */
+.psi-card-header img {
+    width: 50px; 
+    height: 50px; 
     border-radius: 50%;
     object-fit: cover;
     background-color: var(--color-light-gray, #f2f2f2);
-    }
+}
     
-    .psi-card-info h3 {
-    margin: 0;
-    font-size: 1.05rem; /* <-- Reduzido (antes era 1.1rem) */
-    font-weight: 600;
-    color: var(--color-dark-gray, #333);
-    }
-    
-    .psi-card-info span {
-    font-size: 0.85rem; /* <-- Reduzido (antes era 0.9rem) */
+.psi-card-info h3 {
+ margin: 0;
+ font-size: 1.05rem; 
+ font-weight: 600;
+ color: var(--color-dark-gray, #333);
+}
+
+.psi-card-info span {
+    font-size: 0.85rem; 
     color: #666;
-    }
+}
     
-    .psi-card-rating {
+.psi-card-rating {
     display: flex;
     align-items: center;
     gap: 4px;
     color: #777;
-    font-size: 0.85rem; /* <-- Reduzido (antes era 0.9rem) */
-    margin: 8px 0 14px 0; /* <-- Ajustado */
-    }
+    font-size: 0.85rem; 
+    margin: 8px 0 14px 0; 
+}
     
-    .psi-card-rating .material-icons {
+.psi-card-rating .material-icons {
     color: #fbbc05;
-    font-size: 1rem; /* <-- Reduzido (antes era 1.1rem) */
-    }
+    font-size: 1rem; 
+}
     
-    .agendar-button {
+.agendar-button {
     background-color: var(--color-primary-green, #386641);
     color: var(--color-white, #fff);
     border: none;
@@ -110,13 +188,13 @@
     text-decoration: none;
     transition: background-color 0.2s;
     margin-top: auto;
-    }
+}
     
-    .agendar-button:hover {
+.agendar-button:hover {
     background-color: var(--color-secondary-green, #6A994E);
 }
 
-/* --- Rodapé (AJUSTADO) --- */
+/* --- Rodapé --- */
 .footer {
     background-color: var(--color-dark-gray, #333);
     color: var(--color-white, #fff);
@@ -171,7 +249,7 @@
     gap: 5px;
 }
 .footer-column span .material-icons {
-    font-size: 1rem; /* Tamanho do ícone */
+    font-size: 1rem; 
 }
 
 .footer-bottom {
@@ -179,7 +257,7 @@
     border-top: 1px solid #555;
     padding-top: 10px;
     opacity: 0.6;
-    font-size: 0.75rem; /* <-- Reduzido */
+    font-size: 0.75rem; 
 }
 
 .padding-1 {

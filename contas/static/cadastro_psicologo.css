@@ -1,202 +1,313 @@
-/* --- REGRAS GERAIS --- */
+/* static/cadastro_psicologo.css */
+
+/* === 1. VARIÁVEIS DE DESIGN (MODERNO & CLEAN) === */
+:root {
+    /* Cores da Marca (Ajuste para seu verde exato) */
+    --cp-primary: #059669;       /* Um verde esmeralda moderno */
+    --cp-primary-dark: #047857;
+    --cp-primary-light: #d1fae5; /* Verde bem clarinho para fundos de destaque */
+
+    /* Neutros Sofisticados */
+    --cp-bg-page: #f3f4f6;       /* Cinza azulado muito claro para o fundo da página */
+    --cp-bg-surface: #ffffff;    /* Branco puro para superfícies */
+    --cp-border-color: #e5e7eb;  /* Bordas sutis */
+    
+    /* Tipografia */
+    --cp-text-heading: #111827;  /* Quase preto para títulos */
+    --cp-text-body: #374151;     /* Cinza escuro para texto */
+    --cp-text-muted: #6b7280;    /* Cinza médio para dicas */
+    
+    /* Sombras (Essenciais para o look moderno) */
+    --shadow-sm: 0 1px 2px 0 rgb(0 0 0 / 0.05);
+    --shadow-md: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.1);
+    --shadow-lg: 0 10px 15px -3px rgb(0 0 0 / 0.1), 0 4px 6px -4px rgb(0 0 0 / 0.1);
+}
+
+/* === 2. ESTRUTURA MACRO === */
 html, body {
     height: 100%;
-    font-family: var(--font-family, 'Inter', sans-serif);
-    background-color: var(--color-light-gray, #f4f6f5);
     margin: 0;
-    padding: 0;
+    font-family: 'Inter', -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, sans-serif;
+    background-color: var(--cp-bg-page);
+    color: var(--cp-text-body);
+    overflow: hidden; /* Evita scroll na página inteira */
 }
 
-/* CONTAINER PRINCIPAL (divisão entre esquerda e direita) */
 .main-cadastro-container {
     display: flex;
+    height: 100vh;
     width: 100vw;
-    height: 100vh;
 }
 
-/* --- SIDEBAR (igual ao layout anterior) --- */
+/* --- BARRA LATERAL (Mais sofisticada) --- */
 .branding-sidebar {
-    width: 35%;
-    background-color: var(--color-primary-green, #2e7d32);
-    color: var(--color-text-light, #fff);
-    padding: 40px;
-    box-sizing: border-box;
-    height: 100%;
-    flex-shrink: 0;
+    width: 38%;
+    background: linear-gradient(145deg, var(--cp-primary-dark), var(--cp-primary), #065f46);
+    color: white;
     display: flex;
     flex-direction: column;
     justify-content: center;
-    align-items: center;
-}
-
-/* --- CONTEÚDO PRINCIPAL (lado direito fixo) --- */
-.cadastro-form-content {
-    width: 65%;
-    background-color: var(--color-light-gray, #f4f6f5);
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    padding: 40px;
+    padding: 4rem;
     box-sizing: border-box;
-    height: 100vh;
+    position: relative;
+    overflow: hidden;
 }
 
-/* --- CAIXA DO FORMULÁRIO (centralizada, com scroll interno) --- */
-.cadastro-form-box {
-    background-color: var(--color-white, #fff);
-    border-radius: 10px;
-    box-shadow: 0 6px 25px rgba(0, 0, 0, 0.1);
-    width: 100%;
-    max-width: 600px;
-    max-height: 80vh;
-    padding: 25px 30px;
-    box-sizing: border-box;
-    overflow-y: auto;
-    scrollbar-width: thin;
-    scrollbar-color: var(--color-primary-green, #2e7d32) #f1f1f1;
+.branding-sidebar::before {
+    content: '';
+    position: absolute;
+    top: -10%; right: -10%;
+    width: 300px; height: 300px;
+    background: radial-gradient(circle, rgba(255,255,255,0.1) 0%, rgba(255,255,255,0) 70%);
+    pointer-events: none;
 }
 
-/* Scrollbar estilizada */
-.cadastro-form-box::-webkit-scrollbar {
-    width: 6px;
-}
-.cadastro-form-box::-webkit-scrollbar-thumb {
-    background-color: var(--color-primary-green, #2e7d32);
-    border-radius: 10px;
-}
-
-/* --- ESTILOS INTERNOS DO FORMULÁRIO --- */
-h2 {
-    font-size: 1.3rem;
-    font-weight: 600;
-    color: #333;
-    margin-bottom: 5px;
-    text-align: center;
+.branding-sidebar h1 {
+    font-size: 3.5rem;
+    font-weight: 800;
+    line-height: 1;
+    margin-bottom: 1.5rem;
+    letter-spacing: -0.03em;
+    text-shadow: 0 2px 10px rgba(0,0,0,0.1);
 }
 
-p {
-    font-size: 0.8rem;
-    color: #666;
-    text-align: center;
-    margin-bottom: 20px;
-}
-
-/* Estrutura dos campos */
-form p {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 12px;
-}
-
-label {
-    font-size: 0.75rem;
-    color: #444;
-    font-weight: 500;
-    margin-bottom: 4px;
-}
-
-input, select, textarea {
-    border: 1px solid var(--color-border, #ddd);
-    border-radius: 5px;
-    padding: 5px 8px;
-    font-size: 0.75rem;
-    color: #333;
-    background-color: #fff;
-    transition: border-color 0.2s ease, box-shadow 0.2s ease;
-}
-
-input:focus, select:focus, textarea:focus {
-    outline: none;
-    border-color: var(--color-primary-green, #2e7d32);
-    box-shadow: 0 0 0 2px rgba(46, 125, 50, 0.1);
-}
-
-/* Botões */
-button {
-    background-color: var(--color-primary-green, #2e7d32);
-    color: #fff;
-    border: none;
-    padding: 8px 12px;
-    border-radius: 6px;
-    font-size: 0.85rem;
-    font-weight: 500;
-    cursor: pointer;
-    transition: background-color 0.2s ease;
-}
-
-button:hover {
-    background-color: #245d29;
-}
-
-/* Formações */
-h3, h4 {
-    color: #333;
-    font-weight: 600;
-    margin-bottom: 10px;
+.branding-sidebar p {
     font-size: 0.9rem;
+    line-height: 1.6;
+    opacity: 0.9;
+    max-width: 480px;
+    font-weight: 400;
 }
 
+/* --- ÁREA DO FORMULÁRIO --- */
+.cadastro-form-content {
+    width: 62%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    background-color: var(--cp-bg-page);
+    padding: 2rem;
+}
+
+.cadastro-form-box {
+    background-color: var(--cp-bg-surface);
+    width: 65%;
+    max-width: 520px;
+    max-height: 90vh;
+    padding: 2.5rem;
+    border-radius: 24px; 
+    box-shadow: var(--shadow-lg);
+    overflow-y: auto;
+    box-sizing: border-box;
+}
+
+.form-header {
+    text-align: center;
+    margin-bottom: 2.5rem;
+}
+.form-header h2 {
+    font-size: 1.5rem;
+    font-weight: 700;
+    color: var(--cp-text-heading);
+    margin: 0 0 0.5rem 0;
+    letter-spacing: -0.02em;
+}
+.form-header p {
+    color: var(--cp-text-muted);
+    font-size: 1rem;
+    margin: 0;
+}
+
+form p {
+    margin-bottom: 1.0rem; 
+}
+
+/* Labels Modernos */
+form label {
+    display: block;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--cp-text-heading);
+    margin-bottom: 0.5rem;
+    letter-spacing: 0.01em;
+}
+
+/* Inputs Estilo "Stripe" */
+form input[type="text"],
+form input[type="email"],
+form input[type="number"],
+form input[type="tel"],
+form input[type="url"],
+form select,
+form textarea {
+    width: 100%;
+    padding: 0.65rem 0.85rem; 
+    font-size: 0.95rem;
+    line-height: 1.0;
+    color: var(--cp-text-body);
+    background-color: #fff;
+    border: 1px solid var(--cp-border-color);
+    border-radius: 8px;
+    box-shadow: var(--shadow-sm);
+    transition: all 0.2s ease-in-out;
+    box-sizing: border-box;
+}
+
+/* Estado de Foco (Aquele anel colorido bonito) */
+form input:focus,
+form select:focus,
+form textarea:focus {
+    outline: none;
+    border-color: var(--cp-primary);
+    box-shadow: 0 0 0 4px var(--cp-primary-light); /* Anel de foco moderno */
+}
+
+form textarea {
+    resize: vertical;
+    min-height: 80px;
+}
+
+/* Texto de ajuda abaixo do input */
+.helptext {
+    display: block;
+    margin-top: 0.4rem;
+    font-size: 0.85rem;
+    color: var(--cp-text-muted);
+}
+
+/* === 4. SEÇÃO DE FORMAÇÕES (FORMSETS BONITOS) === */
+.section-divider {
+    margin: 3rem 0 1.5rem 0;
+    display: flex;
+    align-items: center;
+    color: var(--cp-text-heading);
+}
+.section-divider::before,
+.section-divider::after {
+    content: '';
+    flex: 1;
+    border-bottom: 1px solid var(--cp-border-color);
+}
+.section-divider span {
+    padding: 0 1rem;
+    font-weight: 600;
+    font-size: 1.1rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    color: var(--cp-text-muted);
+}
+
+/* Card de cada Formação */
 .formacao-item {
-    border: 1px solid #eee;
-    border-radius: 6px;
-    padding: 10px 15px;
-    margin-bottom: 12px;
-    background-color: #fafafa;
+    background-color: #f9fafb; 
+    border: 1px solid var(--cp-border-color);
+    border-radius: 16px;
+    padding: 1.25rem;
+    margin-bottom: 1.5rem;
+    transition: all 0.2s ease;
+    position: relative; 
+}
+
+/* Efeito hover sutil no card */
+.formacao-item:hover {
+    border-color: #d1d5db;
+    box-shadow: var(--shadow-md);
+    background-color: #fff;
 }
 
 .formacao-item h4 {
-    font-size: 0.85rem;
-    color: var(--color-primary-green, #2e7d32);
+    margin-top: 0;
+    font-size: 1rem;
+    font-weight: 700;
+    color: var(--cp-primary);
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    margin-bottom: 1rem;
+    display: flex;
+    align-items: center;
 }
 
-/* Botão “Adicionar formação” */
-#add-formacao-button {
+/* Ícone sutil antes do título da formação (opcional, feito com CSS puro) */
+.formacao-item h4::before {
+    content: '';
+    display: inline-block;
+    width: 6px;
+    height: 6px;
+    background-color: var(--cp-primary);
+    border-radius: 50%;
+    margin-right: 10px;
+}
+
+/* Botão de Remover */
+.delete-row {
+    margin-top: 1rem;
+    padding-top: 1rem;
+    border-top: 1px dashed var(--cp-border-color);
+    display: flex;
+    align-items: center;
+    justify-content: flex-end; /* Alinha à direita */
+}
+.delete-row label {
+    color: #ef4444; /* Vermelho mais moderno */
+    font-size: 0.9rem;
+    cursor: pointer;
+    margin: 0 0 0 0.5rem; /* Ajuste de margem */
+}
+
+/* === 5. BOTÕES DE AÇÃO === */
+.actions-container {
+    margin-top: 2.5rem;
+    display: flex;
+    flex-direction: column;
+    gap: 1rem;
+}
+
+.btn-primary {
+    width: 100%;
+    padding: 0.85rem;
+    background-color: var(--cp-primary);
+    color: white;
+    border: none;
+    border-radius: 12px; 
+    font-size: 1.1rem;
+    font-weight: 700;
+    cursor: pointer;
+    transition: all 0.2s;
+    box-shadow: var(--shadow-sm);
+}
+.btn-primary:hover {
+    background-color: var(--cp-primary-dark);
+    transform: translateY(-1px);
+    box-shadow: var(--shadow-md);
+}
+
+.btn-outline {
+    width: 100%;
+    padding: 0.85rem;
     background-color: transparent;
-    color: var(--color-primary-green, #2e7d32);
-    border: 1px solid var(--color-primary-green, #2e7d32);
-    padding: 6px 10px;
-    font-size: 0.8rem;
-    border-radius: 6px;
-    margin-top: 10px;
+    color: var(--cp-text-body);
+    border: 2px dashed var(--cp-border-color);
+    border-radius: 12px;
+    font-weight: 600;
+    font-size: 1rem;
+    cursor: pointer;
+    transition: all 0.2s;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+.btn-outline:hover {
+    border-color: var(--cp-primary);
+    color: var(--cp-primary);
+    background-color: var(--cp-primary-light);
 }
 
-#add-formacao-button:hover {
-    background-color: var(--color-primary-green, #2e7d32);
-    color: #fff;
-}
-
-/* Mensagens escondidas */
-.hidden {
-    display: none;
-}
-
-/* --- RESPONSIVIDADE --- */
-@media (max-width: 991.98px) {
-    html, body {
-        overflow: auto;
-        height: auto;
-    }
-
-    .main-cadastro-container {
-        flex-direction: column;
-        height: auto;
-    }
-
-    .branding-sidebar {
-        width: 100%;
-        height: auto;
-    }
-
-    .cadastro-form-content {
-        width: 100%;
-        height: auto;
-        align-items: flex-start;
-        padding: 20px;
-    }
-
-    .cadastro-form-box {
-        max-height: none;
-        overflow-y: visible;
-        padding: 20px 25px;
-    }
+/* Responsividade */
+@media (max-width: 1024px) {
+    .main-cadastro-container { flex-direction: column; height: auto; }
+    html, body { overflow: auto; }
+    .branding-sidebar { width: 100%; min-height: 250px; padding: 3rem 2rem; align-items: center; text-align: center; }
+    .branding-sidebar h1 { font-size: 2.5rem; }
+    .cadastro-form-content { width: 100%; padding: 1.5rem; }
+    .cadastro-form-box { padding: 2rem; border-radius: 16px; max-height: none; }
 }

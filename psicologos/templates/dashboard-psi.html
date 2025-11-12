@@ -1,20 +1,43 @@
-<!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dash</title>
-</head>
-<body>
-    Teste Dash Psicologo
-    <form method="post" action="{% url 'logout' %}">
-        {% csrf_token %}
-        <button type="submit">Logout</button>
-    </form>
+{% extends 'base.html' %}
+{% load static %}
 
-    <div>
-        <h4><a href="{% url 'disponibilidade' %}"">Criar horarios disponiveis na agenda -></a></h4>
-    </div>
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'dashboard_psi.css' %}">
+{% endblock %}
 
-</body>
-</html>
+{% block title %}Meu Dashboard - PsiConnect{% endblock %}
+
+{% block content %}
+<div class="psi-dashboard-container">
+    
+    <main class="psi-main-content">
+        
+        <section class="psi-welcome card">
+            <h2>Bem-vindo(a), Dr(a). {{ user.last_name|default:'Silva' }}!</h2>
+            <p>Gerencie sua agenda e acompanhe suas consultas.</p>
+        </section>
+
+        <section class="psi-actions card">
+            <h3>Ações Rápidas</h3>
+            <div class="action-links">
+                
+                <a href="{% url 'disponibilidade' %}" class="action-button">
+                    <span class="material-icons">calendar_month</span>
+                    Gerenciar Agenda (Horários)
+                </a>
+                
+                <a href="#" class="action-button disabled">
+                    <span class="material-icons">pending_actions</span>
+                    Consultas Pendentes (3)
+                </a>
+
+                <a href="#" class="action-button disabled">
+                    <span class="material-icons">people_outline</span>
+                    Meus Pacientes
+                </a>
+            </div>
+        </section>
+    
+    </main>
+</div>
+{% endblock %}

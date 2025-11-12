@@ -1,0 +1,105 @@
+body {
+    background-color: #f2f2f2; 
+}
+
+.card {
+    background-color: var(--color-white, #fff);
+    border-radius: 8px;
+    padding: 24px;
+    box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
+    margin-bottom: 24px; /* <-- Essa margem volta a ser útil */
+}
+
+.psi-dashboard-container {
+    max-width: 1100px;
+    margin: 30px auto; 
+    padding: 0 20px;
+}
+
+/* --- MUDANÇA 1: REVERTENDO O LAYOUT --- */
+/* Voltando ao layout simples, um card abaixo do outro */
+.psi-main-content {
+    width: 100%;
+    /* As regras de grid foram removidas daqui */
+}
+
+/* Esta regra não é mais necessária */
+/* .psi-main-content > .card { ... } */
+
+
+/* --- MUDANÇA 2: AJUSTANDO O CARD WELCOME --- */
+.psi-welcome {
+    background-color: var(--color-primary-green, #386641);
+    color: var(--color-white, #fff);
+    /* As regras 'height: 100%' e 'box-sizing' foram removidas */
+}
+
+.psi-welcome h2 {
+    margin: 0 0 5px 0;
+    font-size: 1.8rem;
+}
+
+.psi-welcome p {
+    margin: 0;
+    font-size: 1rem;
+    opacity: 0.9;
+}
+
+/* ... (Regra .psi-actions h3 continua igual) ... */
+.psi-actions h3 {
+    margin-top: 0;
+    font-size: 1.3rem;
+    color: var(--color-text-dark, #333);
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+/* --- MUDANÇA 3: FORÇANDO 3 COLUNAS NOS BOTÕES --- */
+.action-links {
+    display: grid;
+    /* ANTES: repeat(auto-fit, minmax(200px, 1fr))
+       AGORA: Força 3 colunas de tamanho igual
+    */
+    grid-template-columns: 1fr 1fr 1fr;
+    gap: 16px;
+    margin-top: 20px;
+}
+
+/* ... (O restante do CSS (.action-button, .disabled, etc) continua igual) ... */
+.action-button {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    gap: 10px;
+    padding: 25px 20px;
+    border-radius: 8px;
+    border: 1px solid var(--color-border, #ccc);
+    text-decoration: none;
+    color: var(--color-primary-green, #386641);
+    font-weight: 500;
+    font-size: 0.95rem;
+    text-align: center;
+    transition: all 0.2s ease-in-out;
+}
+
+.action-button .material-icons {
+    font-size: 2.5rem; 
+}
+
+.action-button:hover {
+    background-color: #f9f9f9;
+    border-color: var(--color-primary-green, #386641);
+    transform: translateY(-3px); 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.05);
+}
+
+.action-button.disabled {
+    color: #999;
+    border-color: #ddd;
+    background-color: #fdfdfd;
+    pointer-events: none; 
+}
+.action-button.disabled .material-icons {
+    color: #ccc;
+}

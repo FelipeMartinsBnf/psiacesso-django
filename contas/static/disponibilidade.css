@@ -1,0 +1,135 @@
+
+.agenda-container {
+    --ag-bg-card: #ffffff;
+    --ag-border: #e5e7eb;
+    --ag-text-primary: #111827;
+    --ag-text-secondary: #6b7280;
+    --ag-primary: #0ea5e9;
+    --ag-primary-hover: #0284c7;
+    --ag-selected-bg: #dcfce7;
+    --ag-selected-text: #166534;
+    --ag-selected-border: #22c55e;
+}
+
+/* Container principal da página */
+.agenda-container {
+    width: 95%;
+    max-width: 1480px;
+    margin: 2rem auto;
+    padding: 0 1.5rem;
+    font-family: 'Inter', sans-serif; 
+}
+
+.agenda-header {
+    margin-bottom: 2rem;
+    text-align: center;
+}
+.agenda-header h2 {
+    font-size: 1.8rem;
+    font-weight: 700;
+    color: var(--ag-text-primary);
+    margin-bottom: 0.5rem;
+}
+.agenda-header p {
+    color: var(--ag-text-secondary);
+    font-size: 1rem;
+}
+
+/* Card que envolve a grade */
+.agenda-card {
+    background-color: var(--ag-bg-card);
+    border-radius: 16px;
+    box-shadow: 0 4px 6px -1px rgb(0 0 0 / 0.1), 0 2px 4px -2px rgb(0 0 0 / 0.06);
+    padding: 24px;
+    border: 1px solid var(--ag-border);
+}
+
+/* --- Grid Styling --- */
+.agenda-grid {
+    display: grid;
+    grid-template-columns: 60px repeat(7, 1fr);
+    background-color: var(--ag-border); 
+    gap: 1px;
+    border: 1px solid var(--ag-border);
+    border-radius: 12px;
+    overflow: hidden;
+    margin-bottom: 2rem;
+}
+
+.grid-cell, .grid-header, .grid-time-label {
+    background-color: var(--ag-bg-card);
+    padding: 6px 4px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    font-size: 0.85rem;
+}
+
+/* Cabeçalho dos Dias (SEG, TER...) */
+.grid-header {
+    background-color: #f8fafc;
+    color: var(--ag-text-secondary);
+    font-weight: 600;
+    font-size: 0.85rem;
+    text-transform: uppercase;
+    letter-spacing: 0.05em;
+    padding: 12px 4px;
+}
+
+/* Coluna de Horários (08:00...) */
+.grid-time-label {
+    color: var(--ag-text-secondary);
+    font-weight: 500;
+    font-size: 0.85rem;
+    align-items: flex-start;
+    padding-top: 16px;
+    background-color: #fbfcfd;
+}
+
+/* Células interativas */
+.grid-cell {
+    cursor: pointer;
+    min-height: 35px;
+    transition: all 0.2s ease-in-out;
+    color: transparent; 
+    font-weight: 600;
+    font-size: 0.75rem;
+}
+
+.grid-cell:hover {
+    background-color: #f1f5f9;
+}
+
+/* Estado Selecionado (Verde) */
+.grid-cell.selected {
+    background-color: var(--ag-selected-bg) !important;
+    color: var(--ag-selected-text) !important;
+    box-shadow: inset 3px 0 0 var(--ag-selected-border);
+}
+
+/* --- Botão de Salvar --- */
+.submit-container {
+    display: flex;
+    justify-content: flex-end;
+    padding-top: 1.5rem;
+    border-top: 1px solid var(--ag-border);
+}
+
+.submit-btn {
+    background-color: var(--ag-primary);
+    color: white;
+    padding: 14px 40px;
+    border-radius: 8px;
+    font-weight: 600;
+    font-size: 1rem;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.2s, transform 0.1s;
+    box-shadow: 0 4px 6px -1px rgb(14 165 233 / 0.3);
+}
+.submit-btn:hover {
+    background-color: var(--ag-primary-hover);
+}
+.submit-btn:active {
+    transform: scale(0.98);
+}
