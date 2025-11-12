@@ -5,7 +5,7 @@
 
 {# Bloco para carregar CSS específico desta página #}
 {% block extra_css %}
-    <link rel="stylesheet" href="{% static 'disponibilidade.css' %}">
+<link rel="stylesheet" href="{% static 'disponibilidade.css' %}">
 {% endblock %}
 
 {% block content %}
@@ -23,33 +23,41 @@
 
             <div class="agenda-grid">
                 <div class="grid-header"></div>
-                
+
                 {% for dia_num, dia_nome in dias_semana %}
-                    <div class="grid-header">{{ dia_nome }}</div>
+                <div class="grid-header">{{ dia_nome }}</div>
                 {% endfor %}
 
                 {% for hora in horarios_grade %}
-                    <div class="grid-time-label">{{ hora|time:"H:i" }}</div>
-                    
-                    {% for dia_num, dia_nome in dias_semana %}
-                        {% with chave_horario=dia_num|stringformat:"i"|add:","|add:hora|time:"H:i:s" %}
-                            {% if chave_horario in horarios_selecionados_set %}
-                                <div class="grid-cell selected"
-                                     data-dia="{{ dia_num }}"
-                                     data-hora="{{ hora|time:"H:i:s" }}">
-                                    Disponível
-                                </div>
-                            {% else %}
-                                <div class="grid-cell"
-                                     data-dia="{{ dia_num }}"
-                                     data-hora="{{ hora|time:"H:i:s" }}">
-                                </div>
-                            {% endif %}
-                        {% endwith %}
-                    {% endfor %}
-                {% endfor %}
-            </div>
 
+                <div class="grid-time-label">{{ hora|time:"H:i" }}</div>
+
+                {% for dia_num, dia_nome in dias_semana %}
+
+                {% comment %}
+                Passo A: Formata a 'hora' para string PRIMEIRO
+                {% endcomment %}
+                {% with hora_formatada=hora|time:"H:i:s" %}
+
+                {% comment %}
+                Passo B: Cria a chave de comparação (ex: "4,07:00:00")
+                {% endcomment %}
+                {% with chave_horario=dia_num|stringformat:"i"|add:","|add:hora_formatada %}
+
+                {% comment %}
+                Passo C: Compara a chave (string) com o set (de strings)
+                {% endcomment %}
+                {% if chave_horario in horarios_selecionados_set %}
+                <div class="grid-cell selected" data-dia="{{ dia_num }}" data-hora="{{ hora_formatada }}">
+                    Ativo
+                </div>
+                {% else %}
+                <div class="grid-cell" data-dia="{{ dia_num }}" data-hora="{{ hora_formatada }}">
+                </div>
+                {% endif %}
+
+                {% endwith %} {% endwith %} {% endfor %} {% endfor %}
+            </div>
             <div class="submit-container">
                 <button type="submit" class="submit-btn">
                     Salvar Agenda
@@ -66,7 +74,7 @@
         const hiddenInput = document.getElementById('id_horarios_selecionados');
 
         // --- LÓGICA DE SELEÇÃO COM DRAG ---
-        
+
         let isDragging = false;
         let selectionMode = 'select'; // Guarda a ação (selecionar ou deselecionar)
 
@@ -76,9 +84,9 @@
             if (!e.target.classList.contains('grid-cell')) {
                 return;
             }
-            
+
             // Previne o comportamento padrão do navegador (como arrastar texto)
-            e.preventDefault(); 
+            e.preventDefault();
 
             isDragging = true;
             const cell = e.target;
@@ -104,14 +112,14 @@
             if (!isDragging) {
                 return;
             }
-            
+
             // Só age se for uma célula de horário
             if (!e.target.classList.contains('grid-cell')) {
                 return;
             }
 
             const cell = e.target;
-            
+
             // Aplica o modo definido no mousedown
             if (selectionMode === 'select') {
                 cell.classList.add('selected');
@@ -131,7 +139,7 @@
 
         // --- FIM DA LÓGICA DE SELEÇÃO ---
 
-        
+
         // 4. Lógica de envio do formulário (IDÊNTICA A ANTES)
         // Esta parte não precisa mudar, pois ela só se importa
         // com o resultado final (quais células TÊM a classe .selected).

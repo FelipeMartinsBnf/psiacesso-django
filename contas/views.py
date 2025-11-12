@@ -86,7 +86,7 @@ def cadastro_psicologo(request):
             formset.instance = psicologo
             formset.save()
             
-            return redirect('user-dashboard')
+            return redirect('psi-dashboard')
     else:
         form = PsicologoProfileForm()
         formset = FormacaoFormSet(prefix='formacoes')

@@ -18,11 +18,18 @@
             <p>Encontre o profissional ideal para seu bem-estar mental.</p>
         </section>
 
-        <section class="upcoming-appointment card">
-            <span class="material-icons">task_alt</span>
-            <p>Consulta próxima: Você terá uma consulta com <strong>Dr. Carlos Silva</strong> amanhã às 14:00</p>
-        </section>
-
+        {% if consultas %}
+            <section class="upcoming-appointment card">
+                <span class="material-icons">task_alt</span>
+                {# Acessa o PRIMEIRO item da lista (índice 0) #}
+                <p>Consulta próxima: Você terá uma consulta com <strong>{{ consultas.0.psicologo.usuario.first_name }}</strong> {{ consultas.0.data_horario|date:"d/m/y H:i" }}</p>
+            </section>
+        {% else %}
+            <section class="no-appointments card">
+                <span class="material-icons">info</span>
+                <p>Você não tem consultas agendadas. Encontre um profissional e agende sua primeira consulta!</p>
+            </section>
+        {% endif %}
         <section class="search-container card">
             <h2>Encontrar Profissional</h2>
             <div class="barra-pesquisa">
@@ -66,18 +73,14 @@
         <section class="consultas-card card">
             <h3>Suas Consultas</h3>
             <ul class="consultas-list">
-                <li class="consulta-item proxima">
-                    <div class="consulta-info">
-                        <strong>Dr. Carlos Silva</strong>
-                        <span>Amanhã, 14:00</span>
-                    </div>
-                </li>
-                <li class="consulta-item">
-                    <div class="consulta-info">
-                        <strong>Dra. Ana Santos</strong>
-                        <span>15 Jan, 10:00</span>
-                    </div>
-                </li>
+                {% for c in consultas %}
+                    <li class="consulta-item proxima">
+                        <div class="consulta-info">
+                            <strong>{{c.psicologo.usuario.first_name}}</strong>
+                            <span>{{ c.data_horario|date:"d/m/y H:i" }}</span>
+                        </div>
+                    </li>
+                {% endfor %}
             </ul>
             <a href="#" class="view-all-button">Ver Todas as Consultas</a>
         </section>
