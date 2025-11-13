@@ -8,7 +8,11 @@
     --color-light-gray: #e0e0e0;
     --color-border: #cccccc;
     --color-google: #4285F4;
-    --font-family: 'Roboto', sans-serif;
+    --font-family: "Poppins", sans-serif;
+}
+
+* {
+    font-family: "Poppins", sans-serif;
 }
 
 /* Reset básico e Fontes */

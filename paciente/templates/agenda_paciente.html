@@ -1,0 +1,66 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}{{ psi.usuario.first_name }} {{ psi.usuario.last_name }} - PsiConnect{% endblock %}
+
+{% block extra_css %}
+    <!-- Linkando o novo CSS com o nome que você pediu -->
+    <link rel="stylesheet" href="{% static 'agenda.css' %}">
+{% endblock %}
+
+
+{% block content %}
+<main>
+    <div class="agenda-container">
+        
+        <nav class="agenda-nav">
+            <div>
+                <h2>Minha Agenda Semanal</h2>
+                <span>{{ semana_display }}</span>
+            </div>
+            <div class="agenda-nav-botoes">
+                <a href="?dia={{ nav_prev_dia }}">&lt; Anterior</a>
+                <a href="?dia={{ nav_next_dia }}">Próxima &gt;</a>
+            </div>
+        </nav>
+
+        <div class="agenda-grid">
+            
+            <div class="grid-header" style="border-left: 0;">Horário</div>
+            {% for dia in dias_da_semana %}
+                <div class="grid-header">
+                    {{ dia|date:"D"|upper }}
+                    <span class="dia-numero">{{ dia|date:"d" }}</span>
+                </div>
+            {% endfor %}
+
+            <div class="grid-horas">
+                {% for hora in grid_horas_labels %}
+                    <div class="hora-label">{{ hora }}:00</div>
+                {% endfor %}
+            </div>
+
+            {% for i in "0123456" %}
+                <div class="grid-dia-col">
+                    
+                    {% for item in consultas_processadas %}
+                        {% if item.dia_index == i|add:0 %}
+                            <div class="consulta-card" 
+                                 style="top: {{ item.top }}%; height: {{ item.height }}%;">
+                                
+                                <strong>{{ item.consulta.psicologo.usuario.get_full_name }}</strong>
+                                <span class="tipo">{{ item.consulta.get_modalidade_display }}</span>
+                                <span class="horario">
+                                    {{ item.consulta.data_horario|time:"H:i" }} - 
+                                    {{ item.consulta.get_end_time|time:"H:i" }} </span>
+
+                            </div>
+                        {% endif %}
+                    {% endfor %}
+                
+                </div>
+            {% endfor %}
+
+        </div> </div> </body>
+    </main>
+{% endblock %}

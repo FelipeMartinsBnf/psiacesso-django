@@ -1,3 +1,4 @@
+import datetime
 from django.db import models
 from contas.models import Paciente, Psicologo
 
@@ -75,6 +76,15 @@ class Consulta(models.Model):
 
     def __str__(self):
         return f"Consulta {self.id} - {self.paciente} com {self.psicologo}"
+    
+    def get_end_time(self):
+        """Calcula a hora de término da consulta."""
+        try:
+            duracao = self.psicologo.duracao_minutos
+        except:
+            duracao = 50 # Padrão
+            
+        return self.data_horario + datetime.timedelta(minutes=duracao)
 
 
 # ========================================

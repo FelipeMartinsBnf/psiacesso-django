@@ -1,0 +1,198 @@
+/* * ========================================
+ * agenda.css
+ * Estilo para a agenda semanal, com um 
+ * design "zoom-out" e mais moderno.
+ * ========================================
+ */
+
+/* --- Cores dos cards da imagem de referência --- */
+:root {
+    --color-blue: #e0e7ff;
+    --color-green: #dcfce7;
+    --color-purple: #f3e8ff;
+    --color-yellow: #fef9c3;
+    --color-red: #fee2e2;
+    --color-orange: #ffedd5;
+    --color-pink: #fce7f3;
+
+    /* Variáveis do seu global.css (presumindo que estão em :root) */
+    --color-primary-green: #386641;
+    --color-secondary-green: #6A994E;
+    --color-text-light: #f4f4f4;
+    --color-white: #ffffff;
+    --color-light-gray: #e0e0e0;
+    --color-border: #cccccc;
+    --font-family: "Poppins", sans-serif;
+}
+
+.agenda-container {
+    max-width: 1400px;
+    margin: auto;
+    background-color: var(--color-white);
+    /* Mais arredondado */
+    border-radius: 16px; 
+    /* Sombra mais suave */
+    box-shadow: 0 8px 24px rgba(0,0,0,0.05); 
+    overflow: hidden;
+}
+
+/* --- Cabeçalho de Navegação --- */
+.agenda-nav {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    /* Mais padding */
+    padding: 20px 28px; 
+    border-bottom: 1px solid var(--color-light-gray); /* Borda mais leve */
+}
+.agenda-nav h2 {
+    margin: 0;
+    /* Fonte menor e mais leve */
+    font-size: 1.1rem; 
+    font-weight: 600;
+    color: #333;
+}
+.agenda-nav span {
+    font-size: 0.9rem;
+    color: #666;
+}
+.agenda-nav-botoes a {
+    text-decoration: none;
+    padding: 8px 12px;
+    border: 1px solid var(--color-border);
+    /* Mais arredondado */
+    border-radius: 8px; 
+    color: #333;
+    margin-left: 8px;
+    font-size: 0.9rem;
+    transition: background-color 0.2s ease;
+}
+.agenda-nav-botoes a:hover {
+    background-color: #f9f9f9;
+}
+
+/* * --- A Grade da Agenda (MUDANÇA PRINCIPAL) ---
+ * A lógica de "zoom-out" está aqui.
+ * Reduzimos a altura de cada hora de 60px para 40px.
+ * Total de horas (12) * 40px = 480px de altura total.
+ * Isso deve caber na maioria das telas.
+ */
+.agenda-grid {
+    display: grid;
+    /* Coluna de hora menor */
+    grid-template-columns: 60px repeat(7, 1fr); 
+    /* Altura total da grade reduzida de 720px para 480px */
+    grid-template-rows: auto 480px; 
+}
+
+/* --- Cabeçalho dos Dias --- */
+.grid-header {
+    padding: 10px 4px; /* Padding reduzido */
+    text-align: center;
+    font-weight: 600;
+    font-size: 0.8rem; /* Fonte menor */
+    background-color: #fcfcfc;
+    /* Borda mais leve */
+    border-bottom: 1px solid var(--color-light-gray); 
+    border-left: 1px solid var(--color-light-gray);
+    color: #555;
+}
+.grid-header:first-child {
+    border-left: 0; 
+}
+.grid-header .dia-numero {
+    font-size: 1.2rem; /* Número do dia menor */
+    display: block;
+    margin-top: 4px;
+    font-weight: 500;
+}
+
+/* --- Coluna dos Horários (esquerda) --- */
+.grid-horas {
+    grid-column: 1 / 2;
+    grid-row: 2 / 3;
+    /* Fundo com linhas de 40px */
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 39px, /* 1px a menos que a altura */
+        var(--color-light-gray) 40px /* linha de 1px */
+    );
+    background-size: 100% 40px; /* Altura de cada hora */
+    position: relative;
+    border-top: 1px solid var(--color-light-gray);
+}
+.hora-label {
+    position: relative;
+    top: 8px; /* Centraliza o rótulo na linha */
+    padding-right: 8px;
+    text-align: right;
+    font-size: 0.75rem; /* Fonte menor */
+    color: #666;
+    height: 40px; /* Deve bater com o background-size */
+    box-sizing: border-box;
+}
+
+/* --- Colunas dos Dias (onde as consultas entram) --- */
+.grid-dia-col {
+    grid-row: 2 / 3;
+    position: relative; 
+    /* Borda mais leve */
+    border-left: 1px solid var(--color-light-gray);
+    border-top: 1px solid var(--color-light-gray);
+    /* Fundo com linhas de 40px */
+    background-image: repeating-linear-gradient(
+        to bottom,
+        transparent,
+        transparent 39px,
+        var(--color-light-gray) 40px
+    );
+    background-size: 100% 40px;
+}
+
+/* --- Card da Consulta --- */
+.consulta-card {
+    position: absolute;
+    /* Mais espaçamento nas laterais */
+    left: 6px;
+    right: 6px;
+    /* Mais arredondado */
+    border-radius: 8px; 
+    padding: 8px; /* Padding menor */
+    box-sizing: border-box;
+    overflow: hidden;
+    /* Fonte menor */
+    font-size: 0.75rem; 
+    color: #333;
+    /* Sem borda, estilo mais Apple */
+    border: none; 
+    /* Sombra sutil para "levantar" o card */
+    box-shadow: 0 2px 5px rgba(0,0,0,0.08); 
+    
+    background-color: var(--color-blue); /* Padrão */
+}
+.consulta-card strong {
+    display: block;
+    font-size: 0.8rem;
+    font-weight: 600; /* Mais leve que 'bold' */
+    color: #000;
+}
+.consulta-card .tipo {
+    font-style: italic;
+    font-size: 0.7rem;
+}
+.consulta-card .horario {
+    display: block;
+    margin-top: 4px;
+    font-weight: 600; /* Mais leve que 'bold' */
+    font-size: 0.7rem;
+}
+
+/* Cores variadas como na imagem (bônus) */
+.consulta-card:nth-child(7n+1) { background-color: var(--color-blue); }
+.consulta-card:nth-child(7n+2) { background-color: var(--color-purple); }
+.consulta-card:nth-child(7n+3) { background-color: var(--color-green); }
+.consulta-card:nth-child(7n+4) { background-color: var(--color-yellow); }
+.consulta-card:nth-child(7n+5) { background-color: var(--color-red); }
+.consulta-card:nth-child(7n+6) { background-color: var(--color-pink); }
+.consulta-card:nth-child(7n+0) { background-color: var(--color-orange); }

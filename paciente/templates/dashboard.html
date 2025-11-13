@@ -21,8 +21,9 @@
         {% if consultas %}
             <section class="upcoming-appointment card">
                 <span class="material-icons">task_alt</span>
-                {# Acessa o PRIMEIRO item da lista (índice 0) #}
-                <p>Consulta próxima: Você terá uma consulta com <strong>{{ consultas.0.psicologo.usuario.first_name }}</strong> {{ consultas.0.data_horario|date:"d/m/y H:i" }}</p>
+                <p>Consulta próxima consulta
+                    com <strong>{{ consultas.0.psicologo.usuario.first_name }}</strong>
+                    em {{ consultas.0.data_horario|date:"d/m/y H:i" }}</p>
             </section>
         {% else %}
             <section class="no-appointments card">
@@ -63,7 +64,7 @@
                 {% empty %}
                     <p>Nenhum psicólogo encontrado.</p>
                 {% endfor %}
-                </div>
+            </div>
         </section>
 
     </main>
@@ -82,7 +83,7 @@
                     </li>
                 {% endfor %}
             </ul>
-            <a href="#" class="view-all-button">Ver Todas as Consultas</a>
+            <a href="{% url 'agenda_paciente' %}" class="view-all-button">Ver Todas as Consultas</a>
         </section>
 
         <section class="acoes-card card">
