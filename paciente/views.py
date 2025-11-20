@@ -6,7 +6,7 @@ from django.contrib import messages
 from django.contrib.auth.decorators import login_required
 from contas.models import Especialidade, Psicologo
 from psiacesso_main.models import Formacao, Paciente, Consulta, DisponibilidadePsicologo
-from django.http import JsonResponse
+from django.http import HttpResponse, JsonResponse
 from .utils import PacienteCalendar # Importe o calendário
 from .forms import ConsultaForm
 from django.shortcuts import get_object_or_404, render, redirect
@@ -247,5 +247,28 @@ def agenda_paciente_view(request):
     }
     
     return render(request, 'agenda_paciente.html', context)
+
+@login_required
+def consulta_detalhe_paciente(request, consulta_id):
+    """
+    Busca os detalhes de uma consulta para carregar no modal.
+    Esta view retorna APENAS o HTML parcial.
+    """
+    try:
+        paciente = request.user.paciente
+    except Paciente.DoesNotExist:
+        return HttpResponse("Acesso não autorizado.", status=403)
+
+    # Garante que a consulta existe E pertence ao paciente logado
+    consulta = get_object_or_404(
+        Consulta,
+        pk=consulta_id,
+        paciente=paciente 
+    )
+    
+    # Renderiza o template parcial que vamos criar
+    return render(request, 'partials/_modal_consulta_paciente.html', {
+        'consulta': consulta
+    })
 
 
