@@ -47,11 +47,13 @@ psi.usuario.first_name }} {{ psi.usuario.last_name }} - PsiConnect{% endblock %}
           style="top: {{ item.top }}%; height: {{ item.height }}%;">
       
           <strong>{{ item.consulta.psicologo.usuario.get_full_name }}</strong>
-          <span class="tipo">{{ item.consulta.get_modalidade_display }}</span>
-          <span class="horario">
-            {{ item.consulta.data_horario|time:"H:i" }} -
-            {{ item.consulta.get_end_time|time:"H:i" }}
-          </span>
+          <div class="consulta-info">
+                      <span class="tipo">{{ item.consulta.get_modalidade_display }}</span>
+                      <span class="horario">
+                        {{ item.consulta.data_horario|time:"H:i" }} -
+                        {{ item.consulta.get_end_time|time:"H:i" }}
+                      </span>
+          </div>
         </a>
         <!-- Fim da Mudança -->
       

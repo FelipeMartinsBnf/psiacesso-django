@@ -17,7 +17,7 @@ def dashboard(request):
     recentes = Psicologo.objects.order_by('-id')[:4]
     
     #Pegar as consultas mais recentes    
-    consultas = Consulta.objects.filter(paciente=request.user.paciente).order_by('-data_horario')[:5]
+    consultas = Consulta.objects.filter(paciente=request.user.paciente).order_by('data_horario')[:5]
     return render(request, 'dashboard.html', {'psicologos': recentes, 'consultas': consultas})
 
 #Carrega todos os psicologos disponiveis

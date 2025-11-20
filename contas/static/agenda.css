@@ -152,22 +152,24 @@
 
 /* --- Card da Consulta --- */
 .consulta-card {
+    display: flex;
+    flex-direction: column;
     position: absolute;
     /* Mais espaçamento nas laterais */
-    left: 6px;
-    right: 6px;
+    left: 2px;
+    right: 2px;
     /* Mais arredondado */
     border-radius: 8px; 
-    padding: 8px; /* Padding menor */
+    padding: 4px; /* Padding menor */
     box-sizing: border-box;
     overflow: hidden;
     /* Fonte menor */
-    font-size: 0.75rem; 
+    font-size: 0.8rem; 
     color: #333;
     /* Sem borda, estilo mais Apple */
-    border: none; 
+    border: 1px solid rgba(0, 0, 0, 0.08); 
     /* Sombra sutil para "levantar" o card */
-    box-shadow: 0 2px 5px rgba(0,0,0,0.08); 
+    box-shadow: 0 2px 5px rgba(0,0,0,0.10); 
     
     background-color: var(--color-blue); /* Padrão */
 }
@@ -183,9 +185,13 @@
 }
 .consulta-card .horario {
     display: block;
-    margin-top: 4px;
     font-weight: 600; /* Mais leve que 'bold' */
     font-size: 0.7rem;
+}
+
+.consulta-card .consulta-info {
+    display: flex;
+    justify-content: space-between;
 }
 
 /* Cores variadas como na imagem (bônus) */
