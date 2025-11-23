@@ -17,6 +17,8 @@
 
     <link rel="stylesheet" href="{% static 'globals.css' %}" />
     <link rel="stylesheet" href="{% static 'base.css' %}" />
+    <link rel="stylesheet" href="{% static 'toast.css' %}" />
+        
 
     <link
       href="https://fonts.googleapis.com/icon?family=Material+Icons"
@@ -27,6 +29,23 @@
   </head>
   <body>
     {% include 'partials/_navbar.html' %} {% block content %} {% endblock %}
+
+    {% if messages %}
+    <div class="toast-container" id="toast-container">
+      {% for message in messages %}
+      <!-- 
+                   message.tags retorna 'success', 'error', etc. 
+                   que batem com nossas classes CSS 
+                -->
+      <div class="toast {{ message.tags }}" role="alert">
+        <div class="toast-message">
+          {{ message }}
+        </div>
+        <button type="button" class="toast-close" aria-label="Fechar">&times;</button>
+      </div>
+      {% endfor %}
+    </div>
+    {% endif %}
 
     <footer class="footer">
       <div class="footer-container">
@@ -65,4 +84,43 @@
       </div>
     </footer>
   </body>
+
+  <script>
+    document.addEventListener('DOMContentLoaded', function () {
+
+        // Seleciona todos os toasts renderizados na tela
+        const toasts = document.querySelectorAll('.toast');
+
+        // Configuração
+        const AUTO_DISMISS_TIME = 5000; // 5 segundos
+
+        toasts.forEach(toast => {
+          // 1. Configura o timer para fechar automaticamente
+          setTimeout(() => {
+            closeToast(toast);
+          }, AUTO_DISMISS_TIME);
+
+          // 2. Configura o clique no botão "X"
+          const closeBtn = toast.querySelector('.toast-close');
+          if (closeBtn) {
+            closeBtn.addEventListener('click', () => {
+              closeToast(toast);
+            });
+          }
+        });
+
+        function closeToast(toastElement) {
+          // Evita erro se o elemento já foi removido
+          if (!toastElement) return;
+
+          // Adiciona a classe que dispara a animação de saída (CSS)
+          toastElement.classList.add('hide');
+
+          // Aguarda a animação terminar (400ms) antes de remover do DOM
+          toastElement.addEventListener('animationend', () => {
+            toastElement.remove();
+          });
+        }
+      });
+  </script>
 </html>

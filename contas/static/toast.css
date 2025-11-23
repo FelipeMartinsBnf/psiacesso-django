@@ -1,0 +1,133 @@
+/* * toasts.css
+ * Estilo para notificações flutuantes modernas.
+ */
+
+:root {
+    --toast-bg: #ffffff;
+    --toast-text: #333333;
+    --toast-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
+    --toast-radius: 12px;
+    --toast-border-width: 4px;
+
+    /* Cores de status (podem ser ajustadas) */
+    --status-success: #549c62;
+    /* Seu verde primário */
+    --status-error: #ef4444;
+    /* Vermelho */
+    --status-warning: #f59e0b;
+    /* Laranja */
+    --status-info: #3b82f6;
+    /* Azul */
+}
+
+/* Container fixo no canto superior direito */
+.toast-container {
+    position: fixed;
+    top: 24px;
+    right: 24px;
+    z-index: 9999;
+    display: flex;
+    flex-direction: column;
+    gap: 12px;
+    pointer-events: none;
+    /* Permite clicar através do container vazio */
+}
+
+/* O Cartão da Notificação */
+.toast {
+    background-color: var(--toast-bg);
+    color: var(--toast-text);
+    padding: 16px 20px;
+    border-radius: var(--toast-radius);
+    box-shadow: var(--toast-shadow);
+    min-width: 300px;
+    max-width: 400px;
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    pointer-events: auto;
+    /* Reativa cliques no toast */
+
+    /* Animação de entrada */
+    opacity: 0;
+    transform: translateX(100%);
+    animation: slideIn 0.4s ease forwards;
+
+    /* Borda lateral colorida */
+    border-left: var(--toast-border-width) solid #ccc;
+    position: relative;
+    overflow: hidden;
+}
+
+/* Animação de saída (adicionada via JS) */
+.toast.hide {
+    animation: slideOut 0.4s ease forwards;
+}
+
+/* Variantes de cores baseadas nas tags do Django */
+.toast.success {
+    border-left-color: var(--status-success);
+}
+
+.toast.error {
+    border-left-color: var(--status-error);
+}
+
+.toast.warning {
+    border-left-color: var(--status-warning);
+}
+
+.toast.info {
+    border-left-color: var(--status-info);
+}
+
+/* Ícone ou texto */
+.toast-message {
+    font-family: 'Roboto', sans-serif;
+    font-size: 0.95rem;
+    font-weight: 500;
+    line-height: 1.4;
+    margin-right: 12px;
+}
+
+/* Botão de fechar */
+.toast-close {
+    background: none;
+    border: none;
+    color: #999;
+    font-size: 1.5rem;
+    line-height: 1;
+    cursor: pointer;
+    padding: 0;
+    margin-left: auto;
+    transition: color 0.2s;
+}
+
+.toast-close:hover {
+    color: #333;
+}
+
+/* Keyframes das animações */
+@keyframes slideIn {
+    from {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+
+    to {
+        opacity: 1;
+        transform: translateX(0);
+    }
+}
+
+@keyframes slideOut {
+    from {
+        opacity: 1;
+        transform: translateX(0);
+    }
+
+    to {
+        opacity: 0;
+        transform: translateX(50px);
+    }
+}
