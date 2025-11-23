@@ -329,3 +329,8 @@
 .modal-footer .btn-danger:hover {
     background-color: #e63946;
 }
+
+.btn-info {
+    background-color: #457b9d;
+    color: var(--color-white);
+}

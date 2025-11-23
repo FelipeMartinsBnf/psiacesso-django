@@ -1,5 +1,6 @@
 from django import forms
 import json
+from psiacesso_main.models import AnotacaoPsicologo
 
 class AgendaGridForm(forms.Form):
     # Um campo de texto oculto que receberá o JSON do JavaScript
@@ -17,3 +18,8 @@ class AgendaGridForm(forms.Form):
             return json.loads(data)
         except json.JSONDecodeError:
             raise forms.ValidationError("Formato de dados inválido.")
+        
+class AnotacaoForm(forms.ModelForm):
+    class Meta:
+        model = AnotacaoPsicologo
+        fields = ['texto']

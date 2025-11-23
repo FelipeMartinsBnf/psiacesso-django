@@ -1,0 +1,79 @@
+/* * editor.css
+ * Customização do Quill.js para parecer nativo e moderno.
+ */
+
+.anotacao-container{
+    width: 1024px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Removemos a borda padrão feia do Quill */
+.ql-toolbar.ql-snow {
+    border: none !important;
+    border-bottom: 1px solid var(--color-light-gray) !important;
+    background-color: #fafafa;
+    border-radius: 16px 16px 0 0;
+    padding: 12px !important;
+}
+
+/* A área de texto */
+.ql-container.ql-snow {
+    border: none !important;
+    background-color: var(--color-white);
+    border-radius: 0 0 16px 16px;
+    font-family: var(--font-family) !important;
+    font-size: 1rem;
+    min-height: 200px;
+    /* Altura mínima confortável */
+}
+
+/* O editor em si */
+.ql-editor {
+    padding: 24px !important;
+    line-height: 1.6;
+    color: #333;
+}
+
+/* Placeholder (texto de ajuda) */
+.ql-editor.ql-blank::before {
+    color: #aaa;
+    font-style: normal;
+}
+
+/* Container externo para dar sombra */
+.editor-wrapper {
+    width: 100%;
+    border: 1px solid var(--color-light-gray);
+    border-radius: 16px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.03);
+    background: white;
+    transition: box-shadow 0.2s ease;
+}
+
+.editor-wrapper:focus-within {
+    box-shadow: 0 4px 20px rgba(0, 0, 0, 0.08);
+    border-color: #bbb;
+}
+
+/* Cabeçalho da página de anotação */
+.anotacao-header {
+    margin-bottom: 24px;
+}
+
+.anotacao-header h2 {
+    margin: 0;
+    color: #333;
+}
+
+.anotacao-header p {
+    color: #666;
+    margin-top: 4px;
+}
+
+.anotacao-form-actions {
+    display: flex;
+    justify-content: space-between;
+    margin-top: 20px;
+    text-align: right;
+}

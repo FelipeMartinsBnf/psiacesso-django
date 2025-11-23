@@ -4,8 +4,8 @@ import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from psiacesso_main.models import Consulta, DisponibilidadePsicologo
-from .forms import AgendaGridForm
+from psiacesso_main.models import AnotacaoPsicologo, Consulta, DisponibilidadePsicologo
+from .forms import AgendaGridForm, AnotacaoForm
 from django.http import HttpResponse, JsonResponse
 from django.utils import timezone
 
@@ -224,4 +224,35 @@ def cancelar_consulta_psi(request, consulta_id):
         messages.error(request, "Não é possível cancelar consultas passadas.")
 
     return redirect('psi-dashboard')
+
+@login_required
+def salvar_anotacao_consulta(request, consulta_id):
+    # Busca a consulta e garante que o psicólogo é o dono dela
+    consulta = get_object_or_404(Consulta, pk=consulta_id, psicologo__usuario=request.user)
+    
+    # Tenta buscar a anotação existente, se houver
+    try:
+        anotacao = AnotacaoPsicologo.objects.get(consulta=consulta)
+    except AnotacaoPsicologo.DoesNotExist:
+        anotacao = None
+
+    if request.method == 'POST':
+        form = AnotacaoForm(request.POST, instance=anotacao)
+        if form.is_valid():
+            nova_anotacao = form.save(commit=False)
+            nova_anotacao.consulta = consulta
+            nova_anotacao.psicologo = consulta.psicologo
+            nova_anotacao.data_criacao = timezone.now()
+            nova_anotacao.save()
+            messages.success(request, "Anotações salvas com sucesso!")
+            return redirect('psi-dashboard')  # Ou onde preferir
+        else:
+            messages.error(request, "Erro ao salvar as anotações. Verifique os dados e tente novamente.")
+    else:
+        form = AnotacaoForm(instance=anotacao)
+
+    return render(request, 'anotacao_form.html', {
+        'form': form,
+        'consulta': consulta
+    })
 

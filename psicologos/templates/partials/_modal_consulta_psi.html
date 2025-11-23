@@ -18,7 +18,7 @@
     <!-- O JavaScript também vai adicionar o evento de fechar neste botão -->
     <button type="button" class="btn btn-secondary modal-close-btn">Fechar</button>
     <div>
-        <a href="" class="btn btn-danger">Anotações</a>
+        <a href="{% url 'save_anotacao_consulta' consulta.id %}" class="btn btn-info">Anotações</a>
         <a href="{% url 'cancelar_consulta_psi' consulta.id %}" class="btn btn-danger">Cancelar Consulta</a>
     </div>
     

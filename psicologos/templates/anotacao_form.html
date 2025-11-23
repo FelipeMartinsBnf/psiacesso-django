@@ -1,0 +1,81 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Anotações da Consulta - PsiConnect{% endblock %}
+
+{% block extra_css %}
+<!-- 1. CSS do Quill (Tema Snow) -->
+<link href="https://cdn.quilljs.com/1.3.6/quill.snow.css" rel="stylesheet">
+<!-- Nosso CSS customizado -->
+<link rel="stylesheet" href="{% static 'text_editor.css' %}">
+{% endblock %}
+
+{% block content %}
+<main class="anotacao-container">
+
+    <div class="anotacao-header">
+        <h2>Anotações da Sessão</h2>
+        <p>Paciente: <strong>{{ consulta.paciente.usuario.get_full_name }}</strong> • Data: {{consulta.data_horario|date:"d/m/Y H:i" }}</p>
+    </div>
+
+    <form method="post" id="anotacao-form" class="anotacao-form">
+        {% csrf_token %}
+
+        <!-- 
+           2. CAMPO OCULTO 
+           Este é o campo real que o Django vai ler. 
+           Escondemos ele do usuário.
+        -->
+        <input type="hidden" name="texto" id="input-conteudo" value="{{ form.texto.value|default_if_none:'' }}">
+
+        <!-- 
+           3. EDITOR VISUAL 
+           O Quill vai transformar esta div no editor.
+        -->
+        <div class="editor-wrapper">
+            <!-- A barra de ferramentas será injetada aqui automaticamente ou podemos customizar -->
+            <div id="editor-container"></div>
+        </div>
+
+        <div class="anotacao-form-actions">
+            <a href="{% url 'psi-dashboard' %}" class="btn btn-secondary">Voltar</a> <!-- Ajuste a URL de voltar -->
+            <button type="submit" class="btn btn-primary"
+                style="background-color: var(--color-primary-green); color: white;">Salvar Anotações</button>
+        </div>
+    </form>
+
+    <script src="https://cdn.quilljs.com/1.3.6/quill.js"></script>
+    
+    <script>
+    document.addEventListener('DOMContentLoaded', function () {
+        // Inicializa o Quill na div #editor-container
+        var quill = new Quill('#editor-container', {
+            theme: 'snow',
+            placeholder: 'Escreva suas observações sobre a sessão aqui...',
+            modules: {
+                toolbar: [
+                    [{ 'header': [2, 3, false] }], // Títulos
+                    ['bold', 'italic', 'underline'], // Formatação básica
+                    [{ 'list': 'ordered' }, { 'list': 'bullet' }], // Listas
+                    ['clean'] // Limpar formatação
+                ]
+            }
+        });
+
+        // Carrega o conteúdo existente (se houver) do input oculto para o editor visual
+        var inputConteudo = document.getElementById('input-conteudo');
+        if (inputConteudo.value) {
+            // Use o método correto para carregar o conteúdo no Quill
+            quill.clipboard.dangerouslyPasteHTML(inputConteudo.value);
+        }
+
+        // Antes de enviar o formulário, copia o HTML do editor para o input oculto
+        var form = document.getElementById('anotacao-form');
+        form.addEventListener('submit', function () {
+            // Pega o HTML gerado pelo Quill e joga no input do Django
+            inputConteudo.value = quill.root.innerHTML;
+        });
+    });
+    </script>
+</main>
+{% endblock %}
