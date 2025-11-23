@@ -13,8 +13,8 @@
 
 /* Container principal da página */
 .agenda-container {
-    width: 95%;
-    max-width: 1480px;
+    width: 100%;
+    max-width: 1024px;
     margin: 2rem auto;
     padding: 0 1.5rem;
     font-family: "Poppins", sans-serif;
@@ -53,16 +53,15 @@
     border: 1px solid var(--ag-border);
     border-radius: 12px;
     overflow: hidden;
-    margin-bottom: 2rem;
+
 }
 
 .grid-cell, .grid-header, .grid-time-label {
     background-color: var(--ag-bg-card);
-    padding: 6px 4px;
     display: flex;
     align-items: center;
     justify-content: center;
-    font-size: 0.85rem;
+    font-size: 0.65rem;
 }
 
 /* Cabeçalho dos Dias (SEG, TER...) */
@@ -73,7 +72,7 @@
     font-size: 0.85rem;
     text-transform: uppercase;
     letter-spacing: 0.05em;
-    padding: 12px 4px;
+    padding: 6px 4px;
 }
 
 /* Coluna de Horários (08:00...) */
@@ -82,18 +81,18 @@
     font-weight: 500;
     font-size: 0.85rem;
     align-items: flex-start;
-    padding-top: 16px;
+    padding-top: 8px;
     background-color: #fbfcfd;
 }
 
 /* Células interativas */
 .grid-cell {
     cursor: pointer;
-    min-height: 35px;
+    min-height: 15px;
     transition: all 0.2s ease-in-out;
     color: transparent; 
     font-weight: 600;
-    font-size: 0.75rem;
+    font-size: 0.65rem;
 }
 
 .grid-cell:hover {
