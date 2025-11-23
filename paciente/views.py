@@ -17,7 +17,7 @@ def dashboard(request):
     recentes = Psicologo.objects.order_by('-id')[:4]
     
     #Pegar as consultas mais recentes    
-    consultas = Consulta.objects.filter(paciente=request.user.paciente).order_by('data_horario')[:5]
+    consultas = Consulta.objects.filter(paciente=request.user.paciente, status='confirmado').order_by('data_horario')[:5]
     return render(request, 'dashboard.html', {'psicologos': recentes, 'consultas': consultas})
 
 #Carrega todos os psicologos disponiveis
@@ -166,7 +166,7 @@ def agenda_paciente_view(request):
         paciente = request.user.paciente
     except Paciente.DoesNotExist:
         messages.error(request, "Perfil de paciente não encontrado.")
-        return redirect('root') # Mude para sua página inicial
+        return redirect('user-dashboard') # Mude para sua página inicial
 
     # 2. Calcular a semana que queremos exibir
     try:
@@ -271,4 +271,34 @@ def consulta_detalhe_paciente(request, consulta_id):
         'consulta': consulta
     })
 
+@login_required
+def cancelar_consulta_paciente(request, consulta_id):
+    """
+    Permite que o paciente cancele uma consulta.
+    Redireciona de volta para a agenda do paciente.
+    """
+    try:
+        paciente = request.user.paciente
+    except Paciente.DoesNotExist:
+        messages.error(request, "Acesso não autorizado.")
+        return redirect('user-dashboard')
+
+    consulta = get_object_or_404(
+        Consulta,
+        pk=consulta_id,
+        paciente=paciente
+    )
+
+    # Apenas permite cancelar se a consulta ainda não ocorreu
+    if consulta.data_horario > timezone.now():
+        if consulta.data_horario - timezone.now() < datetime.timedelta(hours=24):
+            messages.error(request, "Consultas só podem ser canceladas com pelo menos 24 horas de antecedência.")
+            return redirect('agenda_paciente')
+        consulta.status = 'cancelado'
+        consulta.save()
+        messages.success(request, "Consulta cancelada com sucesso.")
+    else:
+        messages.error(request, "Não é possível cancelar consultas passadas.")
+
+    return redirect('agenda_paciente')
 

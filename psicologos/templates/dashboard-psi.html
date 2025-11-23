@@ -3,6 +3,7 @@
 
 {% block extra_css %}
     <link rel="stylesheet" href="{% static 'dashboard_psi.css' %}">
+    <link rel="stylesheet" href="{% static 'agenda.css' %}" />
 {% endblock %}
 
 {% block title %}Meu Dashboard - PsiConnect{% endblock %}
@@ -16,6 +17,72 @@
             <h2>Bem-vindo(a), Dr(a). {{ user.last_name|default:'Silva' }}!</h2>
             <p>Gerencie sua agenda e acompanhe suas consultas.</p>
         </section>
+
+        <section class="card" id="agenda">
+            <div class="agenda-container">
+                <nav class="agenda-nav">
+                    <div>
+                        <h2>Minha Agenda Semanal</h2>
+                        <span>{{ semana_display }}</span>
+                    </div>
+                    <div class="agenda-nav-botoes">
+                        <a href="?dia={{ nav_prev_dia }}#agenda">&lt; Anterior</a>
+                        <a href="?dia={{ nav_next_dia }}#agenda">Próxima &gt;</a>
+                    </div>
+                </nav>
+            
+                <div class="agenda-grid">
+                    <div class="grid-header" style="border-left: 0">Horário</div>
+                    {% for dia in dias_da_semana %}
+                    <div class="grid-header">
+                        {{ dia|date:"D"|upper }}
+                        <span class="dia-numero">{{ dia|date:"d" }}</span>
+                    </div>
+                    {% endfor %}
+            
+                    <div class="grid-horas">
+                        {% for hora in grid_horas_labels %}
+                        <div class="hora-label">{{ hora }}:00</div>
+                        {% endfor %}
+                    </div>
+            
+                    {% for i in "0123456" %}
+                    <div class="grid-dia-col">
+            
+                        {% for item in consultas_processadas %}
+                        {% if item.dia_index == i|add:0 %}
+            
+                        <a href="{% url 'consulta_detalhe_psi' item.consulta.id %}" class="consulta-card modal-trigger"
+                            style="top: {{ item.top }}%; height: {{ item.height }}%;">
+            
+                            <strong>{{ item.consulta.paciente.usuario.get_full_name }}</strong>
+                            <div class="consulta-info">
+                                <span class="tipo">{{ item.consulta.get_modalidade_display }}</span>
+                                <span class="horario">
+                                    {{ item.consulta.data_horario|time:"H:i" }} -
+                                    {{ item.consulta.get_end_time|time:"H:i" }}
+                                </span>
+                            </div>
+                        </a>
+                        <!-- Fim da Mudança -->
+            
+                        {% endif %}
+                        {% endfor %}
+            
+                    </div>
+                    {% endfor %}
+                </div>
+            </div>
+            
+            <div id="modal-backdrop" class="modal-backdrop hidden"></div>
+            <div id="modal-container" class="modal-container hidden">
+                <div id="modal-content" class="modal-content">
+                    <!-- O conteúdo do _modal_consulta_paciente.html será injetado aqui -->
+                    <p style="text-align: center; padding: 20px;">Carregando...</p>
+                </div>
+            </div>
+        </section>
+
 
         <section class="psi-actions card">
             <h3>Ações Rápidas</h3>
@@ -39,5 +106,72 @@
         </section>
     
     </main>
+
+    <script>
+        console.log("Script do modal carregado!");
+        document.addEventListener('DOMContentLoaded', function () {
+            const backdrop = document.getElementById('modal-backdrop');
+            const modalContainer = document.getElementById('modal-container');
+            const modalContent = document.getElementById('modal-content');
+
+            // Função para ABRIR o modal
+            function openModal(url) {
+                // Mostra o fundo e o modal (ainda com "Carregando...")
+                backdrop.classList.remove('hidden');
+                backdrop.classList.add('visible');
+                modalContainer.classList.remove('hidden');
+                modalContainer.classList.add('visible');
+
+                // Busca o conteúdo da "div" na sua view
+                fetch(url)
+                    .then(response => response.text())
+                    .then(html => {
+                        // Injeta o HTML retornado pela view
+                        modalContent.innerHTML = html;
+                    })
+                    .catch(error => {
+                        modalContent.innerHTML = "<p>Erro ao carregar os dados. Tente novamente.</p>";
+                    });
+            }
+
+            // Função para FECHAR o modal
+            function closeModal() {
+                backdrop.classList.remove('visible');
+                backdrop.classList.add('hidden');
+                modalContainer.classList.remove('visible');
+                modalContainer.classList.add('hidden');
+                // Limpa o conteúdo ao fechar
+                modalContent.innerHTML = '<p style="text-align: center; padding: 20px;">Carregando...</p>';
+            }
+
+            // 1. Adiciona o listener de clique para TODOS os cards de consulta
+            document.querySelectorAll('.modal-trigger').forEach(trigger => {
+                trigger.addEventListener('click', function (e) {
+                    e.preventDefault(); // Impede o link de navegar
+                    const url = this.getAttribute('href');
+                    openModal(url);
+                });
+            });
+
+            // 2. Adiciona o listener para fechar (clicando no fundo ou nos botões)
+            // Usamos 'mousedown' no backdrop para fechar ao clicar "fora"
+            backdrop.addEventListener('mousedown', closeModal);
+
+            // O conteúdo dos botões de fechar é carregado dinamicamente,
+            // então precisamos delegar o evento de clique ao contêiner.
+            modalContainer.addEventListener('click', function (e) {
+                if (e.target.classList.contains('modal-close-btn')) {
+                    closeModal();
+                }
+            });
+
+            // 3. (Bônus) Fechar com a tecla "Escape"
+            document.addEventListener('keydown', function (e) {
+                if (e.key === 'Escape' && modalContainer.classList.contains('visible')) {
+                    closeModal();
+                }
+            });
+        });
+    </script>
 </div>
 {% endblock %}

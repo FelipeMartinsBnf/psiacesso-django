@@ -8,16 +8,18 @@
     <button type="button" class="modal-close-btn">&times;</button>
 </div>
 <div class="modal-body">
-    <p><strong>Profissional:</strong> {{ consulta.psicologo.usuario.get_full_name }}</p>
+    <p><strong>Paciente:</strong> {{ consulta.paciente.usuario.get_full_name }}</p>
     <p><strong>Data:</strong> {{ consulta.data_horario|date:"l, d \d\e F \d\e Y" }}</p>
     <p><strong>Horário:</strong> {{ consulta.data_horario|time:"H:i" }} - {{ consulta.get_end_time|time:"H:i" }}</p>
     <p><strong>Modalidade:</strong> {{ consulta.get_modalidade_display }}</p>
     <p><strong>Status:</strong> <span class="status-{{ consulta.status }}">{{ consulta.get_status_display }}</span></p>
-
-    <!-- Você pode adicionar mais informações aqui, como um link do Google Meet se for online -->
 </div>
 <div class="modal-footer">
     <!-- O JavaScript também vai adicionar o evento de fechar neste botão -->
     <button type="button" class="btn btn-secondary modal-close-btn">Fechar</button>
-    <a href="{% url 'cancelar_consulta' consulta.id %}" class="btn btn-danger">Cancelar Consulta</a>
+    <div>
+        <a href="" class="btn btn-danger">Anotações</a>
+        <a href="{% url 'cancelar_consulta_psi' consulta.id %}" class="btn btn-danger">Cancelar Consulta</a>
+    </div>
+    
 </div>

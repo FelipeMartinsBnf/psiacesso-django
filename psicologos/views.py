@@ -1,16 +1,123 @@
 import datetime
-from contas.models import Psicologo
+from contas.models import Paciente, Psicologo
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
 from django.contrib.auth.decorators import login_required
-from psiacesso_main.models import DisponibilidadePsicologo
-from .forms import AgendaGridForm # Importe o novo form
+from psiacesso_main.models import Consulta, DisponibilidadePsicologo
+from .forms import AgendaGridForm
+from django.http import HttpResponse, JsonResponse
+from django.utils import timezone
 
 @login_required
 def dashboard(request):
-    #Logica para carregar 4 psicologos mais novos
-    return render(request, 'dashboard-psi.html', {})
+    try:
+        # 1. Identificar o paciente logado
+        psi = request.user.psicologo
+    except Psicologo.DoesNotExist:
+        messages.error(request, "Perfil de paciente não encontrado.")
+        return redirect('psi-dashboard')
+
+    # 2. Calcular a semana que queremos exibir
+    try:
+        # Tenta pegar uma data da URL (para navegação)
+        target_date_str = request.GET.get('dia', None)
+        target_date = datetime.date.fromisoformat(target_date_str)
+    except (ValueError, TypeError):
+        # Se não houver, usa a data de hoje
+        target_date = datetime.date.today()
+
+    # Encontra a Segunda-feira (início da semana)
+    start_of_week = target_date - datetime.timedelta(days=target_date.weekday())
+    # Encontra o Domingo (fim da semana)
+    end_of_week = start_of_week + datetime.timedelta(days=6)
+
+    # 3. Preparar os dados para o cabeçalho do template
+    dias_da_semana = []
+    for i in range(7):
+        dias_da_semana.append(start_of_week + datetime.timedelta(days=i))
+
+    # 4. Definir os limites da nossa grade de horário (ex: 7h às 19h)
+    GRID_START_HOUR = 7
+    GRID_END_HOUR = 19
+    # Total de minutos que a grade visível representa
+    total_grid_minutes = (GRID_END_HOUR - GRID_START_HOUR) * 60
+
+    # 5. Buscar as consultas do paciente para esta semana
+    consultas = Consulta.objects.filter(
+        psicologo=psi,
+        data_horario__date__range=(start_of_week, end_of_week),
+        status='confirmado'
+    ).select_related('psicologo', 'psicologo__usuario') # Otimiza a busca
+
+    # 6. Processar as consultas para o template
+    consultas_processadas = []
+    for consulta in consultas:
+        try:
+            duracao = consulta.psicologo.duracao_minutos
+        except AttributeError:
+            duracao = 50 # Valor padrão se o campo não existir
+
+        start_time = consulta.data_horario.time()
+        start_minutes = (start_time.hour * 60) + start_time.minute
+        
+        # Minutos desde o início da grade (ex: 7h)
+        grid_start_minutes = GRID_START_HOUR * 60
+        minutes_from_top = start_minutes - grid_start_minutes
+
+        # Calcula a posição e altura em porcentagem
+        top_percent = (minutes_from_top / total_grid_minutes) * 100
+        height_percent = (duracao / total_grid_minutes) * 100
+        
+        # Garante que o card não comece antes ou termine depois da grade
+        if top_percent < 0: top_percent = 0
+        if (top_percent + height_percent) > 100:
+            height_percent = 100 - top_percent
+
+        consultas_processadas.append({
+            'consulta': consulta,
+            'dia_index': consulta.data_horario.weekday(), # 0=Seg, 1=Ter...
+            'top': top_percent,
+            'height': height_percent,
+        })
+
+    # 7. Links de navegação
+    nav_prev = start_of_week - datetime.timedelta(days=7)
+    nav_next = start_of_week + datetime.timedelta(days=7)
+
+    context = {
+        'dias_da_semana': dias_da_semana,
+        'consultas_processadas': consultas_processadas,
+        'grid_horas_labels': range(GRID_START_HOUR, GRID_END_HOUR), # Rótulos (7, 8, 9...)
+        'nav_prev_dia': nav_prev.isoformat(),
+        'nav_next_dia': nav_next.isoformat(),
+        'semana_display': f"{start_of_week.strftime('%d de %b')} - {end_of_week.strftime('%d de %b')}"
+    }
+
+    return render(request, 'dashboard-psi.html', context)
+
+@login_required
+def consulta_detalhe_psi(request, consulta_id):
+    """
+    Busca os detalhes de uma consulta para carregar no modal.
+    Esta view retorna APENAS o HTML parcial.
+    """
+    try:
+        psi = request.user.psicologo
+    except Psicologo.DoesNotExist:
+        return HttpResponse("Acesso não autorizado.", status=403)
+
+    # Garante que a consulta existe E pertence ao psicólogo logado
+    consulta = get_object_or_404(
+        Consulta,
+        pk=consulta_id,
+        psicologo=psi
+    )
+    
+    # Renderiza o template parcial que vamos criar
+    return render(request, 'partials/_modal_consulta_psi.html', {
+        'consulta': consulta
+    })
 
 def _gerar_horarios(inicio, fim, duracao):
     """Helper para gerar a lista de horários (ex: 08:00, 08:50, 09:40...)"""
@@ -34,8 +141,8 @@ def gerenciar_disponibilidade_grid(request):
 
     # Duração da consulta e horários da grade
     duracao = psicologo.duracao_minutos
-    # Você pode tornar '07:00' e '22:00' configuráveis depois
-    horarios_grade = _gerar_horarios('07:00', '22:00', duracao)
+    # Você pode tornar '07:00' e '18:00' configuráveis depois
+    horarios_grade = _gerar_horarios('07:00', '19:00', duracao)
     dias_semana = DisponibilidadePsicologo.DIAS_CHOICES
 
     if request.method == 'POST':
@@ -88,3 +195,33 @@ def gerenciar_disponibilidade_grid(request):
         'horarios_selecionados_set': horarios_selecionados_set,
     }
     return render(request, 'disponibilidade.html', context)
+
+
+@login_required
+def cancelar_consulta_psi(request, consulta_id):
+    """
+    Permite que o paciente cancele uma consulta.
+    Redireciona de volta para a agenda do paciente.
+    """
+    try:
+        psicologo = request.user.psicologo
+    except Psicologo.DoesNotExist:
+        messages.error(request, "Acesso não autorizado.")
+        return redirect('psi-dashboard')
+
+    consulta = get_object_or_404(
+        Consulta,
+        pk=consulta_id,
+        psicologo=psicologo
+    )
+
+    # Apenas permite cancelar se a consulta ainda não ocorreu
+    if consulta.data_horario > timezone.now():
+        consulta.status = 'cancelado'
+        consulta.save()
+        messages.success(request, "Consulta cancelada com sucesso.")
+    else:
+        messages.error(request, "Não é possível cancelar consultas passadas.")
+
+    return redirect('psi-dashboard')
+
