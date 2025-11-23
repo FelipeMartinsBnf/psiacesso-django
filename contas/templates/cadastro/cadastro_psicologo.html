@@ -12,72 +12,96 @@
 
     <link rel="stylesheet" href="{% static 'globals.css' %}" />
     <link rel="stylesheet" href="{% static 'cadastro_psicologo.css' %}" />
+    
+    <style>
+        .hidden { display: none; }
+        input, select, textarea { width: 100%; box-sizing: border-box; }
+    </style>
 </head>
 <body>
-    <h2>Complete seu Perfil de Psicólogo</h2>
-    <p>Preencha as informações abaixo para finalizar seu cadastro.</p>
 
-    <form method="post">
-        {% csrf_token %}
-        
-        {{ form.as_p }}
+    <div class="main-cadastro-container">
 
-        <h3>Formação Acadêmica e Cursos</h3>
-        
-        <div id="formacao-list">
-            {{ formset.management_form }} {% for form_item in formset %}
-                <div class="formacao-item">
-                    <h4>Formação {{ forloop.counter }}</h4>
-                    {{ form_item.as_p }}
-                    {% if form_item.instance.pk and formset.can_delete %}
-                        <label for="{{ form_item.DELETE.id_for_label }}">Marcar para remover:</label>
-                        {{ form_item.DELETE }}
-                    {% endif %}
-                </div>
-            {% endfor %}
+        <div class="branding-sidebar">
+            <h1>PsiConnect</h1>
+            <p>Conecte-se com seus pacientes de forma simples, moderna e eficiente. Complete seu perfil para começar.</p>
         </div>
-        
-        <button type="button" id="add-formacao-button">Adicionar mais uma formação</button>
-        
-        <br><br>
 
-        <div id="empty-form" class="hidden">
-            <div class="formacao-item">
-                <h4>Formação <span class="form-counter"></span></h4>
-                {{ formset.empty_form.as_p }}
-            </div>
-        </div>
+        <div class="cadastro-form-content">
             
-        <button type="submit">Salvar Perfil</button>
-    </form>
-    <script>
-        // Este script vai dentro da tag <script> no final do seu <body>
+            <div class="cadastro-form-box">
+                
+                <div class="form-header">
+                    <h2>Complete seu Perfil</h2>
+                    <p>Preencha as informações profissionais</p>
+                </div>
 
-        // Seleciona os elementos do DOM
+                <form method="post">
+                    {% csrf_token %}
+                    
+                    {{ form.as_p }}
+
+                    <div class="section-divider">
+                        <span>Formação Acadêmica</span>
+                    </div>
+                    
+                    <div id="formacao-list">
+                        {{ formset.management_form }}
+                        
+                        {% for form_item in formset %}
+                            <div class="formacao-item">
+                                <h4>Formação {{ forloop.counter }}</h4>
+                                {{ form_item.as_p }}
+                                
+                                {% if form_item.instance.pk and formset.can_delete %}
+                                    <div class="delete-row">
+                                        <label for="{{ form_item.DELETE.id_for_label }}">Remover esta formação?</label>
+                                        {{ form_item.DELETE }}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        {% endfor %}
+                    </div>
+                    
+                    <div class="actions-container">
+                        <button type="button" id="add-formacao-button" class="btn-outline">
+                            + Adicionar mais uma formação
+                        </button>
+                        
+                        <button type="submit" class="btn-primary">
+                            Salvar Perfil
+                        </button>
+                    </div>
+                </form>
+
+            </div> </div> </div> <div id="empty-form" class="hidden">
+        <div class="formacao-item">
+            <h4>Formação <span class="form-counter"></span></h4>
+            {{ formset.empty_form.as_p }}
+        </div>
+    </div>
+        
+    <script>
         const addFormacaoButton = document.getElementById('add-formacao-button');
         const formacaoList = document.getElementById('formacao-list');
         const emptyForm = document.getElementById('empty-form').innerHTML;
-        const totalFormsInput = document.getElementById('id_formacoes-TOTAL_FORMS');
+        const totalFormsInput = document.getElementById('id_formacoes-TOTAL_FORMS'); // Verifique se o prefixo 'formacoes' está certo no seu views.py
 
         addFormacaoButton.addEventListener('click', function() {
-        // Pega o número atual de formulários
-        let currentFormCount = parseInt(totalFormsInput.value);
+            let currentFormCount = parseInt(totalFormsInput.value);
+            const newFormHtml = emptyForm.replace(/__prefix__/g, currentFormCount);
+            
+            const newFormElement = document.createElement('div');
+            newFormElement.innerHTML = newFormHtml;
+            
+            // Tenta atualizar o contador visual, se existir
+            const counterSpan = newFormElement.querySelector('.form-counter');
+            if(counterSpan) {
+                counterSpan.innerText = currentFormCount + 1;
+            }
 
-        // Cria o HTML do novo formulário, substituindo o placeholder '__prefix__' pelo número correto
-        const newFormHtml = emptyForm.replace(/__prefix__/g, currentFormCount);
-        
-        // Cria um novo elemento div para inserir o formulário
-        const newFormElement = document.createElement('div');
-        newFormElement.innerHTML = newFormHtml;
-        
-        // Atualiza o contador no título (opcional, mas melhora a UX)
-        newFormElement.querySelector('.form-counter').innerText = currentFormCount + 1;
-
-        // Insere o novo formulário na lista
-        formacaoList.appendChild(newFormElement);
-
-        // Incrementa o valor no management_form para que o Django saiba do novo formulário
-        totalFormsInput.value = currentFormCount + 1;
+            formacaoList.appendChild(newFormElement);
+            totalFormsInput.value = currentFormCount + 1;
         });
     </script>
 </body>
