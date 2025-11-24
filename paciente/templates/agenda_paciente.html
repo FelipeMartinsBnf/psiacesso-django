@@ -43,8 +43,7 @@ Minha agenda - PsiConnect{% endblock %}
                                     - href aponta para a nova URL da view.
                                     - classe 'modal-trigger' será usada pelo JS.
                                   -->
-        <a href="{% url 'consulta_detalhe_paciente' item.consulta.id %}" class="consulta-card modal-trigger"
-          style="top: {{ item.top }}%; height: {{ item.height }}%;">
+        <a href="{% url 'consulta_detalhe_paciente' item.consulta.id %}" class="consulta-card modal-trigger">
       
           <strong>{{ item.consulta.psicologo.usuario.get_full_name }}</strong>
           <div class="consulta-info">

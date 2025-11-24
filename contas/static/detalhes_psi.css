@@ -1,7 +1,7 @@
 /* Container principal da página */
 .profile-main-container {
     max-width: 900px;
-    margin: 40px auto; /* Centraliza na página */
+    margin: 40px auto;
     padding: 20px;
     box-sizing: border-box;
 }
@@ -11,7 +11,7 @@
     background-color: var(--color-white, #fff);
     border-radius: 12px;
     box-shadow: 0 4px 16px rgba(0,0,0,0.08);
-    overflow: hidden; /* Garante que tudo fique dentro das bordas */
+    overflow: hidden;
 }
 
 /* --- Cabeçalho do Perfil --- */
@@ -20,7 +20,7 @@
     align-items: center;
     gap: 24px;
     padding: 24px;
-    background-color: #f9f9f9; /* Um fundo levemente cinza */
+    background-color: #f9f9f9;
     border-bottom: 1px solid var(--color-light-gray, #e0e0e0);
 }
 
@@ -34,23 +34,22 @@
 }
 
 .profile-info {
-    flex: 1; /* Ocupa o espaço restante */
+    flex: 1; 
 }
 
 .profile-info h2 {
     margin: 0 0 4px 0;
-    font-size: 2rem; /* 32px */
+    font-size: 2rem;
     color: var(--color-text-dark, #333);
 }
 
 .profile-info .crp {
     margin: 0;
-    font-size: 1rem; /* 16px */
+    font-size: 1rem; 
     color: #666;
     font-weight: 500;
 }
 
-/* --- Seções de Conteúdo (Sobre, Formação, etc) --- */
 .profile-section {
     padding: 24px;
     border-bottom: 1px solid var(--color-light-gray, #e0e0e0);
@@ -62,7 +61,7 @@
 .profile-section h3 {
     margin-top: 0;
     margin-bottom: 16px;
-    font-size: 1.25rem; /* 20px */
+    font-size: 1.25rem;
     color: var(--color-primary-green, #386641);
 }
 
@@ -72,10 +71,9 @@
     color: #555;
 }
 
-/* --- Grid de Detalhes (Preço, Duração, etc) --- */
 .details-grid {
     display: grid;
-    grid-template-columns: repeat(2, 1fr); /* 2 colunas */
+    grid-template-columns: repeat(2, 1fr); 
     gap: 20px;
 }
 
@@ -141,7 +139,7 @@
     display: inline-block;
     border: none;
     cursor: pointer;
-    white-space: nowrap; /* Evita quebra de linha */
+    white-space: nowrap; 
 }
 
 .cta-button:hover {
@@ -149,7 +147,6 @@
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-/* --- Responsividade --- */
 .desktop-only { display: inline-block; }
 .mobile-only { display: none; }
 
@@ -160,7 +157,7 @@
     }
     
     .profile-header {
-        flex-direction: column; /* Empilha foto, nome e botão */
+        flex-direction: column; 
         gap: 16px;
         text-align: center;
     }
@@ -168,12 +165,11 @@
         margin-bottom: 16px;
     }
 
-    /* Esconde o botão de desktop e mostra o de mobile */
     .desktop-only { display: none; }
     .mobile-only { display: block; width: 100%; }
 
     .details-grid {
-        grid-template-columns: 1fr; /* 1 coluna */
+        grid-template-columns: 1fr; 
     }
     
     .profile-section { padding: 20px; }

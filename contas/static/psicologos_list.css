@@ -108,7 +108,7 @@
     
 /* Mensagem de lista vazia */
 .empty-message {
-    font-size: 0.95rem; /* <-- Reduzido */
+    font-size: 0.95rem;
     color: #555;
     padding: 20px;
     background-color: var(--color-white, #fff);
@@ -117,7 +117,6 @@
     text-align: center;
 }
     
-/* --- Card do Psicólogo (AJUSTADO) --- */
 .psi-card {
     display: flex;
     flex-direction: column;

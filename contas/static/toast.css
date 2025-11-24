@@ -1,23 +1,13 @@
-/* * toasts.css
- * Estilo para notificações flutuantes modernas.
- */
-
 :root {
     --toast-bg: #ffffff;
     --toast-text: #333333;
     --toast-shadow: 0 4px 12px rgba(0, 0, 0, 0.15);
     --toast-radius: 12px;
     --toast-border-width: 4px;
-
-    /* Cores de status (podem ser ajustadas) */
     --status-success: #549c62;
-    /* Seu verde primário */
     --status-error: #ef4444;
-    /* Vermelho */
     --status-warning: #f59e0b;
-    /* Laranja */
     --status-info: #3b82f6;
-    /* Azul */
 }
 
 /* Container fixo no canto superior direito */
@@ -30,7 +20,6 @@
     flex-direction: column;
     gap: 12px;
     pointer-events: none;
-    /* Permite clicar através do container vazio */
 }
 
 /* O Cartão da Notificação */
@@ -46,25 +35,18 @@
     align-items: center;
     justify-content: space-between;
     pointer-events: auto;
-    /* Reativa cliques no toast */
-
-    /* Animação de entrada */
     opacity: 0;
     transform: translateX(100%);
     animation: slideIn 0.4s ease forwards;
-
-    /* Borda lateral colorida */
     border-left: var(--toast-border-width) solid #ccc;
     position: relative;
     overflow: hidden;
 }
 
-/* Animação de saída (adicionada via JS) */
 .toast.hide {
     animation: slideOut 0.4s ease forwards;
 }
 
-/* Variantes de cores baseadas nas tags do Django */
 .toast.success {
     border-left-color: var(--status-success);
 }

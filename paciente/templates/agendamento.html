@@ -1,13 +1,11 @@
 {% extends 'base.html' %}
 {% load static %}
 
-{% block title %}{{ psi.usuario.first_name }} {{ psi.usuario.last_name }} - PsiConnect{% endblock %}
+{% block title %}Agendar com {{ psicologo.usuario.first_name }} - PsiConnect{% endblock %}
 
 {% block extra_css %}
-    <!-- Linkando o novo CSS com o nome que você pediu -->
-    <link rel="stylesheet" href="{% static 'css/detalhes_psi.css' %}">
+    <link rel="stylesheet" href="{% static 'agendamento.css' %}">
 {% endblock %}
-
 
 {% block content %}
 <main>
@@ -16,28 +14,39 @@
 
     {% if messages %}
         {% for message in messages %}
-            <p style="color:{% if message.tags == 'success' %}green{% else %}red{% endif %};">{{ message }}</p>
+            <p>
+                {{ message }}
+            </p>
         {% endfor %}
     {% endif %}
 
     <div id="calendar-container">
         <div class="calendar-nav">
-            <a href="?year={{ nav_prev.year }}&month={{ nav_prev.month }}">Mes Anterior</a>
-            <strong>Mês Atual</strong> <a href="?year={{ nav_next.year }}&month={{ nav_next.month }}">Próximo Mês</a>
+            <a href="?year={{ nav_prev.year }}&month={{ nav_prev.month }}">
+                &larr; Mês Anterior
+            </a>
+            
+            <strong>{{ nav_current_month_name }} {{ nav_current_year }}</strong>
+            
+            <a href="?year={{ nav_next.year }}&month={{ nav_next.month }}">
+                Próximo Mês &rarr;
+            </a>
         </div>
-        {{ calendar }}
+        
+        {{ calendar|safe }}
     </div>
 
     <div id="horarios-container-wrapper">
         <h3>Horários disponíveis para <span id="data-selecionada-display">--/--/----</span></h3>
+        
         <div id="horarios-container">
-            <p>Selecione um dia no calendário para ver os horários.</p>
+            <p style="color: #666;">Selecione um dia no calendário acima para ver os horários.</p>
         </div>
     </div>
     
     <form method="post" id="booking-form">
         {% csrf_token %}
-        <p>Você selecionou: <strong><span id="horario-final-display"></span></strong></p>
+        <p>Confirmando agendamento para: <strong><span id="horario-final-display"></span></strong></p>
         
         <input type="hidden" name="data_selecionada" id="form-input-data">
         <input type="hidden" name="hora_selecionada" id="form-input-hora">
@@ -46,7 +55,6 @@
         
         <button type="submit">Confirmar Agendamento</button>
     </form>
-
 
     <script>
         document.addEventListener('DOMContentLoaded', function() {
@@ -62,64 +70,91 @@
             let diaSelecionadoEl = null;
             let horaSelecionadaEl = null;
 
-            // 1. Ação ao clicar em um DIA
+            // --- 1. CLIQUE NO DIA DO CALENDÁRIO ---
             calendarContainer.addEventListener('click', function(e) {
                 const target = e.target;
-                if (target.classList.contains('day-cell') && target.dataset.date) {
-                    const dataISO = target.dataset.date;
+                
+                // Verifica se clicou numa célula de dia válido (td que não tem a classe 'noday')
+                // Nota: O HTMLCalendar do Python as vezes não coloca atributo data, vamos pegar pelo texto ou classe
+                // Mas o ideal é que seu backend esteja gerando o HTML com algum identificador.
+                // Vou assumir que o clique funciona na célula TD.
+                
+                if (target.tagName === 'TD' && !target.classList.contains('noday') && target.innerText.trim() !== '') {
                     
-                    // Desmarca dia anterior
+                    // Lógica para montar a data (Isso depende de como seu calendar.py gera o HTML)
+                    // Vamos tentar uma abordagem visual simples: Selecionar o visual primeiro.
+                    
                     if (diaSelecionadoEl) diaSelecionadoEl.classList.remove('selected');
-                    // Marca dia novo
                     target.classList.add('selected');
                     diaSelecionadoEl = target;
 
-                    // Atualiza a UI
-                    dataSelecionadaSpan.innerText = new Date(dataISO + 'T00:00:00').toLocaleDateString('pt-BR');
-                    formInputData.value = dataISO; // Salva a data no form
-                    horariosContainer.innerHTML = "<p>Carregando...</p>";
-                    bookingForm.style.display = 'none'; // Esconde o form final
-                    if (horaSelecionadaEl) horaSelecionadaEl.classList.remove('selected');
-                    horaSelecionadaEl = null;
+                    // Tenta extrair a data. Se o seu Calendar não tem atributo data-date, precisamos improvisar ou
+                    // você precisa ajustar o calendar.py.
+                    // SUGESTÃO: Se o JS falhar em pegar a data, o erro estará aqui.
+                    // Vou assumir que o TD tem um atributo 'id' ou 'data-date' ou vamos montar a data pelo texto.
+                    
+                    // Como fallback, pegamos o dia do texto da célula e o mês/ano da URL ou atual
+                    const dia = target.innerText.trim().padStart(2, '0');
+                    
+                    // Pega ano e mes da URL ou do HTML (precisamos garantir que temos isso)
+                    const urlParams = new URLSearchParams(window.location.search);
+                    const now = new Date();
+                    const year = urlParams.get('year') || now.getFullYear();
+                    const month = urlParams.get('month') || (now.getMonth() + 1);
+                    
+                    // Formata para YYYY-MM-DD
+                    const dataISO = `${year}-${String(month).padStart(2, '0')}-${dia}`;
+                    const dataDisplay = `${dia}/${String(month).padStart(2, '0')}/${year}`;
 
-                    // 2. Busca (Fetch) os horários da API
+                    // Atualiza UI
+                    dataSelecionadaSpan.innerText = dataDisplay;
+                    formInputData.value = dataISO;
+                    
+                    horariosContainer.innerHTML = "<p>Carregando horários...</p>";
+                    bookingForm.style.display = 'none';
+
+                    // Busca horários
                     const url = `/api/horarios/{{ psicologo.id }}/?data=${dataISO}`;
-                    console.log('Buscando horários em:', url)
+                    
                     fetch(url)
                         .then(response => response.json())
                         .then(data => {
                             if (data.horarios_disponiveis && data.horarios_disponiveis.length > 0) {
                                 let html = '';
                                 data.horarios_disponiveis.forEach(hora => {
-                                    html += `<button type="button" class="slot-button" data-hora="${hora}">${hora}</button>`;
+                                    // Corta os segundos se vier HH:MM:SS -> HH:MM
+                                    const horaCurta = hora.substring(0, 5); 
+                                    html += `<button type="button" class="slot-button" data-hora="${horaCurta}">${horaCurta}</button>`;
                                 });
                                 horariosContainer.innerHTML = html;
                             } else {
-                                horariosContainer.innerHTML = "<p>Nenhum horário disponível para este dia.</p>";
+                                horariosContainer.innerHTML = "<p>Nenhum horário disponível.</p>";
                             }
                         })
                         .catch(err => {
-                            horariosContainer.innerHTML = "<p>Erro ao carregar horários. Tente novamente.</p>";
+                            console.error(err);
+                            horariosContainer.innerHTML = "<p style='color:red'>Erro ao buscar horários.</p>";
                         });
                 }
             });
             
-            // 3. Ação ao clicar em um HORÁRIO
+            // --- 2. CLIQUE NO HORÁRIO ---
             horariosContainer.addEventListener('click', function(e) {
-                const target = e.target;
-                if (target.classList.contains('slot-button')) {
-                    const hora = target.dataset.hora;
+                if (e.target.classList.contains('slot-button')) {
+                    const btn = e.target;
                     
-                    // Desmarca hora anterior
                     if (horaSelecionadaEl) horaSelecionadaEl.classList.remove('selected');
-                    // Marca hora nova
-                    target.classList.add('selected');
-                    horaSelecionadaEl = target;
+                    btn.classList.add('selected');
+                    horaSelecionadaEl = btn;
                     
-                    // Preenche os dados finais e mostra o form
+                    const hora = btn.dataset.hora;
                     formInputHora.value = hora;
+                    
                     horarioFinalDisplay.innerText = `${dataSelecionadaSpan.innerText} às ${hora}`;
                     bookingForm.style.display = 'block';
+                    
+                    // Scroll suave até o formulário
+                    bookingForm.scrollIntoView({ behavior: 'smooth' });
                 }
             });
         });
