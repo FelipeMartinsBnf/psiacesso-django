@@ -1,78 +1,105 @@
-{% load static %}
-
-{% if user.is_authenticated %}
+{% load static %} {% if user.is_authenticated %}
 <nav class="navbar-main">
-    
-    <div class="navbar-left">
-        <div class="navbar-title">
-            <a href="{% url 'user-dashboard' %}" class="navbar-logo-link"> <h3><span class="material-icons">psychology</span>PsiConnect</h3>
-            </a>
-        </div>
+  <div class="navbar-left">
+    <div class="navbar-title">
+      <a href="{% url 'user-dashboard' %}" class="navbar-logo-link">
+        <h3><span class="material-icons">psychology</span>PsiConnect</h3>
+      </a>
+    </div>
+  </div>
+
+  <div class="navbar-right">
+    <div class="navbar-notification">
+      <span class="material-icons">notifications</span>
+      <span>2 consultas em 1 hora</span>
     </div>
 
-    <div class="navbar-right">
-        
-        <div class="navbar-notification">
-            <span class="material-icons">notifications</span>
-            <span>2 consultas em 1 hora</span>
+    <div class="navbar-user-dropdown" onclick="toggleMenu()">
+      <div class="user-trigger">
+        {% if user.profile.photo.url %}
+        <img
+          src="{{ user.profile.photo.url }}"
+          alt="Foto de Perfil"
+          class="user-pic"
+        />
+        {% else %}
+        <img
+          src="{% static 'images/default-profile.png' %}"
+          alt="Foto de Perfil"
+          class="user-pic"
+        />
+        {% endif %}
+
+        <div class="user-info">
+          <strong>{{ user.first_name|default:user.username }}</strong>
+          <small>CRP 06/123456</small>
         </div>
+        <span class="material-icons arrow">expand_more</span>
+      </div>
 
-        <div class="navbar-user-dropdown">
-            
-            <div class="user-trigger">
-                {% if user.profile.photo.url %}
-                    <img src="{{ user.profile.photo.url }}" alt="Foto de Perfil" class="user-pic">
-                {% else %}
-                    <img src="{% static 'images/default-profile.png' %}" alt="Foto de Perfil" class="user-pic"> {% comment %} Crie essa imagem padrão {% endcomment %}
-                {% endif %}
-                
-                <div class="user-info">
-                    <strong>{{ user.first_name|default:user.username }}</strong>
-                    <small>CRP 06/123456</small> {% comment %} Você pode tornar isso dinâmico depois {% endcomment %}
-                </div>
-                <span class="material-icons arrow">expand_more</span>
-            </div>
-            
-            <div class="dropdown-menu">
-                <a href="#">
-                    <span class="material-icons">account_circle</span>
-                    Meu Perfil
-                </a>
-                <a href="#">
-                    <span class="material-icons">settings</span>
-                    Configurações
-                </a>
-                
-                <div class="dropdown-divider"></div>
+      <div class="dropdown-menu">
+        {% if user.profile.is_psychologist %}
+        <a href="{% url 'perfil-psi' user.psicologo.id %}">
+          <span class="material-icons">account_circle</span>
+          Meu Perfil (Psi)
+        </a>
+        {% else %}
+        <a href="{% url 'perfil-paciente' user.paciente.id %}">
+          <span class="material-icons">face</span>
+          Meu Perfil
+        </a>
+        {% endif %}
+        <a href="#">
+          <span class="material-icons">settings</span>
+          Configurações
+        </a>
 
-                {% comment %} 
-                    IMPORTANTE: Assumindo que você tem um campo 'is_psychologist' no seu
-                    modelo de Profile (ligado ao User)
-                {% endcomment %}
-                {% if user.profile.is_psychologist %}
-                    <a href="#">
-                        <span class="material-icons">calendar_month</span>
-                        Minha Agenda
-                    </a>
-                {% else %}
-                    <a href="#">
-                        <span class="material-icons">add_circle</span>
-                        Agendar Consulta
-                    </a>
-                {% endif %}
-                
-                <div class="dropdown-divider"></div>
+        <div class="dropdown-divider"></div>
 
-                <form method="post" action="{% url 'logout' %}" class="logout-form-dropdown">
-                    {% csrf_token %}
-                    <button type-="submit">
-                        <span class="material-icons">logout</span>
-                        Sair
-                    </button>
-                </form>
-            </div>
-        </div>
+        {% if user.profile.is_psychologist %}
+        <a href="#">
+          <span class="material-icons">calendar_month</span>
+          Minha Agenda
+        </a>
+        {% else %}
+        <a href="#">
+          <span class="material-icons">add_circle</span>
+          Agendar Consulta
+        </a>
+        {% endif %}
 
+        <div class="dropdown-divider"></div>
+
+        <form
+          method="post"
+          action="{% url 'logout' %}"
+          class="logout-form-dropdown"
+        >
+          {% csrf_token %}
+          <button type="submit">
+            <span class="material-icons">logout</span>
+            Sair
+          </button>
+        </form>
+      </div>
     </div>
+  </div>
 </nav>
+
+<script>
+  function toggleMenu() {
+    const dropdown = document.querySelector(".navbar-user-dropdown");
+    dropdown.classList.toggle("ativo");
+  }
+
+  // Fecha se clicar fora
+  window.onclick = function (event) {
+    const dropdown = document.querySelector(".navbar-user-dropdown");
+    // Verifica se o clique NÃO foi dentro do dropdown
+    if (!dropdown.contains(event.target)) {
+      dropdown.classList.remove("ativo");
+    }
+  };
+</script>
+
 {% endif %}

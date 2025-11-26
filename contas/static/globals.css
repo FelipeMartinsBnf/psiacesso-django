@@ -163,8 +163,7 @@ a {
     overflow: hidden; 
 }
 
-/* Mostrar o menu ao passar o mouse */
-.navbar-user-dropdown:hover .dropdown-menu {
+.navbar-user-dropdown.ativo .dropdown-menu {
     display: block;
 }
 

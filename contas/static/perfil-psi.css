@@ -1,0 +1,276 @@
+/* ======================================================
+   CONFIGURAÇÕES GERAIS E LAYOUT DA PÁGINA
+   ====================================================== */
+
+/* Fundo levemente cinza para destacar os cards brancos (igual da imagem) */
+body {
+    background-color: #f8f9fa; 
+}
+
+/* Container Principal - Organiza em 2 colunas */
+.profile-container {
+    max-width: 1100px;
+    margin: 40px auto; /* Espaçamento do topo (navbar) e baixo (footer) */
+    padding: 0 20px;
+    display: flex;
+    gap: 30px;
+    align-items: flex-start; /* Essencial para a sidebar não esticar */
+}
+
+/* Responsividade: Em celulares, vira uma coluna só */
+@media (max-width: 768px) {
+    .profile-container {
+        flex-direction: column;
+    }
+    .profile-sidebar {
+        width: 100%;
+        position: static;
+    }
+}
+
+/* ======================================================
+   ESTILO DOS CARDS (O "Bloco Branco")
+   ====================================================== */
+.card {
+    background-color: var(--color-white, #fff);
+    border-radius: 12px; /* Bordas arredondadas */
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave */
+    padding: 24px;
+    margin-bottom: 24px;
+    border: 1px solid rgba(0,0,0,0.03);
+}
+
+.card-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    margin-bottom: 20px;
+    border-bottom: 1px solid #eee;
+    padding-bottom: 10px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    color: var(--color-text-dark);
+    font-weight: 600;
+}
+
+/* Botões de ícone pequeno (lápis, adicionar) */
+.btn-icon-small {
+    background: none;
+    border: none;
+    font-size: 1.1rem;
+    cursor: pointer;
+    color: #999;
+    transition: color 0.2s;
+}
+.btn-icon-small:hover {
+    color: var(--color-primary-green);
+}
+
+/* ======================================================
+   COLUNA ESQUERDA (SIDEBAR)
+   ====================================================== */
+.profile-sidebar {
+    flex: 0 0 320px; /* Largura fixa */
+    position: sticky;
+    top: 90px; /* Para não bater na navbar fixa ao rolar */
+}
+
+/* Foto e Cabeçalho da Sidebar */
+.profile-summary {
+    text-align: center;
+}
+
+.profile-image-wrapper {
+    position: relative;
+    width: 140px;
+    height: 140px;
+    margin: 0 auto 16px auto;
+}
+
+.profile-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 4px solid #fff;
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+}
+
+.camera-icon {
+    position: absolute;
+    bottom: 5px;
+    right: 5px;
+    background-color: var(--color-text-dark);
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    font-size: 14px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.profile-name {
+    margin: 10px 0 5px 0;
+    font-size: 1.25rem;
+    color: var(--color-text-dark);
+}
+
+.profile-specialty {
+    color: #777;
+    margin: 0 0 15px 0;
+    font-size: 0.9rem;
+}
+
+/* Avaliação (Estrelas) */
+.profile-rating {
+    background-color: #f9f9f9;
+    padding: 10px;
+    border-radius: 8px;
+    margin-bottom: 20px;
+    display: inline-block;
+    width: 100%;
+    box-sizing: border-box;
+}
+
+.stars {
+    color: #FFC107; /* Amarelo ouro */
+    font-size: 1.1rem;
+    margin-right: 5px;
+}
+
+.rating-value {
+    font-weight: 600;
+    color: var(--color-text-dark);
+}
+
+/* Botões da Sidebar */
+.full-width {
+    width: 100%;
+    display: block;
+    margin-bottom: 10px;
+}
+
+.btn-outline {
+    background-color: transparent;
+    border: 2px solid var(--color-primary-green);
+    color: var(--color-primary-green);
+    padding: 10px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 600;
+    transition: all 0.2s;
+}
+
+.btn-outline:hover {
+    background-color: var(--color-primary-green);
+    color: #fff;
+}
+
+/* ======================================================
+   COLUNA DIREITA (CONTEÚDO)
+   ====================================================== */
+.profile-content {
+    flex: 1; /* Ocupa o resto do espaço */
+    min-width: 0; /* Evita quebra de layout em flex items */
+}
+
+/* Grid de Informações Pessoais */
+.info-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr; /* Duas colunas */
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+    .info-grid {
+        grid-template-columns: 1fr; /* Uma coluna no mobile */
+    }
+}
+
+.info-item label {
+    display: block;
+    font-size: 0.8rem;
+    color: #888;
+    margin-bottom: 4px;
+    text-transform: uppercase;
+    letter-spacing: 0.5px;
+}
+
+.info-item p {
+    margin: 0;
+    font-size: 0.95rem;
+    color: var(--color-text-dark);
+    font-weight: 500;
+}
+
+/* Seção de Endereço */
+.address-content {
+    display: flex;
+    gap: 15px;
+}
+
+.icon-location {
+    font-size: 1.5rem;
+    background-color: #e8f5e9; /* Verde bem clarinho */
+    width: 40px;
+    height: 40px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 50%;
+}
+
+.address-text p {
+    margin: 0 0 5px 0;
+    color: #555;
+    font-size: 0.95rem;
+}
+
+/* Lista de Formação */
+.education-list {
+    display: flex;
+    flex-direction: column;
+    gap: 15px;
+}
+
+.education-item {
+    display: flex;
+    align-items: flex-start;
+    gap: 15px;
+    padding-bottom: 15px;
+    border-bottom: 1px solid #f0f0f0;
+}
+
+.education-item:last-child {
+    border-bottom: none;
+}
+
+.education-icon {
+    font-size: 1.5rem;
+    background-color: #f0f4f8; /* Azulacinza bem claro */
+    width: 45px;
+    height: 45px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    border-radius: 8px;
+}
+
+.education-details h4 {
+    margin: 0 0 4px 0;
+    font-size: 1rem;
+    color: var(--color-text-dark);
+}
+
+.education-details p {
+    margin: 0;
+    color: #666;
+    font-size: 0.9rem;
+}
