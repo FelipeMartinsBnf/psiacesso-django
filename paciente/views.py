@@ -14,16 +14,24 @@ from django.shortcuts import get_object_or_404, render, redirect
 @login_required
 def dashboard(request):
     #Logica para carregar 4 psicologos mais novos
-    recentes = Psicologo.objects.order_by('-id')[:4]
+    recentes = Psicologo.objects.filter(ativo=True, aprovado=True).order_by('-id')[:4]
     
     #Pegar as consultas mais recentes    
-    consultas = Consulta.objects.filter(paciente=request.user.paciente, status='confirmado').order_by('data_horario')[:5]
+    consultas = Consulta.objects.filter(
+        paciente=request.user.paciente,
+        psicologo__ativo=True,
+        psicologo__aprovado=True,
+        status='confirmado'
+        ).order_by('data_horario')[:5]
     return render(request, 'dashboard.html', {'psicologos': recentes, 'consultas': consultas})
 
 #Carrega todos os psicologos disponiveis
 @login_required
 def view_all_psicologs(request):
-    psicologos = Psicologo.objects.all()
+    psicologos = Psicologo.objects.filter(
+        ativo = True,
+        aprovado = True
+    )
     return render(request, 'psicologos_list.html', {'psicologos': psicologos })
 
 #Carrega as informações de um psicologo para o paciente
@@ -196,6 +204,7 @@ def agenda_paciente_view(request):
     # 5. Buscar as consultas do paciente para esta semana
     consultas = Consulta.objects.filter(
         paciente=paciente,
+        psicologo__ativo = True,
         data_horario__date__range=(start_of_week, end_of_week),
         status='confirmado'
     ).select_related('psicologo', 'psicologo__usuario') # Otimiza a busca

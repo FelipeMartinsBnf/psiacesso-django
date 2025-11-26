@@ -73,6 +73,7 @@ class Usuario(AbstractUser):
 class Paciente(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     data_nascimento = models.DateField()
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         ### CORREÇÃO 3: Usando get_full_name() ou email ###
@@ -98,7 +99,8 @@ class Psicologo(models.Model):
     especialidade = models.ForeignKey(Especialidade, on_delete=models.SET_NULL, null=True, blank=True)
     atendimento_online = models.BooleanField()
     atendimento_presencial = models.BooleanField()
-    
+    ativo = models.BooleanField(default=True)
+    aprovado = models.BooleanField(default=False)
 
     def __str__(self):
         ### CORREÇÃO 3: Usando get_full_name() ou email ###
