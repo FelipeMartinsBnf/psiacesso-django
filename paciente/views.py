@@ -28,11 +28,46 @@ def dashboard(request):
 #Carrega todos os psicologos disponiveis
 @login_required
 def view_all_psicologs(request):
-    psicologos = Psicologo.objects.filter(
-        ativo = True,
-        aprovado = True
-    )
-    return render(request, 'psicologos_list.html', {'psicologos': psicologos })
+    psicologos = Psicologo.objects.filter(ativo=True, aprovado=True)
+    especialidades = Especialidade.objects.all()
+
+    # --- Captura os valores do GET ---
+    query = request.GET.get('query')
+    especialidade_id = request.GET.get('especialidade')
+    modalidade = request.GET.get('modalidade')
+    data_filtro = request.GET.get('data')
+    hora_filtro = request.GET.get('hora')
+
+    # --- Aplica os Filtros ---
+    if query:
+        psicologos = psicologos.filter(usuario__first_name__icontains=query) 
+
+    if especialidade_id:
+        psicologos = psicologos.filter(especialidade__id=especialidade_id)
+        # Convertemos para int para facilitar a comparação no template
+        try:
+            especialidade_id = int(especialidade_id)
+        except ValueError:
+            especialidade_id = None
+
+    if modalidade:
+        # Trocar aqui os tripos de filtragem
+            
+
+    # (Lógica de data/hora aqui...)
+
+    # --- Contexto atualizado ---
+    context = {
+        'psicologos': psicologos,
+        'especialidades': especialidades,
+        'current_query': query, 
+        'current_especialidade': especialidade_id,
+        'current_modalidade': modalidade,
+        'current_data': data_filtro,
+        'current_hora': hora_filtro,
+    }
+    
+    return render(request, 'psicologos_list.html', context)
 
 #Carrega as informações de um psicologo para o paciente
 @login_required

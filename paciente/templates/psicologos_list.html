@@ -1,5 +1,4 @@
 {% extends 'base.html' %}
-
 {% load static %}
 
 {% block title %}Nossos Psicólogos - PsiConnect{% endblock %}
@@ -8,21 +7,23 @@
     <link rel="stylesheet" href="{% static 'psicologos_list.css' %}">
 {% endblock %}
 
-
 {% block content %}
     <main class="listagem-container">
         
         <h1>Encontre seu Psicólogo</h1>
         <p>Estes são os profissionais disponíveis em nossa plataforma.</p>
+        
         <section class="search-container card">
             <h2>Encontrar Profissional</h2>
             <div class="barra-pesquisa">
-                <form method="get" action="{% url 'user-psi-list' %}" class="search-form">
-                    {% csrf_token %}
+                <form method="GET" action="{% url 'user-psi-list' %}" class="search-form" id="searchForm">
                     <span class="material-icons">search</span>
-                    <input type="text" value="{{ query }}" name="query" placeholder="Buscar por nome ou especialidade...">
+                    
+                    <input type="text" value="{{ query|default:'' }}" name="query" placeholder="Buscar por nome...">
+                    
                     <input type="submit" value="Buscar" class="search-button">
-                    <button type="button" class="filter-button">
+                    
+                    <button type="button" class="filter-button" onclick="openModal()">
                         Filtrar <span class="material-icons">filter_list</span>
                     </button>
                 </form>
@@ -30,25 +31,93 @@
         </section>
 
         <div class="psicologos-grid">
-            
             {% for psi in psicologos %}
                 <article class="psi-card">
                     <div class="psi-card-header">
-                        <img src="URL_DA_FOTO_AQUI" alt="Foto de {{ psi.usuario.first_name }}">
+                        <img src="{{ psi.usuario.foto.url|default:'path/to/default.jpg' }}" alt="Foto de {{ psi.usuario.first_name }}">
                         <div class="psi-card-info">
-                            <h3>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}></h3>
-                            <span>{{ psi.especialidade|default:'Terapia Cognitiva' }}</span>
+                            <h3>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</h3>
+                            <span>{{ psi.especialidade.nome|default:'Psicólogo' }}</span>
                         </div>
                     </div>
                     <div class="psi-card-rating">
                         <span class="material-icons">star</span>
-                        <strong>4.9</strong> (120) </div>
+                        <strong>4.9</strong> (120) 
+                    </div>
                     <a href="{% url 'user-psi-detail' psi.id %}" class="agendar-button">Agendar Consulta</a>
                 </article>
             {% empty %}
-                <p class="empty-message">Nenhum psicólogo encontrado no momento.</p>
+                <p class="empty-message">Nenhum psicólogo encontrado com estes critérios.</p>
             {% endfor %}
-        
         </div> 
     </main>
+
+    <div id="filterModal" class="modal-overlay">
+        <div class="modal-content">
+            <span class="close-modal" onclick="closeModal()">&times;</span>
+            <h2>Filtrar Resultados</h2>
+            
+            <form method="GET" action="{% url 'user-psi-list' %}">
+                {% if current_query %}
+                <input type="hidden" name="query" value="{{ current_query }}">
+                {% endif %}
+            
+                <div class="filter-group">
+                    <label for="especialidade">Especialidade:</label>
+                    <select name="especialidade" id="especialidade">
+                        <option value="">Todas</option>
+                        {% for esp in especialidades %}
+                            <option value="{{ esp.id }}" 
+                                {% if current_especialidade == esp.id %}selected{% endif %}>
+                                {{ esp.nome }}
+                            </option>
+                        {% endfor %}
+                    </select>
+                </div>
+            
+                <div class="filter-group">
+                    <label for="modalidade">Modalidade:</label>
+                    <select name="modalidade" id="modalidade">
+                        <option value="">Qualquer</option>
+                        <option value="presencial" {% if current_modalidade == 'presencial' %}selected{% endif %}>Presencial</option>
+                        <option value="online" {% if current_modalidade == 'online' %}selected{% endif %}>Online</option>
+                    </select>
+                </div>
+            
+                <div class="filter-group">
+                    <label>Disponibilidade:</label>
+                    <div style="display: flex; gap: 10px;">
+                        <input type="date" name="data" value="{{ current_data|default:'' }}">
+                        <input type="time" name="hora" value="{{ current_hora|default:'' }}">
+                    </div>
+                </div>
+            
+                <button type="submit" class="btn-aplicar">Aplicar Filtros</button>
+                
+                <a href="{% url 'user-psi-list' %}" style="display:block; text-align:center; margin-top:10px; font-size:12px; color:#666;">
+                    Limpar filtros
+                </a>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        // Função para abrir o modal
+        function openModal() {
+            document.getElementById('filterModal').style.display = 'block';
+        }
+
+        // Função para fechar o modal
+        function closeModal() {
+            document.getElementById('filterModal').style.display = 'none';
+        }
+
+        // Fechar se clicar fora do modal
+        window.onclick = function(event) {
+            var modal = document.getElementById('filterModal');
+            if (event.target == modal) {
+                modal.style.display = "none";
+            }
+        }
+    </script>
 {% endblock %}
