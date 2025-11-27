@@ -1,0 +1,43 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block content %}
+<div class="profile-container" style="justify-content: center;">
+    <div class="card" style="width: 100%; max-width: 800px;">
+        <div class="card-header">
+            <h3>Editar Perfil Profissional</h3>
+        </div>
+
+        <form method="post" enctype="multipart/form-data">
+            {% csrf_token %}
+            
+            <div class="form-grid">
+                {{ form.as_p }}
+            </div>
+
+            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
+                <a href="javascript:history.back()" class="btn btn-outline" style="text-decoration: none; text-align:center;">Cancelar</a>
+                <button type="submit" class="btn btn-primary" style="cursor: pointer;">Salvar Alterações</button>
+            </div>
+        </form>
+    </div>
+</div>
+
+<style>
+    /* Estiliza os inputs gerados automaticamente pelo Django */
+    input[type="text"], input[type="email"], input[type="number"], textarea, select {
+        width: 100%;
+        padding: 10px;
+        border: 1px solid #ccc;
+        border-radius: 6px;
+        margin-bottom: 10px;
+        box-sizing: border-box;
+    }
+    label {
+        font-weight: 600;
+        color: #333;
+        margin-bottom: 5px;
+        display: block;
+    }
+</style>
+{% endblock %}

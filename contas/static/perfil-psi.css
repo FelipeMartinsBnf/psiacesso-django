@@ -1,23 +1,20 @@
-/* ======================================================
-   CONFIGURAÇÕES GERAIS E LAYOUT DA PÁGINA
-   ====================================================== */
-
-/* Fundo levemente cinza para destacar os cards brancos (igual da imagem) */
 body {
-    background-color: #f8f9fa; 
+    background-color: #f8f9fa;
 }
 
-/* Container Principal - Organiza em 2 colunas */
+/* ======================================================
+   LAYOUT PRINCIPAL (Igual você já tinha)
+   ====================================================== */
 .profile-container {
     max-width: 1100px;
-    margin: 40px auto; /* Espaçamento do topo (navbar) e baixo (footer) */
+    margin: 40px auto; 
     padding: 0 20px;
-    display: flex;
+    display: flex;       /* Isso garante uma coluna ao lado da outra */
     gap: 30px;
-    align-items: flex-start; /* Essencial para a sidebar não esticar */
+    align-items: flex-start; 
 }
 
-/* Responsividade: Em celulares, vira uma coluna só */
+/* Responsividade: Celular */
 @media (max-width: 768px) {
     .profile-container {
         flex-direction: column;
@@ -29,12 +26,12 @@ body {
 }
 
 /* ======================================================
-   ESTILO DOS CARDS (O "Bloco Branco")
+   ESTILO DOS CARDS (O fundo branco)
    ====================================================== */
 .card {
-    background-color: var(--color-white, #fff);
-    border-radius: 12px; /* Bordas arredondadas */
-    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05); /* Sombra suave */
+    background-color: #fff;
+    border-radius: 12px;
+    box-shadow: 0 4px 12px rgba(0, 0, 0, 0.05);
     padding: 24px;
     margin-bottom: 24px;
     border: 1px solid rgba(0,0,0,0.03);
@@ -52,36 +49,20 @@ body {
 .card-header h3 {
     margin: 0;
     font-size: 1.1rem;
-    color: var(--color-text-dark);
+    color: #333;
     font-weight: 600;
 }
 
-/* Botões de ícone pequeno (lápis, adicionar) */
-.btn-icon-small {
-    background: none;
-    border: none;
-    font-size: 1.1rem;
-    cursor: pointer;
-    color: #999;
-    transition: color 0.2s;
-}
-.btn-icon-small:hover {
-    color: var(--color-primary-green);
-}
-
 /* ======================================================
-   COLUNA ESQUERDA (SIDEBAR)
+   SIDEBAR (Lado Esquerdo)
    ====================================================== */
 .profile-sidebar {
     flex: 0 0 320px; /* Largura fixa */
     position: sticky;
-    top: 90px; /* Para não bater na navbar fixa ao rolar */
+    top: 90px;
 }
 
-/* Foto e Cabeçalho da Sidebar */
-.profile-summary {
-    text-align: center;
-}
+.profile-summary { text-align: center; }
 
 .profile-image-wrapper {
     position: relative;
@@ -99,27 +80,11 @@ body {
     box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
-.camera-icon {
-    position: absolute;
-    bottom: 5px;
-    right: 5px;
-    background-color: var(--color-text-dark);
-    color: #fff;
-    border: none;
-    border-radius: 50%;
-    width: 32px;
-    height: 32px;
-    cursor: pointer;
-    font-size: 14px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-}
-
 .profile-name {
     margin: 10px 0 5px 0;
     font-size: 1.25rem;
-    color: var(--color-text-dark);
+    color: #333;
+    font-weight: 700;
 }
 
 .profile-specialty {
@@ -128,7 +93,6 @@ body {
     font-size: 0.9rem;
 }
 
-/* Avaliação (Estrelas) */
 .profile-rating {
     background-color: #f9f9f9;
     padding: 10px;
@@ -136,62 +100,70 @@ body {
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
-    box-sizing: border-box;
+    box-sizing: border-box; /* Garante que o padding não estoure a largura */
 }
 
-.stars {
-    color: #FFC107; /* Amarelo ouro */
-    font-size: 1.1rem;
-    margin-right: 5px;
+.stars { color: #FFC107; margin-right: 5px; }
+.rating-value { font-weight: 600; color: #333; }
+
+/* ======================================================
+   CORREÇÃO DOS BOTÕES (O Problema estava aqui)
+   ====================================================== */
+.sidebar-actions {
+    width: 100%;
 }
 
-.rating-value {
-    font-weight: 600;
-    color: var(--color-text-dark);
-}
-
-/* Botões da Sidebar */
+/* Essa classe .full-width estava no seu HTML */
 .full-width {
     width: 100%;
     display: block;
+    box-sizing: border-box; /* <--- O SEGREDO: Impede que padding + width 100% vaze */
     margin-bottom: 10px;
+    padding: 12px;
+    text-align: center;
+    border-radius: 6px;
+    text-decoration: none;
+    font-weight: 600;
+    transition: background 0.2s;
+    cursor: pointer;
+}
+
+/* Cores dos botões */
+.btn-primary {
+    background-color: #6A994E; /* Verde Principal */
+    color: #fff;
+    border: none;
+}
+.btn-primary:hover {
+    background-color: #557c3e;
 }
 
 .btn-outline {
     background-color: transparent;
-    border: 2px solid var(--color-primary-green);
-    color: var(--color-primary-green);
-    padding: 10px 16px;
-    border-radius: 6px;
-    cursor: pointer;
-    font-weight: 600;
-    transition: all 0.2s;
+    border: 2px solid #6A994E;
+    color: #6A994E;
 }
-
 .btn-outline:hover {
-    background-color: var(--color-primary-green);
+    background-color: #6A994E;
     color: #fff;
 }
 
 /* ======================================================
-   COLUNA DIREITA (CONTEÚDO)
+   CONTEÚDO DIREITO
    ====================================================== */
 .profile-content {
     flex: 1; /* Ocupa o resto do espaço */
-    min-width: 0; /* Evita quebra de layout em flex items */
+    min-width: 0;
 }
 
-/* Grid de Informações Pessoais */
 .info-grid {
     display: grid;
-    grid-template-columns: 1fr 1fr; /* Duas colunas */
+    grid-template-columns: 1fr 1fr;
     gap: 20px;
 }
 
 @media (max-width: 600px) {
-    .info-grid {
-        grid-template-columns: 1fr; /* Uma coluna no mobile */
-    }
+    .info-grid { grid-template-columns: 1fr; }
 }
 
 .info-item label {
@@ -200,77 +172,35 @@ body {
     color: #888;
     margin-bottom: 4px;
     text-transform: uppercase;
-    letter-spacing: 0.5px;
 }
 
 .info-item p {
     margin: 0;
-    font-size: 0.95rem;
-    color: var(--color-text-dark);
+    font-size: 1rem;
+    color: #333;
     font-weight: 500;
 }
 
-/* Seção de Endereço */
-.address-content {
-    display: flex;
-    gap: 15px;
-}
+/* Ícones de Endereço e Formação */
+.address-content { display: flex; gap: 15px; }
 
-.icon-location {
+.icon-location, .education-icon {
     font-size: 1.5rem;
-    background-color: #e8f5e9; /* Verde bem clarinho */
-    width: 40px;
-    height: 40px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
+    background-color: #e8f5e9;
+    width: 40px; height: 40px;
+    display: flex; align-items: center; justify-content: center;
     border-radius: 50%;
 }
 
-.address-text p {
-    margin: 0 0 5px 0;
-    color: #555;
-    font-size: 0.95rem;
-}
-
-/* Lista de Formação */
-.education-list {
-    display: flex;
-    flex-direction: column;
-    gap: 15px;
-}
+.education-list { display: flex; flex-direction: column; gap: 15px; }
 
 .education-item {
-    display: flex;
-    align-items: flex-start;
+    display: flex; align-items: flex-start;
     gap: 15px;
     padding-bottom: 15px;
     border-bottom: 1px solid #f0f0f0;
 }
+.education-item:last-child { border-bottom: none; }
 
-.education-item:last-child {
-    border-bottom: none;
-}
-
-.education-icon {
-    font-size: 1.5rem;
-    background-color: #f0f4f8; /* Azulacinza bem claro */
-    width: 45px;
-    height: 45px;
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    border-radius: 8px;
-}
-
-.education-details h4 {
-    margin: 0 0 4px 0;
-    font-size: 1rem;
-    color: var(--color-text-dark);
-}
-
-.education-details p {
-    margin: 0;
-    color: #666;
-    font-size: 0.9rem;
-}
+.education-details h4 { margin: 0 0 4px 0; font-size: 1rem; color: #333; }
+.education-details p { margin: 0; color: #666; font-size: 0.9rem; }

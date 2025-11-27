@@ -1,126 +1,154 @@
-{% extends 'base.html' %}
-{% load static %}
-
-{% block title %}Perfil de {{ psi.usuario.first_name }} - PsiConnect{% endblock %}
-
-{% block extra_css %}
-    <link rel="stylesheet" href="{% static 'perfil-psi.css' %}">
-{% endblock %}
-
-{% block content %}
+{% extends 'base.html' %} {% load static %} {% block title %}Perfil de {{
+psi.usuario.first_name }} - PsiConnect{% endblock %} {% block extra_css %}
+<link rel="stylesheet" href="{% static 'perfil-psi.css' %}" />
+{% endblock %} {% block content %}
 <div class="profile-container">
+  <aside class="profile-sidebar">
+    <div class="card profile-summary">
+      <div class="profile-image-wrapper">
+        {% if psi.foto %}
+        <img
+          src="{{ psi.foto.url }}"
+          alt="Foto de {{ psi.usuario.first_name }}"
+        />
+        {% else %}
+        <img
+          src="https://placehold.co/150x150/6A994E/FFFFFF?text={{ psi.usuario.first_name.0 }}"
+          alt="Sem foto"
+        />
+        {% endif %}
 
-    <aside class="profile-sidebar">
-        <div class="card profile-summary">
-            <div class="profile-image-wrapper">
-                {% if psi.foto %}
-                    <img src="{{ psi.foto.url }}" alt="Foto de {{ psi.usuario.first_name }}">
-                {% else %}
-                    <img src="https://placehold.co/150x150/6A994E/FFFFFF?text={{ psi.usuario.first_name.0 }}" alt="Sem foto">
-                {% endif %}
-                
-                <button class="btn-icon camera-icon">📷</button>
-            </div>
+        <button class="btn-icon camera-icon">
+          <span class="material-icons" style="font-size: 16px"
+            >photo_camera</span
+          >
+        </button>
+      </div>
 
-            <h2 class="profile-name">
-                Dra. {{ psi.usuario.first_name }} {{ psi.usuario.last_name }}
-            </h2>
-            <p class="profile-specialty">{{ psi.especialidade.nome|default:"Psicóloga Clínica" }}</p>
+      <h2 class="profile-name">
+        Dra. {{ psi.usuario.first_name }} {{ psi.usuario.last_name }}
+      </h2>
+      <p class="profile-specialty">
+        {{ psi.especialidade.nome|default:"Psicóloga Clínica" }}
+      </p>
 
-            <div class="profile-rating">
-                <span class="stars">★★★★★</span>
-                <span class="rating-value">5.0/5.0</span>
-            </div>
+      <div class="profile-rating">
+        <span class="stars">★★★★★</span>
+        <span class="rating-value">5.0/5.0</span>
+      </div>
 
-            <div class="sidebar-actions">
-                <a href="{% url 'agendar_consulta' psi.id %}" class="btn btn-primary full-width">
-                    Agendar Consulta
-                </a>
-                <button class="btn btn-outline full-width" style="margin-top: 10px;">
-                    Editar Perfil
-                </button>
-            </div>
+      <div class="sidebar-actions">
+        <a
+          href="{% url 'agendar_consulta' psi.id %}"
+          class="btn btn-primary full-width"
+        >
+          Agendar Consulta
+        </a>
+        <a
+          href="{% url 'editar-perfil-psi' %}"
+          class="btn btn-outline full-width"
+        >
+          <span
+            class="material-icons"
+            style="font-size: 18px; vertical-align: middle; margin-right: 5px"
+            >edit</span
+          >
+          Editar Perfil
+        </a>
+      </div>
+    </div>
+  </aside>
+
+  <main class="profile-content">
+    <section class="card info-section">
+      <div class="card-header">
+        <h3>Informações Pessoais</h3>
+        <button class="btn-icon-small">
+          <span class="material-icons">edit</span>
+        </button>
+      </div>
+
+      <div class="info-grid">
+        <div class="info-item">
+          <label>Nome Completo</label>
+          <p>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</p>
         </div>
-    </aside>
+        <div class="info-item">
+          <label>Telefone</label>
+          <p>{{ psi.telefone|default:"(11) 99999-9999" }}</p>
+        </div>
+        <div class="info-item">
+          <label>E-mail Profissional</label>
+          <p>{{ psi.usuario.email }}</p>
+        </div>
+        <div class="info-item">
+          <label>CRP</label>
+          <p>{{ psi.crp }}</p>
+        </div>
+        <div class="info-item">
+          <label>CPF</label>
+          <p>{{ psi.cpf|default:"Não informado" }}</p>
+        </div>
+        <div class="info-item">
+          <label>Preço da Consulta</label>
+          <p>R$ {{ psi.preco_consulta }}</p>
+        </div>
+      </div>
+    </section>
 
-    <main class="profile-content">
+    <section class="card address-section">
+      <div class="card-header">
+        <h3>Endereço do Consultório</h3>
+        <button class="btn-icon-small">
+          <span class="material-icons">edit</span>
+        </button>
+      </div>
 
-        <section class="card info-section">
-            <div class="card-header">
-                <h3>Informações Pessoais</h3>
-                <button class="btn-icon-small">✏️</button>
-            </div>
-            
-            <div class="info-grid">
-                <div class="info-item">
-                    <label>Nome Completo</label>
-                    <p>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</p>
-                </div>
-                <div class="info-item">
-                    <label>Telefone</label>
-                    <p>{{ psi.telefone|default:"(11) 99999-9999" }}</p>
-                </div>
-                <div class="info-item">
-                    <label>E-mail Profissional</label>
-                    <p>{{ psi.usuario.email }}</p>
-                </div>
-                <div class="info-item">
-                    <label>CRP</label>
-                    <p>{{ psi.crp }}</p>
-                </div>
-                <div class="info-item">
-                    <label>CPF</label>
-                    <p>{{ psi.cpf|default:"Não informado" }}</p>
-                </div>
-                <div class="info-item">
-                    <label>Preço da Consulta</label>
-                    <p>R$ {{ psi.preco_consulta }}</p>
-                </div>
-            </div>
-        </section>
+      <div class="address-content">
+        <div class="icon-location">
+          <span class="material-icons">location_on</span>
+        </div>
+        <div class="address-text">
+          <p>
+            <strong
+              >{{ psi.endereco|default:"Endereço não cadastrado" }}</strong
+            >
+          </p>
+          <p>
+            Atendimento: {% if psi.atendimento_online %}Online{% endif %} {% if
+            psi.atendimento_online and psi.atendimento_presencial %} & {% endif
+            %} {% if psi.atendimento_presencial %}Presencial{% endif %}
+          </p>
+        </div>
+      </div>
+    </section>
 
-        <section class="card address-section">
-            <div class="card-header">
-                <h3>Endereço do Consultório</h3>
-                <button class="btn-icon-small">✏️</button>
-            </div>
-            
-            <div class="address-content">
-                <div class="icon-location">📍</div>
-                <div class="address-text">
-                    <p><strong>{{ psi.endereco|default:"Endereço não cadastrado" }}</strong></p>
-                    <p>Atendimento: 
-                        {% if psi.atendimento_online %}Online{% endif %}
-                        {% if psi.atendimento_online and psi.atendimento_presencial %} & {% endif %}
-                        {% if psi.atendimento_presencial %}Presencial{% endif %}
-                    </p>
-                </div>
-            </div>
-        </section>
+    <section class="card education-section">
+      <div class="card-header">
+        <h3>Formação e Qualificações</h3>
+        <button class="btn-icon-small">
+          <span class="material-icons">add</span>
+        </button>
+      </div>
 
-        <section class="card education-section">
-            <div class="card-header">
-                <h3>Formação e Qualificações</h3>
-                <button class="btn-icon-small">➕</button>
-            </div>
-
-            <div class="education-list">
-                {% for formacao in formacoes %}
-                <div class="education-item">
-                    <div class="education-icon">
-                        {% if formacao.tipo == 0 %}🎓{% else %}🏅{% endif %}
-                    </div>
-                    <div class="education-details">
-                        <h4>{{ formacao.nome }}</h4>
-                        <p>{{ formacao.descricao }}</p>
-                    </div>
-                </div>
-                {% empty %}
-                <p style="padding: 15px; color: #666;">Nenhuma formação cadastrada.</p>
-                {% endfor %}
-            </div>
-        </section>
-
-    </main>
+      <div class="education-list">
+        {% for formacao in formacoes %}
+        <div class="education-item">
+          <div class="education-icon">
+            {% if formacao.tipo == 0 %}<span class="material-icons">school</span
+            >{% else %}<span class="material-icons">workspace_premium</span>{%
+            endif %}
+          </div>
+          <div class="education-details">
+            <h4>{{ formacao.nome }}</h4>
+            <p>{{ formacao.descricao }}</p>
+          </div>
+        </div>
+        {% empty %}
+        <p style="padding: 15px; color: #666">Nenhuma formação cadastrada.</p>
+        {% endfor %}
+      </div>
+    </section>
+  </main>
 </div>
 {% endblock %}

@@ -38,12 +38,13 @@
       </div>
 
       <div class="dropdown-menu">
-        {% if user.profile.is_psychologist %}
+        {% if user.role == 'PSICOLOGO' and user.psicologo.id %}
         <a href="{% url 'perfil-psi' user.psicologo.id %}">
           <span class="material-icons">account_circle</span>
-          Meu Perfil (Psi)
+          Meu Perfil
         </a>
-        {% else %}
+
+        {% elif user.role == 'USUARIO' and user.paciente.id %}
         <a href="{% url 'perfil-paciente' user.paciente.id %}">
           <span class="material-icons">face</span>
           Meu Perfil
