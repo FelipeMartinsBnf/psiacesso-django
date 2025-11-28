@@ -19,7 +19,7 @@
                 <form method="GET" action="{% url 'user-psi-list' %}" class="search-form" id="searchForm">
                     <span class="material-icons">search</span>
                     
-                    <input type="text" value="{{ query|default:'' }}" name="query" placeholder="Buscar por nome...">
+                    <input type="text" value="{{ current_query|default:'' }}" name="query" placeholder="Buscar por nome...">
                     
                     <input type="submit" value="Buscar" class="search-button">
                     

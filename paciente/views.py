@@ -51,10 +51,31 @@ def view_all_psicologs(request):
             especialidade_id = None
 
     if modalidade:
-        # Trocar aqui os tripos de filtragem
+        if modalidade == 'presencial':
+            psicologos = psicologos.filter(atendimento_presencial=True)
+        if modalidade == 'online':
+            psicologos = psicologos.filter(atendimento_online=True)
             
 
     # (Lógica de data/hora aqui...)
+    if data_filtro:
+        try:
+            data_obj = datetime.date.fromisoformat(data_filtro)
+            psicologos = psicologos.filter(
+                disponibilidadepsicologo__dia_semana=(data_obj.weekday() + 1) % 7
+            ).distinct()
+        except ValueError:
+            pass
+
+    if hora_filtro:
+        try:
+            hora = datetime.time.fromisoformat(hora_filtro)
+            psicologos = psicologos.filter(
+                disponibilidadepsicologo__hora_inicio=hora
+            ).distinct()
+        except ValueError:
+            pass
+        
 
     # --- Contexto atualizado ---
     context = {
