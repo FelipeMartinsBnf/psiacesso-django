@@ -367,3 +367,53 @@ def cancelar_consulta_paciente(request, consulta_id):
 
     return redirect('agenda_paciente')
 
+
+@login_required
+def perfil_paciente(request, pk):
+    # Pega o paciente pelo ID ou dá erro 404
+    paciente = get_object_or_404(Paciente, pk=pk)
+
+    # CORREÇÃO 1: Trocamos 'paciente.user' por 'paciente.usuario'
+    if paciente.usuario != request.user:
+        messages.error(request, "Você não tem permissão para editar este perfil.")
+        return redirect('user-dashboard') # Garante que volta para a dashboard correta
+
+    # Se clicou no botão "Salvar Alterações" (POST)
+    if request.method == 'POST':
+        user = request.user
+        
+        # 1. Atualiza dados do USUÁRIO (Login, Email, Nome)
+        nome_completo = request.POST.get('nome')
+        email = request.POST.get('email')
+        
+        if nome_completo:
+            nomes = nome_completo.split(' ', 1)
+            user.first_name = nomes[0]
+            user.last_name = nomes[1] if len(nomes) > 1 else ''
+        
+        if email:
+            user.email = email
+            
+        user.save() # Salva na tabela de autenticação
+
+        # 2. Atualiza dados do PACIENTE (Telefone, Endereço, etc)
+        paciente.telefone = request.POST.get('telefone')
+        paciente.cpf = request.POST.get('cpf')
+        paciente.cep = request.POST.get('cep')
+        paciente.endereco = request.POST.get('endereco')
+        
+        # Data de nascimento (evita erro se vier vazio)
+        data_nascimento = request.POST.get('nascimento')
+        if data_nascimento:
+            paciente.data_nascimento = data_nascimento
+            
+        paciente.save() # Salva na tabela de paciente
+
+        messages.success(request, "Perfil atualizado com sucesso!")
+        
+        # CORREÇÃO 2: Nome da URL ajustado para 'perfil-paciente' igual ao urls.py
+        return redirect('perfil-paciente', pk=pk)
+
+    # Se for apenas entrar na página (GET)
+    # CORREÇÃO 3: Nome do arquivo ajustado para 'perfil_paciente.html' (com underscore)
+    return render(request, 'perfil-paciente.html', {'paciente': paciente})

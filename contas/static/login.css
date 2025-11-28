@@ -101,12 +101,8 @@ a {
     padding: 40px;
     background-size: cover;
     background-position: center center;
-  
-    /* Centraliza o form-box verticalmente e horizontalmente */
     justify-content: center; 
     align-items: center;
-  
-    /* Garante altura total em telas grandes */
     height: 100%;
   }
 
@@ -115,32 +111,34 @@ a {
     position: relative;
     z-index: 2;
     background-color: var(--color-white);
-    padding: 30px; /* Um pouco mais de preenchimento, como na imagem */
+    padding: 30px; 
     border-radius: 8px;
     box-shadow: 0 5px 20px rgba(0,0,0,0.2);
     width: 100%;
-    max-width: 400px; /* Um pouco mais largo, como na imagem */
-    margin-bottom: 0; /* REMOVIDA a margem inferior */
+    max-width: 400px; 
+    margin-bottom: 0; 
 }
 
 /* --- REGRAS ADICIONADAS PARA DIMINUIR ITENS --- */
 .form-box h2 {
-    font-size: 1.5rem; /* Diminui o título principal */
+    font-size: 1.5rem; 
 }
+
 .form-box p.mb-4 {
-    margin-bottom: 1rem !important; /* Diminui o espaço do subtítulo */
+    margin-bottom: 1rem !important;
 }
+
 .form-box .form-label {
-    font-size: 0.875rem; /* Diminui as labels (E-mail, Senha) */
+    font-size: 0.875rem;
 }
+
 .form-box .form-control {
-    font-size: 0.9rem; /* Diminui a fonte dentro dos inputs */
+    font-size: 0.9rem;
 }
-/* --- FIM DAS NOVAS REGRAS --- */
 
 /* Estilos do formulário interno */
 .user-type-button {
-    padding: 10px; /* MODIFICADO: Era 15px */
+    padding: 10px; 
     border: 1px solid var(--color-border);
     border-radius: 8px;
     text-align: center;
@@ -154,8 +152,8 @@ a {
 }
 
 .user-icon {
-    font-size: 1.5rem; /* MODIFICADO: Era 1.8rem */
-    margin-bottom: 3px; /* MODIFICADO: Era 5px */
+    font-size: 1.5rem; 
+    margin-bottom: 3px; 
     color: #999;
 }
 
@@ -169,8 +167,8 @@ a {
 .btn-login {
     background-color: var(--color-primary-green);
     border-color: var(--color-primary-green);
-    padding: 0.6rem 1rem; /* MODIFICADO: Era 12px */
-    font-size: 0.9rem; /* ADICIONADO */
+    padding: 0.6rem 1rem; 
+    font-size: 0.9rem;
     font-weight: 500;
     border-radius: 8px;
     color: white;
@@ -188,7 +186,7 @@ a {
 }
 
 .signup-text {
-    font-size: 0.85rem; /* MODIFICADO: Era 0.9rem */
+    font-size: 0.85rem; 
     color: #666;
 }
 

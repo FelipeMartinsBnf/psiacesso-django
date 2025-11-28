@@ -7,7 +7,7 @@ body {
     border-radius: 8px;
     padding: 24px;
     box-shadow: 0 3px 8px rgba(0, 0, 0, 0.08);
-    margin-bottom: 24px; /* <-- Essa margem volta a ser útil */
+    margin-bottom: 24px; 
 }
 
 .psi-dashboard-container {
@@ -16,22 +16,13 @@ body {
     padding: 0 20px;
 }
 
-/* --- MUDANÇA 1: REVERTENDO O LAYOUT --- */
-/* Voltando ao layout simples, um card abaixo do outro */
 .psi-main-content {
     width: 100%;
-    /* As regras de grid foram removidas daqui */
 }
 
-/* Esta regra não é mais necessária */
-/* .psi-main-content > .card { ... } */
-
-
-/* --- MUDANÇA 2: AJUSTANDO O CARD WELCOME --- */
 .psi-welcome {
     background-color: var(--color-primary-green, #386641);
     color: var(--color-white, #fff);
-    /* As regras 'height: 100%' e 'box-sizing' foram removidas */
 }
 
 .psi-welcome h2 {
@@ -45,7 +36,6 @@ body {
     opacity: 0.9;
 }
 
-/* ... (Regra .psi-actions h3 continua igual) ... */
 .psi-actions h3 {
     margin-top: 0;
     font-size: 1.3rem;
@@ -54,18 +44,12 @@ body {
     padding-bottom: 10px;
 }
 
-/* --- MUDANÇA 3: FORÇANDO 3 COLUNAS NOS BOTÕES --- */
 .action-links {
     display: grid;
-    /* ANTES: repeat(auto-fit, minmax(200px, 1fr))
-       AGORA: Força 3 colunas de tamanho igual
-    */
     grid-template-columns: 1fr 1fr 1fr;
     gap: 16px;
     margin-top: 20px;
 }
-
-/* ... (O restante do CSS (.action-button, .disabled, etc) continua igual) ... */
 .action-button {
     display: flex;
     flex-direction: column;

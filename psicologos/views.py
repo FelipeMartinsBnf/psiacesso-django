@@ -3,6 +3,7 @@ from contas.models import Paciente, Psicologo
 import datetime
 from django.shortcuts import render, redirect, get_object_or_404
 from django.contrib import messages
+from .forms import PsicologoProfileForm
 from django.contrib.auth.decorators import login_required
 from psiacesso_main.models import AnotacaoPsicologo, Consulta, DisponibilidadePsicologo
 from .forms import AgendaGridForm, AnotacaoForm
@@ -257,3 +258,40 @@ def salvar_anotacao_consulta(request, consulta_id):
         'consulta': consulta
     })
 
+@login_required
+def perfil_psicologo_view(request, id):
+    # Busca o psicólogo pelo ID passado na URL
+    psi = get_object_or_404(Psicologo, id=id)
+    
+    # Busca as formações cadastradas para exibir no template
+    # 'formacao_set' é o nome padrão do relacionamento reverso no Django
+    formacoes = psi.formacao_set.all() 
+
+    context = {
+        'psi': psi,
+        'formacoes': formacoes
+    }
+    
+    # Renderiza o HTML que você criou
+    return render(request, 'perfil-psi.html', context)
+
+@login_required
+def editar_perfil_psicologo(request):
+    # Pega o perfil do psicólogo logado
+    psi = get_object_or_404(Psicologo, usuario=request.user)
+
+    if request.method == 'POST':
+        # Carrega o formulário com os dados enviados (POST) e arquivos (FILES - foto)
+        # instance=psi diz ao Django: "Atualize esse cara, não crie um novo"
+        form = PsicologoProfileForm(request.POST, request.FILES, instance=psi)
+        
+        if form.is_valid():
+            form.save()
+            messages.success(request, 'Perfil atualizado com sucesso!')
+            # Redireciona de volta para a tela de visualização do perfil
+            return redirect('perfil-psi', id=psi.id)
+    else:
+        # Se for GET (abrir a página), preenche o form com os dados atuais
+        form = PsicologoProfileForm(instance=psi)
+
+    return render(request, 'psicologo/editar_perfil.html', {'form': form})

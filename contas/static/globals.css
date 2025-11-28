@@ -38,7 +38,7 @@ a {
     justify-content: space-between;
     align-items: center;
     padding: 6px 24px;
-    background-color: var(--color-primary-green, #386641); /* <-- USANDO SUA VARIÁVEL */
+    background-color: var(--color-primary-green, #386641); 
     color: var(--color-text-light, #f0f0f0);
     
     position: sticky;
@@ -46,17 +46,17 @@ a {
     z-index: 1000;
     width: 100%;
     box-sizing: border-box; 
-    font-family: var(--font-family); /* <-- USANDO SUA VARIÁVEL */
+    font-family: var(--font-family); 
 }
 
 /* Lado Esquerdo (Dashboard) */
 .navbar-left .navbar-title {
-    display: flex; /* Mantém o h3 alinhado se houver mais itens */
+    display: flex; 
     align-items: center;
 }
 .navbar-left .navbar-logo-link {
     text-decoration: none;
-    color: var(--color-white, #fff); /* Garante que o link seja branco */
+    color: var(--color-white, #fff); 
 }
 .navbar-title h3 {
     margin: 0;
@@ -163,8 +163,7 @@ a {
     overflow: hidden; 
 }
 
-/* Mostrar o menu ao passar o mouse */
-.navbar-user-dropdown:hover .dropdown-menu {
+.navbar-user-dropdown.ativo .dropdown-menu {
     display: block;
 }
 
@@ -194,7 +193,6 @@ a {
     margin: 4px 0;
 }
 
-/* Estilo do botão Sair (para parecer um link) */
 .logout-form-dropdown {
     margin: 0;
 }
@@ -204,14 +202,14 @@ a {
     gap: 12px;
     padding: 12px 16px;
     font-size: 0.9rem;
-    color: #d9534f; /* Vermelho */
+    color: #d9534f; 
     text-decoration: none;
     background: none;
     border: none;
     cursor: pointer;
     width: 100%;
     text-align: left;
-    font-family: var(--font-family); /* <-- USANDO SUA VARIÁVEL */
+    font-family: var(--font-family); 
 }
 .logout-form-dropdown button:hover {
     background-color: #f5f5f5;
@@ -222,7 +220,7 @@ a {
 }
 
 .footer {
-    background-color: var(--color-primary-green, #386641);
+    background-color: #2d3748; 
     color: var(--color-text-light, #f4f4f4);
     padding: 24px; 
     margin-top: auto;
@@ -296,7 +294,7 @@ a {
 
 .footer-bottom {
  text-align: center;
- border-top: 1px solid var(--color-secondary-green, #6A994E);
+ border-top: 1px solid #4a5568;
  padding-top: 16px;
  opacity: 0.7;
  font-size: 0.75rem;
@@ -314,7 +312,7 @@ a {
 }
 
 .btn-primary:hover {
-    background-color: #5c7a3e; /* Tom mais escuro ao passar o mouse */
+    background-color: #5c7a3e; 
 }
 
 .btn-secondary {
@@ -329,5 +327,5 @@ a {
 }
 
 .btn-secondary:hover {
-    background-color: #d3d3d3; /* Tom mais escuro ao passar o mouse */
+    background-color: #d3d3d3; 
 }

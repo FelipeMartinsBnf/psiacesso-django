@@ -205,15 +205,54 @@ form input[type="checkbox"] {
 }
 
 /* === 6. BOTÕES === */
+/* === 6. BOTÕES (CORRIGIDO E CENTRALIZADO) === */
 .actions-container {
     margin-top: 2rem;
-    gap: 0.8rem;
+    display: flex;          /* Ativa o modo flexível */
+    flex-direction: column; /* Coloca um botão embaixo do outro */
+    align-items: center;    /* Centraliza tudo no meio */
+    gap: 1rem;              /* Espaço entre os botões */
+    width: 100%;            /* Garante que o container ocupe tudo */
 }
 
+/* Estilo Base (Vale para os dois botões) */
 .btn-primary, .btn-outline {
-    padding: 0.75rem;
+    width: 100%;            /* <--- O SEGREDO: Estica o botão para centralizar */
+    padding: 0.85rem;       /* Um pouco mais alto para facilitar o clique */
     font-size: 1rem;
+    font-weight: 600;       /* Negrito para dar destaque */
     border-radius: 8px;
+    cursor: pointer;        /* Mãozinha do mouse */
+    text-align: center;
+    transition: all 0.2s ease;
+    box-sizing: border-box; /* Evita que o botão fique maior que a caixa */
+}
+
+/* === Botão Principal (Salvar) === */
+.btn-primary {
+    background-color: var(--cp-primary);
+    color: white;
+    border: none;
+    box-shadow: var(--shadow-sm);
+}
+
+.btn-primary:hover {
+    background-color: var(--cp-primary-dark);
+    transform: translateY(-2px); /* Efeito sutil de subir ao passar o mouse */
+    box-shadow: var(--shadow-md);
+}
+
+/* === Botão Secundário (Adicionar Formação) === */
+.btn-outline {
+    background-color: transparent;
+    color: var(--cp-text-body);
+    border: 2px dashed var(--cp-border-color); /* Borda tracejada estilosa */
+}
+
+.btn-outline:hover {
+    border-color: var(--cp-primary);
+    color: var(--cp-primary);
+    background-color: var(--cp-primary-light);
 }
 
 /* Responsividade */

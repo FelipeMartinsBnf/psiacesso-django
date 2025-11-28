@@ -1,0 +1,316 @@
+body {
+    background-color: #f8f9fa; /* Fundo cinza claro da imagem */
+}
+
+.profile-container {
+    max-width: 1200px;
+    margin: 40px auto;
+    padding: 0 20px;
+}
+
+/* Cabeçalho da página (Título e botão editar lá no topo) */
+.page-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: flex-end;
+    margin-bottom: 30px;
+}
+
+.page-header h2 {
+    font-size: 1.8rem;
+    color: var(--color-text-dark, #333);
+    margin: 0 0 5px 0;
+}
+
+.page-header p {
+    color: #666;
+    margin: 0;
+    font-size: 0.95rem;
+}
+
+.btn-dark-outline {
+    background: transparent;
+    border: 1px solid #4a5568;
+    color: #4a5568;
+    padding: 8px 16px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+    display: flex;
+    align-items: center;
+    gap: 8px;
+    transition: all 0.2s;
+}
+
+.btn-dark-outline:hover {
+    background-color: #4a5568;
+    color: #fff;
+}
+
+/* Layout Flex: Sidebar + Conteúdo */
+.profile-layout {
+    display: flex;
+    gap: 30px;
+    align-items: flex-start;
+}
+
+@media (max-width: 900px) {
+    .profile-layout {
+        flex-direction: column;
+    }
+    .profile-sidebar {
+        width: 100%;
+        flex: none;
+    }
+}
+
+/* =========================================
+   SIDEBAR (CARD DO USUÁRIO)
+   ========================================= */
+.profile-sidebar {
+    flex: 0 0 300px; /* Largura fixa da lateral */
+}
+
+.card {
+    background: #fff;
+    border-radius: 12px;
+    padding: 24px;
+    box-shadow: 0 2px 10px rgba(0,0,0,0.03);
+    border: 1px solid #e2e8f0;
+}
+
+.user-card {
+    text-align: center;
+}
+
+.profile-image-wrapper {
+    position: relative;
+    width: 120px;
+    height: 120px;
+    margin: 0 auto 16px;
+}
+
+.profile-image-wrapper img {
+    width: 100%;
+    height: 100%;
+    border-radius: 50%;
+    object-fit: cover;
+}
+
+.camera-icon {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    background: #4a5568;
+    color: #fff;
+    border: none;
+    border-radius: 50%;
+    width: 32px;
+    height: 32px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+}
+
+.user-name {
+    margin: 10px 0 5px;
+    font-size: 1.2rem;
+    color: var(--color-text-dark, #333);
+}
+
+.user-since {
+    color: #718096;
+    font-size: 0.85rem;
+    margin-bottom: 20px;
+}
+
+.verified-badge {
+    background-color: #f0fff4;
+    border: 1px solid #c6f6d5;
+    color: #2f855a;
+    padding: 10px;
+    border-radius: 8px;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    gap: 8px;
+    font-size: 0.9rem;
+    font-weight: 500;
+}
+
+.verified-badge .material-icons {
+    font-size: 18px;
+}
+
+/* =========================================
+   CONTEÚDO PRINCIPAL (FORMULÁRIO)
+   ========================================= */
+.profile-content {
+    flex: 1;
+    width: 100%;
+}
+
+.card-header {
+    border-bottom: 1px solid #edf2f7;
+    padding-bottom: 15px;
+    margin-bottom: 20px;
+}
+
+.card-header h3 {
+    margin: 0;
+    font-size: 1.1rem;
+    display: flex;
+    align-items: center;
+    gap: 10px;
+    color: var(--color-text-dark, #2d3748);
+}
+
+.form-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 20px;
+}
+
+@media (max-width: 600px) {
+    .form-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.full-width {
+    grid-column: 1 / -1;
+}
+
+.form-group label {
+    display: block;
+    margin-bottom: 8px;
+    color: #4a5568;
+    font-size: 0.85rem;
+    font-weight: 500;
+}
+
+.form-input {
+    width: 100%;
+    padding: 10px 12px;
+    border: 1px solid #cbd5e0; /* Borda suave */
+    border-radius: 6px;
+    font-size: 0.95rem;
+    background-color: #fff; /* Fundo branco ou levemente cinza #fcfcfc */
+    color: #2d3748;
+    box-sizing: border-box;
+    font-family: inherit;
+}
+
+.form-input:focus {
+    outline: none;
+    border-color: var(--color-secondary-green, #6A994E);
+    box-shadow: 0 0 0 3px rgba(106, 153, 78, 0.1);
+}
+
+/* Rodapé do Form */
+.form-footer {
+    margin-top: 30px;
+    padding-top: 20px;
+    border-top: 1px solid #edf2f7;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.last-update {
+    font-size: 0.8rem;
+    color: #718096;
+}
+
+.form-actions {
+    display: flex;
+    gap: 12px;
+}
+
+.btn-cancel {
+    background: transparent;
+    border: none;
+    color: #718096;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-save {
+    background-color: #2d3748; /* Cor escura da imagem */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    border-radius: 6px;
+    cursor: pointer;
+    font-weight: 500;
+}
+
+.btn-save:hover {
+    background-color: #1a202c;
+}
+
+/* =========================================
+   GRID INFERIOR (Privacidade e Preferências)
+   ========================================= */
+.bottom-grid {
+    display: grid;
+    grid-template-columns: 1fr 1fr;
+    gap: 30px;
+    margin-top: 30px;
+}
+
+@media (max-width: 768px) {
+    .bottom-grid {
+        grid-template-columns: 1fr;
+    }
+}
+
+.settings-list {
+    list-style: none;
+    padding: 0;
+    margin: 0;
+}
+
+.settings-list li {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 12px 0;
+    font-size: 0.95rem;
+    color: #4a5568;
+    border-bottom: 1px solid #f7fafc;
+}
+
+.settings-list li:last-child {
+    border-bottom: none;
+}
+
+/* Badges (Ativado/Desativado) */
+.badge {
+    padding: 4px 10px;
+    border-radius: 12px;
+    font-size: 0.75rem;
+    font-weight: 600;
+}
+
+.badge-green {
+    background-color: #c6f6d5;
+    color: #22543d;
+}
+
+.badge-gray {
+    background-color: #edf2f7;
+    color: #4a5568;
+}
+
+.link-action {
+    color: #4a5568;
+    text-decoration: underline;
+    cursor: pointer;
+}
+
+.text-detail {
+    color: #718096;
+    font-size: 0.85rem;
+}
