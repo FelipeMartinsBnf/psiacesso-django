@@ -13,5 +13,5 @@ urlpatterns = [
 
     path('psicologo/perfil/<int:id>/', perfil_psicologo_view, name='perfil-psi'),
 
-    path('psicologo/editar/', editar_perfil_psicologo, name='editar-perfil-psi')
+    path('psicologo/editar/', editar_perfil_psicologo, name='editar_perfil')
 ]

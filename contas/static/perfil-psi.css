@@ -3,18 +3,17 @@ body {
 }
 
 /* ======================================================
-   LAYOUT PRINCIPAL (Igual você já tinha)
+   LAYOUT PRINCIPAL
    ====================================================== */
 .profile-container {
     max-width: 1100px;
     margin: 40px auto; 
     padding: 0 20px;
-    display: flex;       /* Isso garante uma coluna ao lado da outra */
+    display: flex;     
     gap: 30px;
     align-items: flex-start; 
 }
 
-/* Responsividade: Celular */
 @media (max-width: 768px) {
     .profile-container {
         flex-direction: column;
@@ -26,7 +25,7 @@ body {
 }
 
 /* ======================================================
-   ESTILO DOS CARDS (O fundo branco)
+   ESTILO DOS CARDS
    ====================================================== */
 .card {
     background-color: #fff;
@@ -54,32 +53,71 @@ body {
 }
 
 /* ======================================================
-   SIDEBAR (Lado Esquerdo)
+   SIDEBAR E FOTO DE PERFIL (COM OVERLAY)
    ====================================================== */
 .profile-sidebar {
-    flex: 0 0 320px; /* Largura fixa */
+    flex: 0 0 320px;
     position: sticky;
     top: 90px;
 }
 
-.profile-summary { text-align: center; }
+.profile-summary { 
+    text-align: center; 
+}
 
+/* Container da Foto */
 .profile-image-wrapper {
-    position: relative;
-    width: 140px;
-    height: 140px;
-    margin: 0 auto 16px auto;
+    position: relative; /* Necessário para segurar o overlay */
+    width: 150px;       
+    height: 150px;      
+    margin: 0 auto 15px auto; 
+    border-radius: 50%; 
+    overflow: hidden;   /* Garante que o overlay não saia do círculo */
+    border: 4px solid #fff; 
+    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
 }
 
 .profile-image-wrapper img {
     width: 100%;
     height: 100%;
-    border-radius: 50%;
     object-fit: cover;
-    border: 4px solid #fff;
-    box-shadow: 0 4px 10px rgba(0,0,0,0.1);
+    display: block;
 }
 
+/* O Overlay (Máscara escura com ícone no centro) */
+.camera-overlay {
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    
+    background-color: rgba(0, 0, 0, 0.5); /* Fundo preto transparente */
+    color: white;
+    
+    display: flex;        /* Centraliza o ícone */
+    align-items: center;
+    justify-content: center;
+    
+    opacity: 0;           /* Invisível por padrão */
+    transition: opacity 0.3s ease; 
+    cursor: pointer;
+    text-decoration: none;
+}
+
+/* Ao passar o mouse, o overlay aparece */
+.profile-image-wrapper:hover .camera-overlay {
+    opacity: 1;
+}
+
+/* Tamanho do ícone dentro do overlay */
+.camera-overlay .material-icons {
+    font-size: 32px;
+    color: #fff;
+}
+
+
+/* Restante da Sidebar */
 .profile-name {
     margin: 10px 0 5px 0;
     font-size: 1.25rem;
@@ -100,24 +138,23 @@ body {
     margin-bottom: 20px;
     display: inline-block;
     width: 100%;
-    box-sizing: border-box; /* Garante que o padding não estoure a largura */
+    box-sizing: border-box;
 }
 
 .stars { color: #FFC107; margin-right: 5px; }
 .rating-value { font-weight: 600; color: #333; }
 
 /* ======================================================
-   CORREÇÃO DOS BOTÕES (O Problema estava aqui)
+   BOTÕES GERAIS
    ====================================================== */
 .sidebar-actions {
     width: 100%;
 }
 
-/* Essa classe .full-width estava no seu HTML */
 .full-width {
     width: 100%;
     display: block;
-    box-sizing: border-box; /* <--- O SEGREDO: Impede que padding + width 100% vaze */
+    box-sizing: border-box;
     margin-bottom: 10px;
     padding: 12px;
     text-align: center;
@@ -128,9 +165,8 @@ body {
     cursor: pointer;
 }
 
-/* Cores dos botões */
 .btn-primary {
-    background-color: #6A994E; /* Verde Principal */
+    background-color: #6A994E;
     color: #fff;
     border: none;
 }
@@ -152,7 +188,7 @@ body {
    CONTEÚDO DIREITO
    ====================================================== */
 .profile-content {
-    flex: 1; /* Ocupa o resto do espaço */
+    flex: 1;
     min-width: 0;
 }
 
@@ -181,7 +217,9 @@ body {
     font-weight: 500;
 }
 
-/* Ícones de Endereço e Formação */
+/* ======================================================
+   ÍCONES E LISTAS
+   ====================================================== */
 .address-content { display: flex; gap: 15px; }
 
 .icon-location, .education-icon {
@@ -204,3 +242,10 @@ body {
 
 .education-details h4 { margin: 0 0 4px 0; font-size: 1rem; color: #333; }
 .education-details p { margin: 0; color: #666; font-size: 0.9rem; }
+
+/* ======================================================
+   UTILITÁRIOS
+   ====================================================== */
+.hidden-input {
+    display: none;
+}
