@@ -45,24 +45,27 @@
       </div>
 
       <div class="sidebar-actions">
-        <a
-          href="{% url 'agendar_consulta' psi.id %}"
-          class="btn btn-primary full-width"
-        >
-          Agendar Consulta
-        </a>
-        
-        <a
-          href="{% url 'editar_perfil' %}"
-          class="btn btn-outline full-width"
-        >
-          <span
-            class="material-icons"
-            style="font-size: 18px; vertical-align: middle; margin-right: 5px">
+        {% if request.user == psi.usuario %}
+          <a
+            href="{% url 'editar_perfil' %}"
+            class="btn btn-outline full-width"
+          >
+            <span
+              class="material-icons"
+              style="font-size: 18px; vertical-align: middle; margin-right: 5px">
               edit
-          </span>
-            Editar Perfil
-        </a>
+            </span>
+              Editar Perfil
+          </a>
+
+        {% else %}
+          <a
+            href="{% url 'agendar_consulta' psi.id %}"
+            class="btn btn-primary full-width"
+          >
+            Agendar Consulta
+          </a>
+        {% endif %}
       </div>
     </div>
   </aside>

@@ -2,10 +2,28 @@
 <nav class="navbar-main">
   <div class="navbar-left">
     <div class="navbar-title">
+  {% if user.is_authenticated %}
+    
+    {# SE FOR PSICÓLOGO #}
+    {% if user.role == 'PSICOLOGO' %}
+      <a href="{% url 'psi-dashboard' %}" class="navbar-logo-link">
+        <h3><span class="material-icons">psychology</span>PsiConnect</h3>
+      </a>
+
+    {# SE FOR PACIENTE #}
+    {% else %}
       <a href="{% url 'user-dashboard' %}" class="navbar-logo-link">
         <h3><span class="material-icons">psychology</span>PsiConnect</h3>
       </a>
-    </div>
+    {% endif %}
+
+  {% else %}
+    {# SE NÃO TIVER LOGADO (Manda para a Home) #}
+    <a href="/" class="navbar-logo-link">
+      <h3><span class="material-icons">psychology</span>PsiConnect</h3>
+    </a>
+  {% endif %}
+</div>
   </div>
 
   <div class="navbar-right">
