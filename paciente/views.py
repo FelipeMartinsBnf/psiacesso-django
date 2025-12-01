@@ -14,17 +14,81 @@ from django.shortcuts import get_object_or_404, render, redirect
 @login_required
 def dashboard(request):
     #Logica para carregar 4 psicologos mais novos
-    recentes = Psicologo.objects.order_by('-id')[:4]
+    recentes = Psicologo.objects.filter(ativo=True, aprovado=True).order_by('-id')[:4]
     
     #Pegar as consultas mais recentes    
-    consultas = Consulta.objects.filter(paciente=request.user.paciente, status='confirmado').order_by('data_horario')[:5]
+    consultas = Consulta.objects.filter(
+        paciente=request.user.paciente,
+        psicologo__ativo=True,
+        psicologo__aprovado=True,
+        status='confirmado'
+        ).order_by('data_horario')[:5]
     return render(request, 'dashboard.html', {'psicologos': recentes, 'consultas': consultas})
 
 #Carrega todos os psicologos disponiveis
 @login_required
 def view_all_psicologs(request):
-    psicologos = Psicologo.objects.all()
-    return render(request, 'psicologos_list.html', {'psicologos': psicologos })
+    psicologos = Psicologo.objects.filter(ativo=True, aprovado=True)
+    especialidades = Especialidade.objects.all()
+
+    # --- Captura os valores do GET ---
+    query = request.GET.get('query')
+    especialidade_id = request.GET.get('especialidade')
+    modalidade = request.GET.get('modalidade')
+    data_filtro = request.GET.get('data')
+    hora_filtro = request.GET.get('hora')
+
+    # --- Aplica os Filtros ---
+    if query:
+        psicologos = psicologos.filter(usuario__first_name__icontains=query) 
+
+    if especialidade_id:
+        psicologos = psicologos.filter(especialidade__id=especialidade_id)
+        # Convertemos para int para facilitar a comparação no template
+        try:
+            especialidade_id = int(especialidade_id)
+        except ValueError:
+            especialidade_id = None
+
+    if modalidade:
+        if modalidade == 'presencial':
+            psicologos = psicologos.filter(atendimento_presencial=True)
+        if modalidade == 'online':
+            psicologos = psicologos.filter(atendimento_online=True)
+            
+
+    # (Lógica de data/hora aqui...)
+    if data_filtro:
+        try:
+            data_obj = datetime.date.fromisoformat(data_filtro)
+            psicologos = psicologos.filter(
+                disponibilidadepsicologo__dia_semana=(data_obj.weekday() + 1) % 7
+            ).distinct()
+        except ValueError:
+            pass
+
+    if hora_filtro:
+        try:
+            hora = datetime.time.fromisoformat(hora_filtro)
+            psicologos = psicologos.filter(
+                disponibilidadepsicologo__hora_inicio=hora
+            ).distinct()
+        except ValueError:
+            pass
+        
+
+    # --- Contexto atualizado ---
+    context = {
+        'psicologos': psicologos,
+        'especialidades': especialidades,
+        'current_query': query, 
+        'current_especialidade': especialidade_id,
+        'current_modalidade': modalidade,
+        'current_data': data_filtro,
+        'current_hora': hora_filtro,
+    }
+    
+    return render(request, 'psicologos_list.html', context)
 
 #Carrega as informações de um psicologo para o paciente
 @login_required
@@ -196,6 +260,7 @@ def agenda_paciente_view(request):
     # 5. Buscar as consultas do paciente para esta semana
     consultas = Consulta.objects.filter(
         paciente=paciente,
+        psicologo__ativo = True,
         data_horario__date__range=(start_of_week, end_of_week),
         status='confirmado'
     ).select_related('psicologo', 'psicologo__usuario') # Otimiza a busca

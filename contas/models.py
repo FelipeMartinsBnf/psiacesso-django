@@ -73,6 +73,7 @@ class Usuario(AbstractUser):
 class Paciente(models.Model):
     usuario = models.OneToOneField(Usuario, on_delete=models.CASCADE)
     data_nascimento = models.DateField()
+    ativo = models.BooleanField(default=True)
 
     def __str__(self):
         ### CORREÇÃO 3: Usando get_full_name() ou email ###
@@ -96,12 +97,16 @@ class Psicologo(models.Model):
     preco_consulta = models.DecimalField(max_digits=8, decimal_places=2)
     duracao_minutos = models.PositiveIntegerField(default=50)
     especialidade = models.ForeignKey(Especialidade, on_delete=models.SET_NULL, null=True, blank=True)
+
     atendimento_online = models.BooleanField(default=False) 
     atendimento_presencial = models.BooleanField(default=False)
     
     biografia = models.TextField(blank=True, null=True)
     telefone = models.CharField(max_length=20, blank=True, null=True)
     foto = models.ImageField(upload_to='psicologos_fotos/', blank=True, null=True)
+
+    ativo = models.BooleanField(default=True)
+    aprovado = models.BooleanField(default=False)
 
     def __str__(self):
         nome = self.usuario.get_full_name() or self.usuario.email

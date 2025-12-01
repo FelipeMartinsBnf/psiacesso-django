@@ -47,6 +47,7 @@ def dashboard(request):
     # 5. Buscar as consultas do paciente para esta semana
     consultas = Consulta.objects.filter(
         psicologo=psi,
+        paciente__ativo=True,
         data_horario__date__range=(start_of_week, end_of_week),
         status='confirmado'
     ).select_related('psicologo', 'psicologo__usuario') # Otimiza a busca

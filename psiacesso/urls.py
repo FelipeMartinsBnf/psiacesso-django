@@ -19,7 +19,7 @@ from django.contrib import admin
 from contas.views import checar_perfil
 
 urlpatterns = [
-    path('admin/', admin.site.urls),
+    path('admin', admin.site.urls),
     path("", include('contas.urls')),
     path("", include('psiacesso_main.urls')),
     path("", include('paciente.urls')),
