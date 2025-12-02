@@ -1,0 +1,79 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Editar Perfil - PsiConnect{% endblock %}
+
+{% block extra_css %}
+    <link rel="stylesheet" href="{% static 'perfil-paciente.css' %}">
+{% endblock %}
+
+{% block content %}
+<div class="profile-container">
+
+    <div class="page-header">
+        <div>
+            <h2>Editar Perfil</h2>
+            <p>Atualize suas informações</p>
+        </div>
+    </div>
+
+    <div class="profile-layout">
+        <aside class="profile-sidebar">
+            <div class="card user-card">
+                <div class="profile-image-wrapper">
+                     <img src="https://placehold.co/150x150/png?text={{ user.first_name|first }}" alt="Sem foto">
+                </div>
+                <h3 class="user-name">{{ user.first_name }}</h3>
+            </div>
+        </aside>
+
+        <main class="profile-content">
+            <form method="POST" class="card form-section">
+                {% csrf_token %}
+                
+                <div class="card-header">
+                    <h3><span class="material-icons">edit</span> Editando Informações</h3>
+                </div>
+
+                <div class="form-grid">
+                    <div class="form-group">
+                        <label>Nome Completo</label>
+                        <input type="text" name="nome" value="{{ user.first_name }} {{ user.last_name }}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Data de Nascimento</label>
+                        <input type="date" name="nascimento" value="{{ paciente.data_nascimento|date:'Y-m-d' }}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>E-mail</label>
+                        <input type="email" name="email" value="{{ user.email }}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>Telefone</label>
+                        <input type="text" name="telefone" value="{{ paciente.telefone|default:'' }}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>CPF</label>
+                        <input type="text" name="cpf" value="{{ paciente.cpf|default:'' }}" class="form-input">
+                    </div>
+                    <div class="form-group">
+                        <label>CEP</label>
+                        <input type="text" name="cep" value="{{ paciente.cep|default:'' }}" class="form-input">
+                    </div>
+                    <div class="form-group full-width">
+                        <label>Endereço Completo</label>
+                        <input type="text" name="endereco" value="{{ paciente.endereco|default:'' }}" class="form-input">
+                    </div>
+                </div>
+
+                <div class="form-footer">
+                    <div class="form-actions">
+                        <a href="{% url 'perfil-paciente' paciente.id %}" class="btn-cancel" style="text-decoration: none; display: inline-flex; align-items: center; justify-content: center;">Cancelar</a>
+                        <button type="submit" class="btn-save">Salvar Alterações</button>
+                    </div>
+                </div>
+            </form>
+        </main>
+    </div>
+</div>
+{% endblock %}

@@ -368,52 +368,61 @@ def cancelar_consulta_paciente(request, consulta_id):
     return redirect('agenda_paciente')
 
 
+# No seu views.py
+
 @login_required
 def perfil_paciente(request, pk):
-    # Pega o paciente pelo ID ou dá erro 404
+    # --- FUNÇÃO 1: APENAS VISUALIZAR (SEM SALVAR NADA) ---
     paciente = get_object_or_404(Paciente, pk=pk)
 
-    # CORREÇÃO 1: Trocamos 'paciente.user' por 'paciente.usuario'
+    # Segurança: Se o usuário logado não for o dono do perfil, manda voltar
     if paciente.usuario != request.user:
-        messages.error(request, "Você não tem permissão para editar este perfil.")
-        return redirect('user-dashboard') # Garante que volta para a dashboard correta
+        messages.error(request, "Acesso negado.")
+        return redirect('user-dashboard')
 
-    # Se clicou no botão "Salvar Alterações" (POST)
+    return render(request, 'perfil-paciente.html', {'paciente': paciente})
+
+@login_required
+def editar_perfil_paciente(request):
+    # --- FUNÇÃO 2: FORMULÁRIO DE EDIÇÃO ---
+    try:
+        paciente = request.user.paciente
+    except Paciente.DoesNotExist:
+        return redirect('home')
+
     if request.method == 'POST':
+        # 1. Salva dados do User (Nome, Email)
         user = request.user
-        
-        # 1. Atualiza dados do USUÁRIO (Login, Email, Nome)
-        nome_completo = request.POST.get('nome')
+        nome_completo = request.POST.get('nome', '').strip()
         email = request.POST.get('email')
-        
-        if nome_completo:
-            nomes = nome_completo.split(' ', 1)
-            user.first_name = nomes[0]
-            user.last_name = nomes[1] if len(nomes) > 1 else ''
-        
-        if email:
-            user.email = email
-            
-        user.save() # Salva na tabela de autenticação
 
-        # 2. Atualiza dados do PACIENTE (Telefone, Endereço, etc)
+        if nome_completo:
+            if " " in nome_completo:
+                first, last = nome_completo.split(" ", 1)
+                user.first_name = first
+                user.last_name = last
+            else:
+                user.first_name = nome_completo
+                user.last_name = ""
+        
+        user.email = email
+        user.save()
+
+        # 2. Salva dados do Paciente (CPF, Endereço, etc)
         paciente.telefone = request.POST.get('telefone')
         paciente.cpf = request.POST.get('cpf')
         paciente.cep = request.POST.get('cep')
         paciente.endereco = request.POST.get('endereco')
         
-        # Data de nascimento (evita erro se vier vazio)
-        data_nascimento = request.POST.get('nascimento')
-        if data_nascimento:
-            paciente.data_nascimento = data_nascimento
+        d_nasc = request.POST.get('nascimento')
+        if d_nasc:
+            paciente.data_nascimento = d_nasc
             
-        paciente.save() # Salva na tabela de paciente
+        paciente.save()
 
-        messages.success(request, "Perfil atualizado com sucesso!")
-        
-        # CORREÇÃO 2: Nome da URL ajustado para 'perfil-paciente' igual ao urls.py
-        return redirect('perfil-paciente', pk=pk)
+        messages.success(request, 'Perfil atualizado com sucesso!')
+        # O SEGREDO: Ao salvar, volta para a tela de VISUALIZAÇÃO
+        return redirect('perfil-paciente', pk=paciente.id)
 
-    # Se for apenas entrar na página (GET)
-    # CORREÇÃO 3: Nome do arquivo ajustado para 'perfil_paciente.html' (com underscore)
-    return render(request, 'perfil-paciente.html', {'paciente': paciente})
+    # Se for GET, abre a tela de edição
+    return render(request, 'editar-perfil-paciente.html', {'paciente': paciente})
