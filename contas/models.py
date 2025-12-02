@@ -104,6 +104,9 @@ class Psicologo(models.Model):
     telefone = models.CharField(max_length=20, blank=True, null=True)
     foto = models.ImageField(upload_to='psicologos_fotos/', blank=True, null=True)
 
+    ativo = models.BooleanField(default=True)
+    aprovado = models.BooleanField(default=False)
+
     def __str__(self):
         nome = self.usuario.get_full_name() or self.usuario.email
         return f"{nome} - CRP {self.crp}"
