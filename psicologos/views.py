@@ -277,21 +277,20 @@ def perfil_psicologo_view(request, id):
 
 @login_required
 def editar_perfil_psicologo(request):
-    # Pega o perfil do psicólogo logado
+    # Pega o psicólogo logado
     psi = get_object_or_404(Psicologo, usuario=request.user)
 
     if request.method == 'POST':
-        # Carrega o formulário com os dados enviados (POST) e arquivos (FILES - foto)
-        # instance=psi diz ao Django: "Atualize esse cara, não crie um novo"
         form = PsicologoProfileForm(request.POST, request.FILES, instance=psi)
         
         if form.is_valid():
             form.save()
             messages.success(request, 'Perfil atualizado com sucesso!')
-            # Redireciona de volta para a tela de visualização do perfil
+
             return redirect('perfil-psi', id=psi.id)
+        else:
+            messages.error(request, 'Erro ao atualizar. Verifique os campos abaixo.')
     else:
-        # Se for GET (abrir a página), preenche o form com os dados atuais
         form = PsicologoProfileForm(instance=psi)
 
-    return render(request, 'psicologo/editar_perfil.html', {'form': form})
+    return render(request, 'editar_perfil.html', {'form': form})

@@ -44,17 +44,17 @@ class AnotacaoForm(forms.ModelForm):
     class Meta:
         model = AnotacaoPsicologo
         fields = ['texto']
-
-# --- ADICIONE ISSO AQUI EMBAIXO ---
 class PsicologoProfileForm(forms.ModelForm):
+    
     class Meta:
         model = Psicologo
-        # Aqui definimos quais campos o psicólogo pode editar
-        fields = ['crp', 'telefone', 'cpf', 'endereco', 'preco_consulta', 'biografia', 'foto', 'atendimento_online', 'atendimento_presencial']
-        
-        widgets = {
-            'endereco': forms.TextInput(attrs={'class': 'form-input', 'placeholder': 'Ex: Rua das Flores, 123'}),
-            'telefone': forms.TextInput(attrs={'class': 'form-input', 'placeholder': '(00) 00000-0000'}),
-            'preco_consulta': forms.NumberInput(attrs={'class': 'form-input', 'step': '0.01'}),
-            'biografia': forms.Textarea(attrs={'class': 'form-input', 'rows': 3}),
-        }
+
+        fields = [
+            'biografia', 
+            'foto', 
+            'telefone', 
+            'preco_consulta', 
+            'duracao_minutos', 
+            'atendimento_online', 
+            'atendimento_presencial'
+        ]

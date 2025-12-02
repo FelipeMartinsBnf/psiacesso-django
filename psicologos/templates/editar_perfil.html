@@ -1,43 +1,204 @@
-{% extends 'base.html' %}
-{% load static %}
+{% extends 'base.html' %} 
+{% load static %} 
 
-{% block content %}
-<div class="profile-container" style="justify-content: center;">
-    <div class="card" style="width: 100%; max-width: 800px;">
-        <div class="card-header">
-            <h3>Editar Perfil Profissional</h3>
-        </div>
+{% block title %}Editar Perfil - PsiConnect{% endblock %} 
 
-        <form method="post" enctype="multipart/form-data">
-            {% csrf_token %}
-            
-            <div class="form-grid">
-                {{ form.as_p }}
-            </div>
-
-            <div style="margin-top: 20px; display: flex; gap: 10px; justify-content: flex-end;">
-                <a href="javascript:history.back()" class="btn btn-outline" style="text-decoration: none; text-align:center;">Cancelar</a>
-                <button type="submit" class="btn btn-primary" style="cursor: pointer;">Salvar Alterações</button>
-            </div>
-        </form>
-    </div>
-</div>
+{% block extra_css %}
+<link rel="stylesheet" href="{% static 'perfil-psi.css' %}" />
 
 <style>
-    /* Estiliza os inputs gerados automaticamente pelo Django */
-    input[type="text"], input[type="email"], input[type="number"], textarea, select {
+    /* Faz os inputs parecerem parte do design */
+    .form-input {
         width: 100%;
-        padding: 10px;
-        border: 1px solid #ccc;
-        border-radius: 6px;
-        margin-bottom: 10px;
-        box-sizing: border-box;
-    }
-    label {
-        font-weight: 600;
+        padding: 8px 0;
+        border: none;
+        border-bottom: 2px solid #eee;
+        background-color: transparent;
+        font-family: inherit;
+        font-size: 1rem;
         color: #333;
-        margin-bottom: 5px;
-        display: block;
+        transition: border-color 0.3s;
+    }
+    
+    .form-input:focus {
+        outline: none;
+        border-bottom-color: #6A994E; /* Cor verde do seu tema */
+        background-color: #fcfcfc;
+    }
+
+    /* Estilo para inputs de arquivo (foto) */
+    .file-input-wrapper {
+        margin-top: 10px;
+        font-size: 0.8rem;
+        overflow: hidden;
+    }
+
+    /* Botões de salvar/cancelar */
+    .btn-save {
+        background-color: #28a745;
+        color: white;
+        border: none;
+    }
+    .btn-cancel {
+        border: 2px solid #dc3545;
+        color: #dc3545;
+        background: transparent;
+    }
+    .btn-cancel:hover {
+        background: #dc3545;
+        color: white;
+    }
+    
+    /* Checkboxes (Atendimento Online/Presencial) */
+    .checkbox-wrapper {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        margin-bottom: 10px;
+    }
+    .checkbox-wrapper label {
+        margin: 0; /* Remove margem padrão */
+        cursor: pointer;
+    }
+    
+    /* Caixa de erro */
+    .alert-error {
+        background-color: #ffebee;
+        color: #c62828;
+        padding: 15px;
+        border-radius: 8px;
+        margin-bottom: 20px;
+        border: 1px solid #ffcdd2;
     }
 </style>
+{% endblock %} 
+
+{% block content %}
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+
+    <div class="profile-container">
+        
+        <aside class="profile-sidebar">
+            <div class="card profile-summary">
+                
+                <div class="profile-image-wrapper">
+                    {% if user.psicologo.foto %}
+                        <img src="{{ user.psicologo.foto.url }}" alt="Foto Atual" />
+                    {% else %}
+                        <img src="https://placehold.co/150x150/6A994E/FFFFFF?text={{ user.first_name.0 }}" alt="Sem foto" />
+                    {% endif %}
+                </div>
+
+                <div class="file-input-wrapper">
+                    <label style="font-size: 0.8rem; color: #777;">Alterar Foto:</label>
+                    {{ form.foto }}
+                </div>
+
+                <h2 class="profile-name">
+                    {{ user.first_name }} {{ user.last_name }}
+                </h2>
+                
+                <p class="profile-specialty">
+                   CRP: {{ user.psicologo.crp }}
+                </p>
+
+                <div class="sidebar-actions">
+                    <button type="submit" class="btn full-width btn-save" style="padding: 12px; border-radius: 6px; cursor: pointer; font-weight: 600;">
+                        <span class="material-icons" style="font-size: 18px; vertical-align: middle; margin-right: 5px">save</span>
+                        Salvar Alterações
+                    </button>
+                    
+                    <a href="{% url 'perfil-psi' user.psicologo.id %}" 
+                       class="btn full-width btn-cancel" 
+                       style="padding: 12px; display: block; text-align: center; border-radius: 6px; text-decoration: none; font-weight: 600; box-sizing: border-box;">
+                        Cancelar
+                    </a>
+                </div>
+            </div>
+        </aside>
+
+        <main class="profile-content">
+            
+            {% if form.errors %}
+                <div class="alert-error">
+                    <strong>Atenção! Corrija os erros abaixo:</strong>
+                    <ul>
+                    {% for field in form %}
+                        {% for error in field.errors %}
+                            <li>{{ field.label }}: {{ error }}</li>
+                        {% endfor %}
+                    {% endfor %}
+                    </ul>
+                </div>
+            {% endif %}
+
+            <section class="card info-section">
+                <div class="card-header">
+                    <h3>Editar Informações</h3>
+                </div>
+
+                <div class="info-grid">
+                    <div class="info-item">
+                        <label>Telefone</label>
+                        {{ form.telefone }} 
+                        {% if form.telefone.errors %}
+                            <small style="color:red">{{ form.telefone.errors.0 }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="info-item">
+                        <label>Preço da Consulta (R$)</label>
+                        {{ form.preco_consulta }}
+                        {% if form.preco_consulta.errors %}
+                            <small style="color:red">{{ form.preco_consulta.errors.0 }}</small>
+                        {% endif %}
+                    </div>
+
+                    <div class="info-item">
+                        <label>Duração (Minutos)</label>
+                        {{ form.duracao_minutos }}
+                        {% if form.duracao_minutos.errors %}
+                            <small style="color:red">{{ form.duracao_minutos.errors.0 }}</small>
+                        {% endif %}
+                    </div>
+                    
+                    <div class="info-item" style="grid-column: 1 / -1;">
+                        <label>Biografia / Sobre Mim</label>
+                        {{ form.biografia }}
+                    </div>
+                </div>
+            </section>
+
+            <section class="card address-section">
+                <div class="card-header">
+                    <h3>Modalidades de Atendimento</h3>
+                </div>
+
+                <div class="address-content" style="flex-direction: column; align-items: flex-start;">
+                    <div class="checkbox-wrapper">
+                        {{ form.atendimento_online }}
+                        <label for="{{ form.atendimento_online.id_for_label }}">Atendimento Online</label>
+                    </div>
+                    
+                    <div class="checkbox-wrapper">
+                        {{ form.atendimento_presencial }}
+                        <label for="{{ form.atendimento_presencial.id_for_label }}">Atendimento Presencial</label>
+                    </div>
+                </div>
+            </section>
+
+        </main>
+    </div>
+</form>
+
+<script>
+    document.addEventListener('DOMContentLoaded', function() {
+        var inputs = document.querySelectorAll('.info-grid input, .info-grid textarea');
+        inputs.forEach(function(input) {
+            input.classList.add('form-input');
+        });
+    });
+</script>
+
 {% endblock %}

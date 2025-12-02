@@ -97,16 +97,17 @@ class Psicologo(models.Model):
     preco_consulta = models.DecimalField(max_digits=8, decimal_places=2)
     duracao_minutos = models.PositiveIntegerField(default=50)
     especialidade = models.ForeignKey(Especialidade, on_delete=models.SET_NULL, null=True, blank=True)
-    atendimento_online = models.BooleanField()
-    atendimento_presencial = models.BooleanField()
-    ativo = models.BooleanField(default=True)
-    aprovado = models.BooleanField(default=False)
+    atendimento_online = models.BooleanField(default=False) 
+    atendimento_presencial = models.BooleanField(default=False)
+    
+    biografia = models.TextField(blank=True, null=True)
+    telefone = models.CharField(max_length=20, blank=True, null=True)
+    foto = models.ImageField(upload_to='psicologos_fotos/', blank=True, null=True)
 
     def __str__(self):
-        ### CORREÇÃO 3: Usando get_full_name() ou email ###
         nome = self.usuario.get_full_name() or self.usuario.email
         return f"{nome} - CRP {self.crp}"
-
+    
 class Endereco(models.Model):
     usuario = models.ForeignKey(Usuario, on_delete=models.CASCADE, related_name="enderecos")
     cidade = models.CharField(max_length=100) 

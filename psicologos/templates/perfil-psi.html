@@ -1,10 +1,18 @@
-{% extends 'base.html' %} {% load static %} {% block title %}Perfil de {{
-psi.usuario.first_name }} - PsiConnect{% endblock %} {% block extra_css %}
+{% extends 'base.html' %} 
+{% load static %} 
+
+{% block title %}Perfil de {{ psi.usuario.first_name }} - PsiConnect{% endblock %} 
+
+{% block extra_css %}
 <link rel="stylesheet" href="{% static 'perfil-psi.css' %}" />
-{% endblock %} {% block content %}
+{% endblock %} 
+
+{% block content %}
 <div class="profile-container">
+  
   <aside class="profile-sidebar">
     <div class="card profile-summary">
+      
       <div class="profile-image-wrapper">
         {% if psi.foto %}
         <img
@@ -18,16 +26,15 @@ psi.usuario.first_name }} - PsiConnect{% endblock %} {% block extra_css %}
         />
         {% endif %}
 
-        <button class="btn-icon camera-icon">
-          <span class="material-icons" style="font-size: 16px"
-            >photo_camera</span
-          >
-        </button>
+        <a href="{% url 'editar_perfil' %}" class="camera-overlay" title="Alterar foto">
+          <span class="material-icons">photo_camera</span>
+        </a>
       </div>
 
       <h2 class="profile-name">
         Dra. {{ psi.usuario.first_name }} {{ psi.usuario.last_name }}
       </h2>
+      
       <p class="profile-specialty">
         {{ psi.especialidade.nome|default:"Psicóloga Clínica" }}
       </p>
@@ -44,16 +51,17 @@ psi.usuario.first_name }} - PsiConnect{% endblock %} {% block extra_css %}
         >
           Agendar Consulta
         </a>
+        
         <a
-          href="{% url 'editar-perfil-psi' %}"
+          href="{% url 'editar_perfil' %}"
           class="btn btn-outline full-width"
         >
           <span
             class="material-icons"
-            style="font-size: 18px; vertical-align: middle; margin-right: 5px"
-            >edit</span
-          >
-          Editar Perfil
+            style="font-size: 18px; vertical-align: middle; margin-right: 5px">
+              edit
+          </span>
+            Editar Perfil
         </a>
       </div>
     </div>
@@ -63,9 +71,9 @@ psi.usuario.first_name }} - PsiConnect{% endblock %} {% block extra_css %}
     <section class="card info-section">
       <div class="card-header">
         <h3>Informações Pessoais</h3>
-        <button class="btn-icon-small">
+        <a href="{% url 'editar_perfil' %}" class="btn-icon-small">
           <span class="material-icons">edit</span>
-        </button>
+        </a>
       </div>
 
       <div class="info-grid">
@@ -99,9 +107,9 @@ psi.usuario.first_name }} - PsiConnect{% endblock %} {% block extra_css %}
     <section class="card address-section">
       <div class="card-header">
         <h3>Endereço do Consultório</h3>
-        <button class="btn-icon-small">
+        <a href="{% url 'editar_perfil' %}" class="btn-icon-small">
           <span class="material-icons">edit</span>
-        </button>
+        </a>
       </div>
 
       <div class="address-content">
@@ -110,14 +118,13 @@ psi.usuario.first_name }} - PsiConnect{% endblock %} {% block extra_css %}
         </div>
         <div class="address-text">
           <p>
-            <strong
-              >{{ psi.endereco|default:"Endereço não cadastrado" }}</strong
-            >
+            <strong>{{ psi.endereco|default:"Endereço não cadastrado" }}</strong>
           </p>
           <p>
-            Atendimento: {% if psi.atendimento_online %}Online{% endif %} {% if
-            psi.atendimento_online and psi.atendimento_presencial %} & {% endif
-            %} {% if psi.atendimento_presencial %}Presencial{% endif %}
+            Atendimento: 
+            {% if psi.atendimento_online %}Online{% endif %} 
+            {% if psi.atendimento_online and psi.atendimento_presencial %} & {% endif %} 
+            {% if psi.atendimento_presencial %}Presencial{% endif %}
           </p>
         </div>
       </div>
@@ -135,9 +142,11 @@ psi.usuario.first_name }} - PsiConnect{% endblock %} {% block extra_css %}
         {% for formacao in formacoes %}
         <div class="education-item">
           <div class="education-icon">
-            {% if formacao.tipo == 0 %}<span class="material-icons">school</span
-            >{% else %}<span class="material-icons">workspace_premium</span>{%
-            endif %}
+            {% if formacao.tipo == 0 %}
+            <span class="material-icons">school</span>
+            {% else %}
+            <span class="material-icons">workspace_premium</span>
+            {% endif %}
           </div>
           <div class="education-details">
             <h4>{{ formacao.nome }}</h4>
