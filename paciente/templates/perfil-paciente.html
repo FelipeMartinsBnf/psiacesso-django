@@ -10,20 +10,18 @@
 {% block content %}
 <div class="profile-container">
 
-    <!-- Cabeçalho da Página (Título e Subtítulo) -->
     <div class="page-header">
         <div>
             <h2>Meu Perfil</h2>
             <p>Gerencie suas informações pessoais e preferências</p>
         </div>
-        <button class="btn-dark-outline">
-            <span class="material-icons">edit</span> Editar Perfil
-        </button>
+        <a href="{% url 'editar_perfil_paciente' %}" class="btn-dark-outline" style="text-decoration: none; display: inline-flex; align-items: center;">
+            <span class="material-icons" style="font-size: 18px; margin-right: 5px">edit</span> Editar Perfil
+        </a>
     </div>
 
     <div class="profile-layout">
         
-        <!-- COLUNA ESQUERDA: Card do Usuário -->
         <aside class="profile-sidebar">
             <div class="card user-card">
                 <div class="profile-image-wrapper">
@@ -32,7 +30,6 @@
                     {% else %}
                         <img src="https://placehold.co/150x150/png?text={{ user.first_name|first }}" alt="Sem foto">
                     {% endif %}
-                    <button class="btn-icon camera-icon">📷</button>
                 </div>
 
                 <h3 class="user-name">{{ user.first_name }} {{ user.last_name }}</h3>
@@ -45,69 +42,77 @@
             </div>
         </aside>
 
-        <!-- COLUNA DIREITA: Formulário e Configurações -->
         <main class="profile-content">
             
-            <!-- FORMULÁRIO DE INFORMAÇÕES PESSOAIS -->
-            <form method="POST" class="card form-section">
-                {% csrf_token %}
+            <div class="card form-section">
                 
+                {% if messages %}
+                    {% for message in messages %}
+                        <div style="padding: 10px; margin: 10px 0; border-radius: 4px; background-color: #d4edda; color: #155724;">
+                            {{ message }}
+                        </div>
+                    {% endfor %}
+                {% endif %}
+
                 <div class="card-header">
                     <h3><span class="material-icons">person</span> Informações Pessoais</h3>
                 </div>
 
                 <div class="form-grid">
-                    <!-- Linha 1 -->
                     <div class="form-group">
                         <label>Nome Completo</label>
-                        <input type="text" name="nome" value="{{ user.first_name }} {{ user.last_name }}" class="form-input">
+                        <div class="form-input" style="display: flex; align-items: center;">
+                            {{ user.first_name }} {{ user.last_name }}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Data de Nascimento</label>
-                        <!-- Assumindo que existe data_nascimento no perfil -->
-                        <input type="date" name="nascimento" value="{{ user.paciente.data_nascimento|date:'Y-m-d' }}" class="form-input">
+                        <div class="form-input" style="display: flex; align-items: center;">
+                            {{ paciente.data_nascimento|date:"d/m/Y" }}
+                        </div>
                     </div>
 
-                    <!-- Linha 2 -->
                     <div class="form-group">
                         <label>E-mail</label>
-                        <input type="email" name="email" value="{{ user.email }}" class="form-input">
+                        <div class="form-input" style="display: flex; align-items: center;">
+                            {{ user.email }}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>Telefone</label>
-                        <input type="text" name="telefone" value="{{ user.paciente.telefone }}" class="form-input">
+                        <div class="form-input" style="display: flex; align-items: center;">
+                            {{ paciente.telefone|default:"-" }}
+                        </div>
                     </div>
 
-                    <!-- Linha 3 -->
                     <div class="form-group">
                         <label>CPF</label>
-                        <input type="text" name="cpf" value="{{ user.paciente.cpf }}" class="form-input">
+                        <div class="form-input" style="display: flex; align-items: center;">
+                            {{ paciente.cpf|default:"-" }}
+                        </div>
                     </div>
                     <div class="form-group">
                         <label>CEP</label>
-                        <input type="text" name="cep" value="{{ user.paciente.cep }}" class="form-input">
+                        <div class="form-input" style="display: flex; align-items: center;">
+                            {{ paciente.cep|default:"-" }}
+                        </div>
                     </div>
 
-                    <!-- Linha 4 (Full Width) -->
                     <div class="form-group full-width">
                         <label>Endereço Completo</label>
-                        <input type="text" name="endereco" value="{{ user.paciente.endereco }}" class="form-input">
+                        <div class="form-input" style="display: flex; align-items: center;">
+                            {{ paciente.endereco|default:"-" }}
+                        </div>
                     </div>
                 </div>
 
                 <div class="form-footer">
-                    <span class="last-update">Última atualização: 15 de dezembro de 2024</span>
-                    <div class="form-actions">
-                        <button type="button" class="btn-cancel">Cancelar</button>
-                        <button type="submit" class="btn-save">Salvar Alterações</button>
+                    <span class="last-update">Última atualização: Hoje</span>
                     </div>
-                </div>
-            </form>
+            </div>
 
-            <!-- GRID INFERIOR: Privacidade e Preferências -->
             <div class="bottom-grid">
                 
-                <!-- Card Privacidade -->
                 <div class="card small-card">
                     <div class="card-header">
                         <h3><span class="material-icons">security</span> Privacidade e Segurança</h3>
@@ -127,7 +132,6 @@
                     </ul>
                 </div>
 
-                <!-- Card Preferências -->
                 <div class="card small-card">
                     <div class="card-header">
                         <h3><span class="material-icons">settings</span> Preferências</h3>
@@ -149,8 +153,7 @@
                 </div>
 
             </div>
-
-        </main>
+            </main>
     </div>
 </div>
 {% endblock %}
