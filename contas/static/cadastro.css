@@ -121,7 +121,7 @@ html, body {
     transition: all 0.2s ease;
 }
 .btn-cadastro:hover {
-    background-color: #2a5232;
+    --cp-primary-dark: #047857;
 }
 
 .login-prompt {

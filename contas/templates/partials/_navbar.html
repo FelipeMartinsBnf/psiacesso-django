@@ -27,22 +27,17 @@
   </div>
 
   <div class="navbar-right">
-    <div class="navbar-notification">
-      <span class="material-icons">notifications</span>
-      <span>2 consultas em 1 hora</span>
-    </div>
-
     <div class="navbar-user-dropdown" onclick="toggleMenu()">
       <div class="user-trigger">
         {% if user.profile.photo.url %}
         <img
-          src="{{ user.profile.photo.url }}"
+          src="https://placehold.co/150x150/6A994E/FFFFFF?text={{ user.first_name.0 }}"
           alt="Foto de Perfil"
           class="user-pic"
         />
         {% else %}
         <img
-          src="{% static 'images/default-profile.png' %}"
+          src="https://placehold.co/150x150/6A994E/FFFFFF?text={{ user.first_name.0 }}"
           alt="Foto de Perfil"
           class="user-pic"
         />

@@ -2,7 +2,7 @@
 
 /* === 1. VARIÁVEIS DE DESIGN (MODERNO & CLEAN) === */
 :root {
-    --cp-primary: #059669;
+    --cp-primary: #386641;
     --cp-primary-dark: #047857;
     --cp-primary-light: #d1fae5;
     --cp-bg-page: #f3f4f6;
@@ -35,7 +35,7 @@ html, body {
 /* --- BARRA LATERAL --- */
 .branding-sidebar {
     width: 38%;
-    background: linear-gradient(145deg, var(--cp-primary-dark), var(--cp-primary), #065f46);
+    background-color: var(--color-primary-green);
     color: white;
     display: flex;
     flex-direction: column;

@@ -294,3 +294,25 @@ def editar_perfil_psicologo(request):
         form = PsicologoProfileForm(instance=psi)
 
     return render(request, 'editar_perfil.html', {'form': form})
+
+@login_required
+def historico_consultas_view(request):
+    try:
+        psicologo = request.user.psicologo
+    except:
+        return redirect('root')
+
+    # Busca todas as consultas do psicólogo
+    # select_related otimiza o banco para já trazer os dados do paciente
+    consultas = Consulta.objects.filter(
+        psicologo=psicologo
+    ).select_related('paciente', 'paciente__usuario').order_by('-data_horario')
+
+    # Opcional: Filtros de busca (se você tiver um campo de busca na tela)
+    query = request.GET.get('q')
+    if query:
+        consultas = consultas.filter(paciente__usuario__first_name__icontains=query)
+
+    return render(request, 'historico_consultas.html', {
+        'consultas': consultas
+    })

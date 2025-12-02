@@ -50,7 +50,7 @@
                 {% for psi in psicologos %}
                     <article class="psi-card card">
                         <div class="psi-card-header">
-                            <img src="URL_FOTO_{{psi.id}}" alt="Foto de {{ psi.usuario.first_name }}">
+                            <img src={% static 'img/user.png' %} alt="Foto de {{ psi.usuario.first_name }}">
                             <div class="psi-card-info">
                                 <h3>{{ psi.usuario.first_name }} {{ psi.usuario.last_name }}</h3>
                                 <span>{{ psi.especialidade|default:'Terapia Cognitiva' }}</span>
@@ -91,7 +91,7 @@
             <ul class="acoes-list">
                 <li><a href="#"><span class="material-icons">add_circle_outline</span> Nova Consulta</a></li>
                 <li><a href="#"><span class="material-icons">chat_bubble_outline</span> Mensagens</a></li>
-                <li><a href="#"><span class="material-icons">history</span> Histórico</a></li>
+                <li><a href="{% url 'historico_paciente' %}"><span class="material-icons">history</span> Histórico</a></li>
             </ul>
         </section>
         

@@ -21,7 +21,8 @@ def dashboard(request):
         paciente=request.user.paciente,
         psicologo__ativo=True,
         psicologo__aprovado=True,
-        status='confirmado'
+        status='confirmado',
+        data_horario__gt=timezone.now()
         ).order_by('data_horario')[:5]
     return render(request, 'dashboard.html', {'psicologos': recentes, 'consultas': consultas})
 
@@ -171,6 +172,7 @@ def agendar(request, psicologo_id):
         'calendar': mark_safe(cal), # Passa o HTML do calendário
         'nav_next': {'year': next_month.year, 'month': next_month.month},
         'nav_prev': {'year': prev_month.year, 'month': prev_month.month},
+        'month': month
     }
     return render(request, 'agendamento.html', context)
 
@@ -426,3 +428,25 @@ def editar_perfil_paciente(request):
 
     # Se for GET, abre a tela de edição
     return render(request, 'editar-perfil-paciente.html', {'paciente': paciente})
+
+@login_required
+def historico_consultas_paciente_view(request):
+    try:
+        paciente = request.user.paciente
+    except:
+        return redirect('root')
+
+    # Busca todas as consultas do psicólogo
+    # select_related otimiza o banco para já trazer os dados do paciente
+    consultas = Consulta.objects.filter(
+        paciente=paciente
+    ).select_related('psicologo', 'psicologo__usuario').order_by('-data_horario')
+
+    # Opcional: Filtros de busca (se você tiver um campo de busca na tela)
+    query = request.GET.get('q')
+    if query:
+        consultas = consultas.filter(psicologo__usuario__first_name__icontains=query)
+
+    return render(request, 'historico_consultas_paciente.html', {
+        'consultas': consultas
+    })

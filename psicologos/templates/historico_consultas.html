@@ -1,0 +1,170 @@
+{% extends 'base.html' %}
+{% load static %}
+
+{% block title %}Histórico de Consultas - PsiConnect{% endblock %}
+
+{% block extra_css %}
+<style>
+    /* Estilos específicos para a lista de histórico */
+    .historico-container {
+        max-width: 1024px;
+        margin: 40px auto;
+        padding: 0 20px;
+    }
+
+    .historico-header {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-bottom: 30px;
+    }
+
+    .lista-consultas {
+        display: flex;
+        flex-direction: column;
+        gap: 15px;
+    }
+
+    /* O Card da Consulta (que é um link) */
+    .consulta-item {
+        display: grid;
+        grid-template-columns: 80px 1fr 150px 120px 40px;
+        /* Colunas fixas */
+        align-items: center;
+        background: white;
+        padding: 20px;
+        border-radius: 12px;
+        border: 1px solid var(--color-light-gray);
+        text-decoration: none;
+        /* Remove sublinhado do link */
+        color: #333;
+        transition: transform 0.2s, box-shadow 0.2s;
+    }
+
+    .consulta-item:hover {
+        transform: translateY(-2px);
+        box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
+        border-color: var(--color-primary-green);
+    }
+
+    /* Data (Caixa esquerda) */
+    .consulta-data {
+        text-align: center;
+        background-color: #f9f9f9;
+        padding: 8px;
+        border-radius: 8px;
+        font-weight: bold;
+        color: var(--color-primary-green);
+    }
+
+    .consulta-data span {
+        display: block;
+        font-size: 0.8rem;
+        color: #666;
+        font-weight: normal;
+    }
+
+    /* Informações do Paciente */
+    .consulta-info h3 {
+        margin: 0;
+        font-size: 1.1rem;
+    }
+
+    .consulta-info p {
+        margin: 4px 0 0;
+        font-size: 0.9rem;
+        color: #666;
+    }
+
+    /* Badges de Status */
+    .badge {
+        padding: 6px 12px;
+        border-radius: 20px;
+        font-size: 0.8rem;
+        font-weight: 600;
+        text-align: center;
+    }
+
+    .badge-confirmado {
+        background-color: var(--color-blue);
+        color: #1e40af;
+    }
+
+    .badge-concluido {
+        background-color: var(--color-green);
+        color: #166534;
+    }
+
+    .badge-cancelado {
+        background-color: var(--color-red);
+        color: #991b1b;
+    }
+
+    /* Ícone de seta */
+    .icon-arrow {
+        color: #ccc;
+        font-size: 1.2rem;
+    }
+</style>
+{% endblock %}
+
+{% block content %}
+<main class="historico-container">
+
+    <div class="historico-header">
+        <h2>Histórico de Consultas</h2>
+        <br>
+        <form method="get" style="display: flex; gap: 10px;">
+            <input type="text" name="q" placeholder="Buscar paciente..."
+                style="padding: 8px 12px; border-radius: 8px; border: 1px solid #ccc;">
+            <button type="submit" class="btn btn-primary"
+                style="background-color: var(--color-primary-green); color: white; border: none; padding: 8px 16px; border-radius: 8px; cursor: pointer;">Buscar</button>
+        </form>
+    </div>
+
+    <div class="lista-consultas">
+        {% for consulta in consultas %}
+        <!-- O card inteiro é um link para a anotação -->
+        <a href="{% url 'save_anotacao_consulta' consulta.id %}" class="consulta-item">
+
+            <!-- 1. Data -->
+            <div class="consulta-data">
+                {{ consulta.data_horario|date:"d" }}
+                <span>{{ consulta.data_horario|date:"M"|upper }}</span>
+            </div>
+
+            <!-- 2. Paciente e Modalidade -->
+            <div class="consulta-info">
+                <h3>{{ consulta.paciente.usuario.get_full_name }}</h3>
+                <p>{{ consulta.get_modalidade_display }} • {{ consulta.data_horario|time:"H:i" }}</p>
+            </div>
+
+            <!-- 3. Status -->
+            <div>
+                <span class="badge badge-{{ consulta.status }}">
+                    {{ consulta.get_status_display }}
+                </span>
+            </div>
+
+            <!-- 4. Indicador de Anotação (Bônus) -->
+            <div style="font-size: 0.85rem; color: #666; text-align: right;">
+                <!-- Se você quiser checar se já existe anotação, precisaria passar isso na view ou no model -->
+                <span style="display: flex; align-items: center; gap: 5px; justify-content: flex-end;">
+                    📝 Ver notas
+                </span>
+            </div>
+
+            <!-- 5. Seta -->
+            <div class="icon-arrow">
+                &rsaquo;
+            </div>
+        </a>
+        {% empty %}
+        <div style="text-align: center; padding: 40px; color: #666;">
+            <p>Nenhuma consulta encontrada no histórico.</p>
+        </div>
+        {% endfor %}
+    </div>
+
+</main>
+{% endblock %}
